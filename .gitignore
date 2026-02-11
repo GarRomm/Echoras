@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+*.log
+server/uploads/*
+server/storage/stl/*
+server/storage/obj/*
+server/storage/renders/*
+!server/uploads/.gitkeep
+!server/storage/stl/.gitkeep
+!server/storage/obj/.gitkeep
+!server/storage/renders/.gitkeep
+python-service/venv/
+python-service/__pycache__/
+.DS_Store
+Thumbs.db

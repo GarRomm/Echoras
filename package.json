@@ -1,0 +1,17 @@
+{
+  "name": "coresound",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Le Souvenir Musical — Transform audio into 3D printable objects",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "build:client": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "setup": "npm install && cd server && npm install && cd ../client && npm install && cd ../python-service && pip install -r requirements.txt"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

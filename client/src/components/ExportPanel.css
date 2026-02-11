@@ -1,0 +1,51 @@
+.export {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.export__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.export__btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.export__btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.export__btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.export__btn--render {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent-light);
+}
+
+.export__preview {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.export__preview img {
+  width: 100%;
+  display: block;
+}

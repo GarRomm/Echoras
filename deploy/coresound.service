@@ -1,0 +1,25 @@
+[Unit]
+Description=CoreSound - Le Souvenir Musical
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/coresound/server
+Environment=NODE_ENV=production
+Environment=PORT=4000
+Environment=BLENDER_PATH=/usr/bin/blender
+ExecStart=/usr/bin/node src/index.js
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/coresound/server/uploads /opt/coresound/server/storage
+
+# Blender renders can be slow, give extra time
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
