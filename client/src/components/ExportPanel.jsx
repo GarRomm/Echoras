@@ -26,7 +26,7 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
   // Derive STL filename from audio file name (strip extension)
   const stlFileName = audioFileName
     ? audioFileName.replace(/\.[^.]+$/, '') + '.stl'
-    : 'coresound-model.stl';
+    : 'echoras-model.stl';
 
   const handleExportSTL = useCallback(() => {
     const geometries = buildAllGeometries(waveformData, params);

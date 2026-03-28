@@ -122,7 +122,7 @@ def apply_material(obj, preset_name):
     """Create and assign a Principled BSDF material."""
     preset = MATERIAL_PRESETS.get(preset_name, MATERIAL_PRESETS["plastic_white"])
 
-    mat = bpy.data.materials.new(name=f"CoreSound_{preset_name}")
+    mat = bpy.data.materials.new(name=f"Echoras_{preset_name}")
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes.get("Principled BSDF")
 
