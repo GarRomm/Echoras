@@ -24,7 +24,7 @@ export function exportSTLBinary(geometry) {
   const view = new DataView(buffer);
 
   // Header (80 bytes) — fill with zeros (already default)
-  const header = 'CoreSound STL Export';
+  const header = 'Echoras STL Export';
   for (let i = 0; i < header.length && i < 80; i++) {
     view.setUint8(i, header.charCodeAt(i));
   }
@@ -102,7 +102,7 @@ export function exportMultiGeometrySTL(geometries) {
   const view = new DataView(buffer);
 
   // Header
-  const header = 'CoreSound STL Export';
+  const header = 'Echoras STL Export';
   for (let i = 0; i < header.length && i < 80; i++) {
     view.setUint8(i, header.charCodeAt(i));
   }

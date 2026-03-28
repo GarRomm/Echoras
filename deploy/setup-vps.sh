@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# CoreSound — VPS Setup Script (Debian/Ubuntu on IONOS)
+# Echoras — VPS Setup Script (Debian/Ubuntu on IONOS)
 #
 # This script installs all system dependencies required to run:
 #   - Node.js (backend + built frontend)
@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-echo "===== CoreSound VPS Setup ====="
+echo "===== Echoras VPS Setup ====="
 
 # ---------------------------------------------------------------------------
 # 1. System updates
@@ -67,7 +67,7 @@ apt-get install -y \
 # ---------------------------------------------------------------------------
 # 6. Create application directory structure
 # ---------------------------------------------------------------------------
-APP_DIR="/opt/coresound"
+APP_DIR="/opt/echoras"
 mkdir -p "$APP_DIR"
 mkdir -p "$APP_DIR/server/uploads"
 mkdir -p "$APP_DIR/server/storage/stl"
@@ -91,6 +91,6 @@ echo "Next steps:"
 echo "  1. Copy your project files to $APP_DIR"
 echo "  2. cd $APP_DIR && npm run setup"
 echo "  3. cd client && npm run build"
-echo "  4. Set up the systemd service: sudo cp deploy/coresound.service /etc/systemd/system/"
-echo "  5. sudo systemctl enable --now coresound"
+echo "  4. Set up the systemd service: sudo cp deploy/echoras.service /etc/systemd/system/"
+echo "  5. sudo systemctl enable --now echoras"
 echo ""

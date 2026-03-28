@@ -14,3 +14,8 @@ python-service/venv/
 python-service/__pycache__/
 .DS_Store
 Thumbs.db
+
+# Fichiers locaux
+CLAUDE.md
+.github/
+docs/
