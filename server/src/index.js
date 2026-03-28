@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 
+const sequelize = require('./db/index');
+require('./db/models/index'); // enregistre les modèles et leurs associations
+
 const uploadRoutes = require('./routes/upload');
 const modelRoutes = require('./routes/model');
 const renderRoutes = require('./routes/render');
@@ -46,6 +49,15 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Echoras server running on port ${PORT}`);
+
+  // Synchronise le schéma Sequelize avec MySQL (alter uniquement en dev)
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
+    console.log('Database connected and schema synced');
+  } catch (err) {
+    console.warn('Database unavailable — running without DB:', err.message);
+  }
 });

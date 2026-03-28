@@ -1,0 +1,143 @@
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ───────────────────────────── Hero ───────────────────────────── */
+.hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  padding: 80px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero__content {
+  flex: 1;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero__title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.hero__title--accent {
+  color: var(--accent-light);
+}
+
+.hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero__cta {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.hero__cta:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.hero__cta--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.hero__cta--secondary {
+  background: transparent;
+  color: var(--accent-light);
+  border: 1px solid var(--accent);
+}
+
+/* ─────────────── Visual décoratif (anneaux CSS) ───────────────── */
+.hero__visual {
+  flex-shrink: 0;
+  width: 320px;
+  height: 320px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__visual-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0.25;
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+.hero__visual-ring {
+  width: 200px;
+  height: 200px;
+}
+
+.hero__visual-ring--2 {
+  width: 270px;
+  height: 270px;
+  animation-delay: 0.8s;
+  border-color: var(--accent-light);
+  opacity: 0.15;
+}
+
+.hero__visual-ring--3 {
+  width: 320px;
+  height: 320px;
+  animation-delay: 1.6s;
+  opacity: 0.08;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(1);   opacity: 0.25; }
+  50%       { transform: scale(1.06); opacity: 0.45; }
+}
+
+/* ─────────────────────── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 48px 24px;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .hero__visual {
+    width: 220px;
+    height: 220px;
+  }
+
+  .hero__visual-ring     { width: 140px; height: 140px; }
+  .hero__visual-ring--2  { width: 185px; height: 185px; }
+  .hero__visual-ring--3  { width: 220px; height: 220px; }
+}

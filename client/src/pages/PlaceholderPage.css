@@ -1,0 +1,48 @@
+.placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.placeholder__content {
+  text-align: center;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.placeholder__icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.placeholder__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.placeholder__text {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.placeholder__cta {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.placeholder__cta:hover {
+  opacity: 0.85;
+}
