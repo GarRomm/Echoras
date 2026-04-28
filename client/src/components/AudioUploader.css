@@ -1,38 +1,99 @@
 .uploader {
+  margin: 10px 16px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 24px 16px;
-  border: 2px dashed var(--border);
-  border-radius: 12px;
+  gap: 6px;
+  padding: 18px 16px;
+  background: #0e0e16;
+  border: 1.5px dashed rgba(240, 237, 230, 0.2);
+  border-radius: 8px;
   cursor: pointer;
-  transition: border-color 0.2s;
   text-align: center;
+  transition: border-color 0.2s;
 }
 
 .uploader:hover {
   border-color: var(--accent);
 }
 
+.uploader__icon {
+  color: rgba(240, 237, 230, 0.35);
+  margin-bottom: 4px;
+}
+
 .uploader__label {
-  font-size: 0.9rem;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
   font-weight: 600;
+  color: var(--text);
 }
 
 .uploader__hint {
+  font-family: var(--font-body);
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: rgba(240, 237, 230, 0.4);
+}
+
+.uploader__hint a,
+.uploader__hint span {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .uploader__formats {
   font-size: 0.65rem;
-  color: var(--text-muted);
-  margin-top: 8px;
+  color: rgba(240, 237, 230, 0.3);
+  margin-top: 4px;
 }
 
 .uploader__status {
-  font-size: 0.85rem;
-  color: var(--accent-light);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  color: var(--accent);
+}
+
+/* Pill fichier importé */
+.uploader--loaded {
+  margin: 12px 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(123, 94, 167, 0.08);
+  border: 1px solid rgba(123, 94, 167, 0.3);
+  border-radius: 8px;
+  cursor: default;
+}
+
+.uploader__file-icon {
+  color: #4caf82;
+  flex-shrink: 0;
+}
+
+.uploader__file-name {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uploader__file-clear {
+  background: none;
+  border: none;
+  color: rgba(240, 237, 230, 0.4);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.uploader__file-clear:hover {
+  color: var(--text);
 }

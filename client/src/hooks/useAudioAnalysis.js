@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
  * Custom hook: decode an audio file using Web Audio API and extract
  * a downsampled waveform amplitude array for geometry generation.
  *
- * @param {File|null} file – the audio file selected by the user
+ * @param {File|null} file - the audio file selected by the user
  * @returns {{ waveformData: Float32Array|null, isAnalyzing: boolean }}
  */
 export function useAudioAnalysis(file) {

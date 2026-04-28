@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
@@ -8,10 +8,13 @@ import PlaceholderPage from './pages/PlaceholderPage';
 import './styles/App.css';
 
 export default function App() {
+  const location = useLocation();
+  const isCreator = location.pathname === '/createur';
+
   return (
     <div className="app">
       <Header />
-      <main className="app__main">
+      <main className={`app__main${isCreator ? ' app__main--fixed' : ''}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/createur" element={<CreatorPage />} />

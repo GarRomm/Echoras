@@ -14,7 +14,7 @@ export default function Footer() {
           <Link to="/confidentialite" className="footer__nav-link">Confidentialité</Link>
           <Link to="/faq" className="footer__nav-link">Contact</Link>
         </nav>
-        <span className="footer__copy">© {year} Echoras — Le Souvenir Musical</span>
+        <span className="footer__copy">© {year} Echoras - Le Souvenir Musical</span>
       </div>
     </footer>
   );

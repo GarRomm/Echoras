@@ -2,151 +2,88 @@ import React from 'react';
 import './ControlPanel.css';
 
 const MATERIALS = [
-  { value: 'plastic_white', label: 'Plastique blanc' },
-  { value: 'plastic_black', label: 'Plastique noir' },
-  { value: 'metal_silver', label: 'Metal argent' },
-  { value: 'metal_gold', label: 'Metal or' },
-  { value: 'wood', label: 'Bois' },
+  { value: 'plastic_white', label: 'Plastique blanc', color: '#E8E8E8' },
+  { value: 'plastic_black', label: 'Plastique noir', color: '#222222' },
+  { value: 'metal_silver', label: 'Métal argent', color: '#A8A8B0' },
+  { value: 'metal_gold', label: 'Métal or', color: '#C9A84C' },
+  { value: 'wood', label: 'Bois', color: '#8B6340' },
+];
+
+const SLIDERS = [
+  { key: 'peakHeight', label: 'Hauteur des pics', min: 0.1, max: 3, step: 0.05, fmt: (v) => v.toFixed(2) },
+  { key: 'smoothing', label: 'Lissage', min: 0, max: 1, step: 0.01, fmt: (v) => v.toFixed(2) },
+  { key: 'cylinderRadius', label: 'Rayon du cylindre', min: 0.3, max: 3, step: 0.1, fmt: (v) => v.toFixed(1) },
+  { key: 'cylinderHeight', label: 'Hauteur du cylindre', min: 1, max: 10, step: 0.5, fmt: (v) => v.toFixed(1) },
+  { key: 'ringThickness', label: 'Épaisseur', min: 0.1, max: 1.5, step: 0.05, fmt: (v) => v.toFixed(2) },
+  { key: 'segments', label: 'Segments', min: 64, max: 512, step: 16, fmt: (v) => v },
+  { key: 'helixTurns', label: "Tours d'hélice", min: 1, max: 12, step: 1, fmt: (v) => v },
+  { key: 'ribbonWidth', label: 'Largeur du ruban', min: 0.05, max: 0.5, step: 0.01, fmt: (v) => v.toFixed(2) },
 ];
 
 export default function ControlPanel({ params, onChange }) {
   return (
     <div className="controls">
-      <h3 className="controls__title">Personnalisation</h3>
-
-      <label className="controls__field">
-        <span>Hauteur des pics</span>
-        <input
-          type="range"
-          min="0.1"
-          max="3"
-          step="0.05"
-          value={params.peakHeight}
-          onChange={(e) => onChange('peakHeight', parseFloat(e.target.value))}
-        />
-        <span className="controls__value">{params.peakHeight.toFixed(2)}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Lissage</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={params.smoothing}
-          onChange={(e) => onChange('smoothing', parseFloat(e.target.value))}
-        />
-        <span className="controls__value">{params.smoothing.toFixed(2)}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Rayon du cylindre</span>
-        <input
-          type="range"
-          min="0.3"
-          max="3"
-          step="0.1"
-          value={params.cylinderRadius}
-          onChange={(e) => onChange('cylinderRadius', parseFloat(e.target.value))}
-        />
-        <span className="controls__value">{params.cylinderRadius.toFixed(1)}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Hauteur du cylindre</span>
-        <input
-          type="range"
-          min="1"
-          max="10"
-          step="0.5"
-          value={params.cylinderHeight}
-          onChange={(e) => onChange('cylinderHeight', parseFloat(e.target.value))}
-        />
-        <span className="controls__value">{params.cylinderHeight.toFixed(1)}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Epaisseur</span>
-        <input
-          type="range"
-          min="0.1"
-          max="1.5"
-          step="0.05"
-          value={params.ringThickness}
-          onChange={(e) => onChange('ringThickness', parseFloat(e.target.value))}
-        />
-        <span className="controls__value">{params.ringThickness.toFixed(2)}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Segments</span>
-        <input
-          type="range"
-          min="64"
-          max="512"
-          step="16"
-          value={params.segments}
-          onChange={(e) => onChange('segments', parseInt(e.target.value, 10))}
-        />
-        <span className="controls__value">{params.segments}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Tours d'helice</span>
-        <input
-          type="range"
-          min="1"
-          max="12"
-          step="1"
-          value={params.helixTurns}
-          onChange={(e) => onChange('helixTurns', parseInt(e.target.value, 10))}
-        />
-        <span className="controls__value">{params.helixTurns}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Largeur du ruban</span>
-        <input
-          type="range"
-          min="0.05"
-          max="0.5"
-          step="0.01"
-          value={params.ribbonWidth}
-          onChange={(e) => onChange('ribbonWidth', parseFloat(e.target.value))}
-        />
-        <span className="controls__value">{params.ribbonWidth.toFixed(2)}</span>
-      </label>
-
-      <label className="controls__field">
-        <span>Couleur de l'onde</span>
-        <input
-          type="color"
-          value={params.waveformColor}
-          onChange={(e) => onChange('waveformColor', e.target.value)}
-        />
-      </label>
-
-      <label className="controls__field">
-        <span>Couleur du cylindre</span>
-        <input
-          type="color"
-          value={params.cylinderColor}
-          onChange={(e) => onChange('cylinderColor', e.target.value)}
-        />
-      </label>
-
-      <label className="controls__field">
-        <span>Materiau</span>
-        <select
-          value={params.material}
-          onChange={(e) => onChange('material', e.target.value)}
-        >
-          {MATERIALS.map((m) => (
-            <option key={m.value} value={m.value}>{m.label}</option>
+      {/* Section sliders */}
+      <div className="controls__section">
+        <h3 className="controls__title">Personnalisation</h3>
+        <div className="controls__fields">
+          {SLIDERS.map(({ key, label, min, max, step, fmt }) => (
+            <label key={key} className="controls__field">
+              <div className="controls__field-header">
+                <span className="controls__field-label">{label}</span>
+                <span className="controls__value">{fmt(params[key])}</span>
+              </div>
+              <input
+                type="range"
+                min={min}
+                max={max}
+                step={step}
+                value={params[key]}
+                onChange={(e) =>
+                  onChange(key, step % 1 === 0 ? parseInt(e.target.value, 10) : parseFloat(e.target.value))
+                }
+              />
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </div>
+
+      {/* Section matériaux */}
+      <div className="controls__section">
+        <h3 className="controls__title">Matériau</h3>
+        <div className="controls__materials">
+          {MATERIALS.map((m) => (
+            <button
+              key={m.value}
+              className={`controls__material${params.material === m.value ? ' controls__material--active' : ''}`}
+              onClick={() => onChange('material', m.value)}
+              type="button"
+            >
+              <span className="controls__material-dot" style={{ background: m.color }} />
+              {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Section couleurs */}
+      <div className="controls__section">
+        <h3 className="controls__title">Couleurs</h3>
+        <div className="controls__fields">
+          <label className="controls__field">
+            <div className="controls__field-header">
+              <span className="controls__field-label">Couleur de l'onde</span>
+            </div>
+            <input type="color" value={params.waveformColor} onChange={(e) => onChange('waveformColor', e.target.value)} />
+          </label>
+          <label className="controls__field">
+            <div className="controls__field-header">
+              <span className="controls__field-label">Couleur du cylindre</span>
+            </div>
+            <input type="color" value={params.cylinderColor} onChange={(e) => onChange('cylinderColor', e.target.value)} />
+          </label>
+        </div>
+      </div>
     </div>
   );
 }

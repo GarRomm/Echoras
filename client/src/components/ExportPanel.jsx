@@ -70,21 +70,23 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
 
   return (
     <div className="export">
-      <h3 className="export__title">Export</h3>
-
-      <button className="export__btn" disabled={disabled} onClick={handleExportSTL}>
-        Telecharger STL
-      </button>
-
       <button
-        className="export__btn export__btn--render"
+        className="export__render-btn"
         disabled={disabled || status === 'saving' || status === 'rendering'}
         onClick={handleSaveAndRender}
       >
-        {status === 'saving' && 'Envoi du modele...'}
+        {status === 'saving' && 'Envoi du modèle...'}
         {status === 'rendering' && 'Rendu en cours...'}
         {status === 'done' && 'Nouveau rendu'}
         {!status && 'Rendu photoréaliste'}
+      </button>
+
+      <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
+        Télécharger STL
+      </button>
+
+      <button className="export__btn export__btn--secondary" disabled={disabled}>
+        Commander
       </button>
 
       {renderUrl && (

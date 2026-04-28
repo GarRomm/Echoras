@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import WaveformRingMesh from './WaveformRingMesh';
 
-export default function Visualizer({ waveformData, params }) {
+export default function Visualizer({ waveformData, params, controlsRef, autoRotate }) {
   return (
     <Canvas
       camera={{ position: [0, 3, 5], fov: 50 }}
@@ -19,10 +19,13 @@ export default function Visualizer({ waveformData, params }) {
       <WaveformRingMesh waveformData={waveformData} params={params} />
 
       <OrbitControls
+        ref={controlsRef}
         enableDamping
         dampingFactor={0.08}
         minDistance={2}
         maxDistance={15}
+        autoRotate={autoRotate}
+        autoRotateSpeed={2}
       />
 
       <gridHelper args={[10, 20, '#222233', '#1a1a2e']} position={[0, -0.01, 0]} />

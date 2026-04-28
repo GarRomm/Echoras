@@ -5,18 +5,23 @@
 }
 
 :root {
-  --bg: #0a0a0f;
-  --surface: #14141f;
+  --bg: #12121A;
+  --surface: #1a1a26;
   --border: #2a2a3a;
-  --text: #e8e8f0;
+  --text: #F0EDE6;
   --text-muted: #8888aa;
-  --accent: #6c5ce7;
-  --accent-light: #a29bfe;
+  --accent: #C9863A;
+  --accent-light: #d9a060;
+  --violet: #7B5EA7;
+  --font-title: 'Epilogue', sans-serif;
+  --font-nav: 'Montserrat', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+  --font-ui: 'Manrope', sans-serif;
 }
 
 html, body, #root {
   height: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
 }
