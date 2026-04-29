@@ -24,6 +24,13 @@
   overflow: hidden;
 }
 
+.creator__viewer:fullscreen,
+.creator__viewer:-webkit-full-screen {
+  max-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+}
+
 /* Barre flottante de contrôle de vue */
 .creator__viewer-controls {
   position: absolute;

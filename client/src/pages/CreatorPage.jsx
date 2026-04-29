@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import AudioUploader from '../components/AudioUploader';
 import Visualizer from '../components/Visualizer';
 import ControlPanel from '../components/ControlPanel';
@@ -27,7 +27,37 @@ export default function CreatorPage() {
   const { waveformData, isAnalyzing } = useAudioAnalysis(audioFile);
 
   const controlsRef = useRef(null);
+  const viewerRef = useRef(null);
   const [autoRotate, setAutoRotate] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const onFSChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFSChange);
+    return () => document.removeEventListener('fullscreenchange', onFSChange);
+  }, []);
+
+  const handleFullscreen = useCallback(() => {
+    const el = viewerRef.current;
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }, []);
+
+  const handleSnapshot = useCallback(() => {
+    const canvas = viewerRef.current?.querySelector('canvas');
+    if (!canvas) return;
+    const url = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = audioFile
+      ? `${audioFile.name.replace(/\.[^.]+$/, '')}.png`
+      : 'echoras-sculpture.png';
+    a.click();
+  }, [audioFile]);
 
   const handleReset = useCallback(() => {
     if (controlsRef.current) {
@@ -61,7 +91,7 @@ export default function CreatorPage() {
   return (
     <div className="creator">
       <div className="creator__left">
-        <div className="creator__viewer">
+        <div className="creator__viewer" ref={viewerRef}>
           <Visualizer waveformData={waveformData} params={params} controlsRef={controlsRef} autoRotate={autoRotate} />
           <div className="creator__viewer-controls">
             <button
@@ -78,6 +108,18 @@ export default function CreatorPage() {
             <span className="creator__viewer-sep" />
             <button className="creator__viewer-hint" onClick={handleReset} type="button">
               Réinitialiser
+            </button>
+            <span className="creator__viewer-sep" />
+            <button className="creator__viewer-hint" onClick={handleSnapshot} type="button">
+              Instantané
+            </button>
+            <span className="creator__viewer-sep" />
+            <button
+              className={`creator__viewer-hint${isFullscreen ? ' creator__viewer-hint--active' : ''}`}
+              onClick={handleFullscreen}
+              type="button"
+            >
+              {isFullscreen ? 'Réduire' : 'Plein écran'}
             </button>
           </div>
         </div>
@@ -99,7 +141,7 @@ export default function CreatorPage() {
             <div className="creator__waveform-info">
               <p className="creator__waveform-title">Dynamique du son</p>
               <div className="creator__waveform-bars" aria-hidden="true">
-                {waveformData.slice(0, 32).map((v, i) => (
+                {Array.from(waveformData.slice(0, 32)).map((v, i) => (
                   <div
                     key={i}
                     className="creator__waveform-bar"

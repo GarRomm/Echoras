@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
-
-const imgHero = '/images/hero.jpg';
-const imgGallery1 = '/images/gallery-1.jpg';
-const imgGallery2 = '/images/gallery-2.jpg';
-const imgGallery3 = '/images/gallery-3.jpg';
+import imgGallery1 from '../assets/disiz - melodrama feat. theodora (audio officiel).png';
+import imgGallery2 from '../assets/Gazo, Tiakola - MAMI WATA (Clip Vidéo).png';
+import imgGallery3 from '../assets/Nada Surf - Always Love.png';
+import imgHero from '../assets/Image header.png';
 
 const STEPS = [
   {
@@ -45,7 +44,7 @@ const STEPS = [
 const GALLERY = [
   { img: imgGallery1, title: 'Melodrama - Theodora', material: 'Résine violette translucide' },
   { img: imgGallery2, title: 'Mami Wata - Gazo', material: 'Métal noir satiné' },
-  { img: imgGallery3, title: 'Danse du mariage', material: 'Céramique ivoire' },
+  { img: imgGallery3, title: 'Always Love - Nada Surf', material: 'Céramique ivoire' },
 ];
 
 const TRUST = [
@@ -138,7 +137,6 @@ export default function HomePage() {
               </div>
               <div className="gallery__card-body">
                 <h3 className="gallery__card-title">{item.title}</h3>
-                <p className="gallery__card-material">{item.material}</p>
               </div>
             </article>
           ))}
