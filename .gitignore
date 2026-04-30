@@ -20,8 +20,8 @@ Thumbs.db
 docs/
 
 # Assets images (non versionnés)
-client/src/assets/*.png
-client/src/assets/*.jpg
-client/src/assets/*.jpeg
-client/src/assets/*.webp
-client/src/assets/*.gif
+# client/src/assets/*.png
+# client/src/assets/*.jpg
+# client/src/assets/*.jpeg
+# client/src/assets/*.webp
+# client/src/assets/*.gif
