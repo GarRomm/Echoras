@@ -54,6 +54,13 @@
   color: var(--accent);
 }
 
+.uploader__error {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: #e05c5c;
+  margin-top: 4px;
+}
+
 /* Pill fichier importé */
 .uploader--loaded {
   margin: 12px 20px 0;

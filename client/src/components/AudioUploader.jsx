@@ -1,22 +1,42 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './AudioUploader.css';
+
+const MAX_SIZE_BYTES = 50 * 1024 * 1024;
+const ALLOWED_EXTS = ['.mp3', '.wav', '.ogg', '.flac', '.m4a'];
+
+function validateFile(file) {
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+  if (!ALLOWED_EXTS.includes(ext)) return `Format non supporté (${ext}). Acceptés : MP3, WAV, OGG, FLAC, M4A.`;
+  if (file.size > MAX_SIZE_BYTES) return `Fichier trop lourd (${(file.size / 1024 / 1024).toFixed(1)} Mo). Maximum 50 Mo.`;
+  return null;
+}
 
 export default function AudioUploader({ onFileSelected, isAnalyzing, audioFile }) {
   const inputRef = useRef(null);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) onFileSelected(file);
+    if (!file) return;
+    const err = validateFile(file);
+    if (err) { setError(err); return; }
+    setError(null);
+    onFileSelected(file);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
-    if (file) onFileSelected(file);
+    if (!file) return;
+    const err = validateFile(file);
+    if (err) { setError(err); return; }
+    setError(null);
+    onFileSelected(file);
   };
 
   const handleClear = (e) => {
     e.stopPropagation();
+    setError(null);
     onFileSelected(null);
     if (inputRef.current) inputRef.current.value = '';
   };
@@ -49,7 +69,8 @@ export default function AudioUploader({ onFileSelected, isAnalyzing, audioFile }
       ) : (
         <>
           <p className="uploader__label">Glissez un fichier ici ou <span>parcourir</span></p>
-          <p className="uploader__formats">MP3, WAV, M4A - max 50 Mo</p>
+          <p className="uploader__formats">MP3, WAV, OGG, FLAC, M4A — max 50 Mo</p>
+          {error && <p className="uploader__error">{error}</p>}
         </>
       )}
     </div>
