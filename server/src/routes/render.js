@@ -10,7 +10,7 @@ const RENDER_SCRIPT = path.join(__dirname, '..', '..', '..', 'python-service', '
 const STL_DIR = path.join(__dirname, '..', '..', 'storage', 'stl');
 const RENDER_DIR = path.join(__dirname, '..', '..', 'storage', 'renders');
 
-// POST /api/render/:id  — trigger a Blender render of the given STL
+// POST /api/render/:id : trigger a Blender render of the given STL
 router.post('/:id', (req, res) => {
   const stlPath = path.join(STL_DIR, `${req.params.id}.stl`);
   const outputPath = path.join(RENDER_DIR, `${req.params.id}.png`);
@@ -45,7 +45,7 @@ router.post('/:id', (req, res) => {
   });
 });
 
-// GET /api/render/:id  — check render status / get image URL
+// GET /api/render/:id : check render status and get image URL
 router.get('/:id', (req, res) => {
   const outputPath = path.join(RENDER_DIR, `${req.params.id}.png`);
   if (!fs.existsSync(outputPath)) {

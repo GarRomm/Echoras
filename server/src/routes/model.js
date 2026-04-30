@@ -9,7 +9,7 @@ const router = express.Router();
 const STL_DIR = path.join(__dirname, '..', '..', 'storage', 'stl');
 const OBJ_DIR = path.join(__dirname, '..', '..', 'storage', 'obj');
 
-// POST /api/model/save  — receive STL binary from client
+// POST /api/model/save : receive STL binary from client
 router.post('/save', express.raw({ type: 'application/octet-stream', limit: '100mb' }), (req, res) => {
   const id = uuidv4();
   const filePath = path.join(STL_DIR, `${id}.stl`);
@@ -22,7 +22,7 @@ router.post('/save', express.raw({ type: 'application/octet-stream', limit: '100
   });
 });
 
-// GET /api/model/:id  — download a stored STL (admin only — RG-01)
+// GET /api/model/:id : download a stored STL (admin only)
 router.get('/:id', requireAdminKey, (req, res) => {
   const filePath = path.join(STL_DIR, `${req.params.id}.stl`);
 
@@ -33,7 +33,7 @@ router.get('/:id', requireAdminKey, (req, res) => {
   res.download(filePath);
 });
 
-// DELETE /api/model/:id  — remove a stored model (admin only — RG-01)
+// DELETE /api/model/:id : remove a stored model (admin only)
 router.delete('/:id', requireAdminKey, (req, res) => {
   const stlPath = path.join(STL_DIR, `${req.params.id}.stl`);
   const objPath = path.join(OBJ_DIR, `${req.params.id}.obj`);

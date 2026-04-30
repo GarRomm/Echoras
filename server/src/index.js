@@ -1,12 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 
 const sequelize = require('./db/index');
 require('./db/models/index'); // enregistre les modèles et leurs associations
 
+const authRoutes = require('./routes/auth');
 const uploadRoutes = require('./routes/upload');
 const modelRoutes = require('./routes/model');
 const renderRoutes = require('./routes/render');
@@ -17,8 +19,9 @@ const PORT = process.env.PORT || 4000;
 // ---------------------------------------------------------------------------
 // Middleware
 // ---------------------------------------------------------------------------
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173', credentials: true }));
 app.use(express.json({ limit: '2mb' }));
+app.use(cookieParser());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 min
@@ -32,6 +35,7 @@ app.use('/renders', express.static(path.join(__dirname, '..', 'storage', 'render
 // ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
+app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/model', modelRoutes);
 app.use('/api/render', renderRoutes);
@@ -58,6 +62,6 @@ app.listen(PORT, async () => {
     await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
     console.log('Database connected and schema synced');
   } catch (err) {
-    console.warn('Database unavailable — running without DB:', err.message);
+    console.warn('Database unavailable, running without DB:', err.message);
   }
 });

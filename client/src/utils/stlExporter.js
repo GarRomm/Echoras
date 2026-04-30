@@ -23,7 +23,7 @@ export function exportSTLBinary(geometry) {
   const buffer = new ArrayBuffer(bufferLength);
   const view = new DataView(buffer);
 
-  // Header (80 bytes) — fill with zeros (already default)
+  // Header (80 bytes), filled with zeros by default
   const header = 'Echoras STL Export';
   for (let i = 0; i < header.length && i < 80; i++) {
     view.setUint8(i, header.charCodeAt(i));
