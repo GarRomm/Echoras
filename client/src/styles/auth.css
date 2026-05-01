@@ -68,12 +68,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  min-width: 0;
 }
 
 .auth-form__group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 }
 
 .auth-form__label {
@@ -99,6 +101,9 @@
   font-size: 0.9rem;
   transition: border-color 0.15s;
   outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .auth-form__input:focus {
