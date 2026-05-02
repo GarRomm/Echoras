@@ -8,7 +8,7 @@ const { sendResetPasswordEmail } = require('../services/emailService');
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  secure: process.env.COOKIE_SECURE === 'true',
   sameSite: 'lax',
   maxAge: 24 * 60 * 60 * 1000, // 24h
 };
