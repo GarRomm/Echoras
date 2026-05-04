@@ -49,6 +49,9 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
           failIfMajorPerformanceCaveat: false,
         }}
         style={{ width: '100%', height: '100%' }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener('webglcontextlost', (e) => e.preventDefault(), false);
+        }}
       >
         <color attach="background" args={['#1a1a2e']} />
         <ambientLight intensity={0.5} />
