@@ -7,8 +7,16 @@ import {
   buildBaseGeometry,
 } from '../utils/waveformRing';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
 import './ExportPanel.css';
+
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, { credentials: 'include', ...options });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw Object.assign(new Error(body.error || `HTTP ${res.status}`), { status: res.status });
+  }
+  return res.json();
+}
 
 function buildAllGeometries(waveformData, params) {
   const geometries = [];
@@ -58,16 +66,20 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
       const blob = exportMultiGeometrySTL(geometries);
       const buffer = await blob.arrayBuffer();
 
-      const saveRes = await axios.post('/api/model/save', buffer, {
+      const saveRes = await apiFetch('/api/model/save', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/octet-stream' },
+        body: buffer,
       });
 
       setRenderStatus('rendering');
-      const renderRes = await axios.post(`/api/render/${saveRes.data.id}`, {
-        material: params.material,
+      const renderRes = await apiFetch(`/api/render/${saveRes.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ material: params.material }),
       });
 
-      setRenderUrl(renderRes.data.renderUrl);
+      setRenderUrl(renderRes.renderUrl);
       setRenderStatus('done');
     } catch (err) {
       console.error(err);
@@ -87,23 +99,27 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
         ? audioFileName.replace(/\.[^.]+$/, '')
         : 'Ma sculpture';
 
-      const res = await axios.post('/api/sculptures', {
-        name:           sculName,
-        audioFileName:  audioFileName || null,
-        materialSlug:   params.material,
-        peakHeight:     params.peakHeight,
-        smoothing:      params.smoothing,
-        cylinderRadius: params.cylinderRadius,
-        cylinderHeight: params.cylinderHeight,
-        ringThickness:  params.ringThickness,
-        segments:       params.segments,
-        helixTurns:     params.helixTurns,
-        ribbonWidth:    params.ribbonWidth,
-        waveformColor:  params.waveformColor,
-        cylinderColor:  params.cylinderColor,
-      }, { withCredentials: true });
+      const res = await apiFetch('/api/sculptures', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:           sculName,
+          audioFileName:  audioFileName || null,
+          materialSlug:   params.material,
+          peakHeight:     params.peakHeight,
+          smoothing:      params.smoothing,
+          cylinderRadius: params.cylinderRadius,
+          cylinderHeight: params.cylinderHeight,
+          ringThickness:  params.ringThickness,
+          segments:       params.segments,
+          helixTurns:     params.helixTurns,
+          ribbonWidth:    params.ribbonWidth,
+          waveformColor:  params.waveformColor,
+          cylinderColor:  params.cylinderColor,
+        }),
+      });
 
-      setSavedSculpture({ id: res.data.id, materialId: res.data.materialId, price: res.data.price });
+      setSavedSculpture({ id: res.id, materialId: res.materialId, price: res.price });
       setSaveStatus('saved');
     } catch (err) {
       console.error(err);
@@ -116,10 +132,14 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
     if (!savedSculpture) return;
     try {
       setCartStatus('adding');
-      await axios.post('/api/cart', {
-        sculptureId: savedSculpture.id,
-        materialId:  savedSculpture.materialId,
-      }, { withCredentials: true });
+      await apiFetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sculptureId: savedSculpture.id,
+          materialId:  savedSculpture.materialId,
+        }),
+      });
 
       setCartStatus('added');
       navigate('/panier');

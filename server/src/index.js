@@ -60,6 +60,16 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+const { Material } = require('./db/models/index');
+
+const DEFAULT_MATERIALS = [
+  { name: 'plastic_white', basePrice: 29.90 },
+  { name: 'plastic_black', basePrice: 29.90 },
+  { name: 'metal_silver',  basePrice: 49.90 },
+  { name: 'metal_gold',    basePrice: 59.90 },
+  { name: 'wood',          basePrice: 39.90 },
+];
+
 app.listen(PORT, async () => {
   console.log(`Echoras server running on port ${PORT}`);
 
@@ -68,6 +78,13 @@ app.listen(PORT, async () => {
     await sequelize.authenticate();
     await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
     console.log('Database connected and schema synced');
+
+    // Seed matériaux si la table est vide
+    const count = await Material.count();
+    if (count === 0) {
+      await Material.bulkCreate(DEFAULT_MATERIALS);
+      console.log('Materials seeded');
+    }
   } catch (err) {
     console.warn('Database unavailable, running without DB:', err.message);
   }
