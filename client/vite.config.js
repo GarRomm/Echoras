@@ -10,4 +10,14 @@ export default defineConfig({
       '/renders': 'http://localhost:4000',
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'three-vendor': ['three'],
+        },
+      },
+    },
+  },
 });
