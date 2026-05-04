@@ -1,0 +1,255 @@
+/* ================================================
+   Page "Comment ça marche" — design Figma 136:399
+   ================================================ */
+
+.ccm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--bg);
+  width: 100%;
+}
+
+/* ---- HERO ---- */
+.ccm__hero {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  padding: 40px 24px;
+  width: 100%;
+}
+
+.ccm__hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 0 0 auto;
+  max-width: 800px;
+}
+
+.ccm__hero-title {
+  font-family: var(--font-nav);
+  font-weight: 600;
+  font-size: clamp(32px, 4vw, 48px);
+  color: var(--text);
+  padding: 10px;
+  line-height: 1.1;
+}
+
+.ccm__hero-desc {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.67;
+  color: var(--text);
+  padding: 10px;
+}
+
+/* Effet visuel fréquences */
+.ccm__freq-visual {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  flex: 1 0 0;
+  min-width: 0;
+  min-height: 280px;
+}
+
+.ccm__freq-bar {
+  width: 8px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(to bottom, var(--violet), var(--accent));
+  flex-shrink: 0;
+}
+
+/* ---- PROCESSUS ---- */
+.ccm__process {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  padding-top: 40px;
+  width: 100%;
+}
+
+.ccm__process-intro {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--text);
+  text-align: center;
+  max-width: 780px;
+  padding: 10px;
+}
+
+.ccm__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  padding: 0 24px;
+}
+
+/* Carte étape */
+.ccm__step-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 390px;
+  min-height: 380px;
+  padding: 40px 20px;
+  background: rgba(18, 18, 26, 0.6);
+  border: 1px solid var(--violet);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ccm__step-icon {
+  flex-shrink: 0;
+}
+
+.ccm__step-title {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--text);
+  padding: 10px 10px 0;
+}
+
+.ccm__step-desc {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.875;
+  color: var(--text);
+  padding: 10px;
+}
+
+/* Ellipses décoratives */
+.ccm__step-ellipse {
+  position: absolute;
+  top: -16px;
+  right: -17px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(18px);
+  opacity: 0.9;
+}
+
+.ccm__step-ellipse--violet {
+  background: radial-gradient(circle, var(--violet) 30%, transparent 80%);
+}
+
+.ccm__step-ellipse--amber {
+  background: radial-gradient(circle, var(--accent) 30%, transparent 80%);
+}
+
+.ccm__step-ellipse--mixed {
+  background: radial-gradient(circle, var(--violet) 0%, var(--accent) 60%, transparent 80%);
+}
+
+/* ---- CTA ---- */
+.ccm__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+  padding: 80px 24px;
+  width: 100%;
+}
+
+.ccm__cta-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.04;
+  color: var(--text);
+  text-align: center;
+  max-width: 781px;
+}
+
+.ccm__cta-buttons {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ccm__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 240px;
+  padding: 20px;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 1.2px;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.ccm__btn:hover {
+  opacity: 0.85;
+}
+
+.ccm__btn--primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.ccm__btn--secondary {
+  background: transparent;
+  border: 1px solid var(--text);
+  color: var(--text);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .ccm__hero {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ccm__hero-content {
+    max-width: 100%;
+  }
+
+  .ccm__freq-visual {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .ccm__step-card {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .ccm__cta-title {
+    font-size: 30px;
+  }
+
+  .ccm__btn {
+    width: 200px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 500px) {
+  .ccm__cta-buttons {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

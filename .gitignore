@@ -16,6 +16,7 @@ python-service/__pycache__/
 Thumbs.db
 
 # Fichiers locaux
+DEPLOY_LOG.md
 .github/
 docs/
 
