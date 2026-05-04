@@ -62,10 +62,10 @@ router.delete('/:itemId', authJWT, async (req, res) => {
 // POST /api/cart — ajoute une sculpture au panier
 router.post('/', authJWT, async (req, res) => {
   try {
-    const { sculptureId, materialId } = req.body;
+    const { sculptureId, materialId: materialIdFromBody } = req.body;
 
-    if (!sculptureId || !materialId) {
-      return res.status(400).json({ error: 'sculptureId et materialId requis' });
+    if (!sculptureId) {
+      return res.status(400).json({ error: 'sculptureId requis' });
     }
 
     // Vérifie que la sculpture appartient à l'utilisateur
@@ -74,8 +74,14 @@ router.post('/', authJWT, async (req, res) => {
     });
     if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
 
+    // Utilise le materialId fourni, ou celui déjà associé à la sculpture
+    const resolvedMaterialId = materialIdFromBody || sculpture.materialId;
+    if (!resolvedMaterialId) {
+      return res.status(400).json({ error: 'Matériau introuvable pour cette sculpture' });
+    }
+
     // Récupère le prix du matériau
-    const material = await Material.findByPk(materialId);
+    const material = await Material.findByPk(resolvedMaterialId);
     if (!material) return res.status(404).json({ error: 'Matériau introuvable' });
 
     // Crée ou récupère le panier de l'utilisateur
@@ -84,11 +90,11 @@ router.post('/', authJWT, async (req, res) => {
     // Évite les doublons : si la sculpture est déjà dans le panier, on la met à jour
     const [item, created] = await CartItem.findOrCreate({
       where: { cartId: cart.id, sculptureId },
-      defaults: { price: material.basePrice, materialId, quantity: 1 },
+      defaults: { price: material.basePrice, materialId: resolvedMaterialId, quantity: 1 },
     });
 
     if (!created) {
-      await item.update({ materialId, price: material.basePrice });
+      await item.update({ materialId: resolvedMaterialId, price: material.basePrice });
     }
 
     res.status(created ? 201 : 200).json({ item, created });

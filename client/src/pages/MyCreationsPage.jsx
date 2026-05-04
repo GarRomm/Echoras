@@ -75,6 +75,7 @@ function SculptureCard({ sculpture, onDelete }) {
         sculptureName: sculpture.name,
         audioFileName: sculpture.audioFileName,
         params:        buildCreatorParams(),
+        waveformData:  sculpture.analysis?.rmsEnvelope ?? null,
       },
     });
   }

@@ -28,18 +28,21 @@ function buildAllGeometries(waveformData, params) {
   return geometries;
 }
 
-export default function ExportPanel({ waveformData, params, audioFileName }) {
+export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isAdmin = user?.role === 'ADMIN';
 
-  // États rendu photoréaliste
+  // États rendu photoéaliste
   const [renderStatus, setRenderStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
   const [renderUrl, setRenderUrl] = useState(null);
 
   // États sauvegarde draft
   const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
-  const [savedSculpture, setSavedSculpture] = useState(null); // { id, materialId, price }
+  // Si on reprend une sculpture existante, on la pré-charge comme "déjà sauvegardée"
+  const [savedSculpture, setSavedSculpture] = useState(
+    resumedSculptureId ? { id: resumedSculptureId, _resumed: true } : null
+  );
 
   // État ajout panier
   const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
@@ -105,6 +108,7 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
         body: JSON.stringify({
           name:           sculName,
           audioFileName:  audioFileName || null,
+          waveformData:   waveformData ? Array.from(waveformData) : null,
           materialSlug:   params.material,
           peakHeight:     params.peakHeight,
           smoothing:      params.smoothing,
@@ -173,7 +177,7 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
       )}
 
       {/* Sauvegarde draft */}
-      {user && (
+      {user && !resumedSculptureId && (
         <button
           className="export__btn export__btn--secondary"
           disabled={disabled || saveStatus === 'saving'}
@@ -186,8 +190,8 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
         </button>
       )}
 
-      {/* Ajouter au panier (disponible après sauvegarde) */}
-      {saveStatus === 'saved' && (
+      {/* Ajouter au panier (disponible après sauvegarde, ou si reprise) */}
+      {(saveStatus === 'saved' || (resumedSculptureId && savedSculpture)) && (
         <button
           className="export__btn export__btn--cart"
           disabled={cartStatus === 'adding'}
@@ -195,7 +199,7 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
         >
           {cartStatus === 'adding' && 'Ajout en cours…'}
           {cartStatus === 'error' && 'Erreur — réessayer'}
-          {!cartStatus && `Ajouter au panier — ${savedSculpture?.price ?? '…'} €`}
+          {!cartStatus && (savedSculpture?.price ? `Ajouter au panier — ${savedSculpture.price} €` : 'Ajouter au panier')}
         </button>
       )}
 

@@ -34,7 +34,13 @@ export default function CreatorPage() {
   }));
   const [resumeBanner, setResumeBanner] = useState(!!resumed);
 
-  const { waveformData, isAnalyzing } = useAudioAnalysis(audioFile);
+  const { waveformData: analyzedData, isAnalyzing } = useAudioAnalysis(audioFile);
+
+  // Utilise la waveform analysée depuis le fichier, ou la waveform sauvegardée si reprise sans re-upload
+  const resumedWaveform = resumed?.waveformData
+    ? new Float32Array(resumed.waveformData)
+    : null;
+  const waveformData = analyzedData ?? resumedWaveform;
 
   const controlsRef = useRef(null);
   const viewerRef = useRef(null);
@@ -105,7 +111,12 @@ export default function CreatorPage() {
         <div className="creator__resume-banner">
           <span>
             Reprise de <strong>{resumed?.sculptureName || 'votre sculpture'}</strong>
-            {resumed?.audioFileName && <> — re-uploadez <em>{resumed.audioFileName}</em> pour retrouver votre son</>}
+            {resumed?.waveformData
+              ? <> — votre sculpture est prête, vous pouvez modifier les paramètres</>
+              : resumed?.audioFileName
+                ? <> — re-uploadez <em>{resumed.audioFileName}</em> pour retrouver votre son</>
+                : null
+            }
           </span>
           <button className="creator__resume-banner-close" onClick={() => setResumeBanner(false)} aria-label="Fermer">×</button>
         </div>

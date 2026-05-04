@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { Sculpture, SculptureParams, Material } = require('../db/models/index');
+const { Sculpture, SculptureParams, Material, AudioAnalysis } = require('../db/models/index');
 const { authJWT } = require('../middleware/authJWT');
 
 const router = express.Router();
@@ -12,6 +12,7 @@ router.post('/', authJWT, async (req, res) => {
     const {
       name,
       audioFileName,
+      waveformData,
       peakHeight,
       smoothing,
       cylinderRadius,
@@ -47,6 +48,12 @@ router.post('/', authJWT, async (req, res) => {
       cylinderColor:  cylinderColor  || '#FFFFFF',
     });
 
+    // Crée l'analyse audio si une waveform est fournie
+    let audioAnalysis = null;
+    if (Array.isArray(waveformData) && waveformData.length > 0) {
+      audioAnalysis = await AudioAnalysis.create({ rmsEnvelope: waveformData });
+    }
+
     // Crée la sculpture liée à l'utilisateur
     const sculpture = await Sculpture.create({
       name:              name || 'Ma sculpture',
@@ -55,6 +62,7 @@ router.post('/', authJWT, async (req, res) => {
       userId:            req.user.id,
       materialId:        material.id,
       sculptureParamsId: sculptureParams.id,
+      audioAnalysisId:   audioAnalysis?.id ?? null,
     });
 
     res.status(201).json({
@@ -62,6 +70,7 @@ router.post('/', authJWT, async (req, res) => {
       name:       sculpture.name,
       materialId: material.id,
       price:      parseFloat(material.basePrice),
+      hasWaveform: !!audioAnalysis,
     });
   } catch (err) {
     console.error('[POST /api/sculptures]', err);
@@ -77,6 +86,7 @@ router.get('/', authJWT, async (req, res) => {
       include: [
         { model: Material, attributes: ['id', 'name', 'basePrice'] },
         { model: SculptureParams, as: 'params' },
+        { model: AudioAnalysis, as: 'analysis', attributes: ['id', 'rmsEnvelope'] },
       ],
       order: [['createdAt', 'DESC']],
     });
