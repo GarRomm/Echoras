@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 import CommentCaMarchePage from './pages/CommentCaMarchePage';
+import CartPage from './pages/CartPage';
 import './styles/App.css';
 
 export default function App() {
@@ -40,7 +41,7 @@ export default function App() {
           <Route path="/profil" element={<ProtectedRoute><PlaceholderPage title="Mon profil" /></ProtectedRoute>} />
           <Route path="/mes-creations" element={<ProtectedRoute><PlaceholderPage title="Mes créations" /></ProtectedRoute>} />
           <Route path="/mes-commandes" element={<ProtectedRoute><PlaceholderPage title="Mes commandes" /></ProtectedRoute>} />
-          <Route path="/panier" element={<ProtectedRoute><PlaceholderPage title="Panier" /></ProtectedRoute>} />
+          <Route path="/panier" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
 
           {/* Admin (Phase 5) */}
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><PlaceholderPage title="Administration" /></ProtectedRoute>} />
