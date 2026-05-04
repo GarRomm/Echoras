@@ -41,7 +41,7 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
     <WebGLErrorBoundary>
       <Canvas
         camera={{ position: [0, 3, 5], fov: 50 }}
-        frameloop="demand"
+        frameloop="always"
         gl={{
           antialias: false,
           preserveDrawingBuffer: true,

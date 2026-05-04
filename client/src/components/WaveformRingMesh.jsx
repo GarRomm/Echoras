@@ -1,5 +1,4 @@
-import React, { useMemo, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import React, { useMemo } from 'react';
 import * as THREE from 'three';
 import {
   buildHelixRibbonGeometry,
@@ -8,8 +7,6 @@ import {
 } from '../utils/waveformRing';
 
 export default function WaveformRingMesh({ waveformData, params }) {
-  const groupRef = useRef();
-
   const helixGeometry = useMemo(() => {
     return buildHelixRibbonGeometry(waveformData, params);
   }, [waveformData, params]);
@@ -22,15 +19,8 @@ export default function WaveformRingMesh({ waveformData, params }) {
     return buildBaseGeometry(params);
   }, [params]);
 
-  // Slow idle rotation
-  useFrame((_state, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.1;
-    }
-  });
-
   return (
-    <group ref={groupRef}>
+    <group>
       {/* Central smooth cylinder */}
       <mesh geometry={cylinderGeometry}>
         <meshStandardMaterial
