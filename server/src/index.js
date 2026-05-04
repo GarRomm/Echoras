@@ -16,6 +16,9 @@ const renderRoutes = require('./routes/render');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Trust nginx reverse proxy (required for express-rate-limit and cookies behind proxy)
+app.set('trust proxy', 1);
+
 // ---------------------------------------------------------------------------
 // Middleware
 // ---------------------------------------------------------------------------
