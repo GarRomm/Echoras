@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 import {
   buildHelixRibbonGeometry,
@@ -18,6 +18,11 @@ export default function WaveformRingMesh({ waveformData, params }) {
   const baseGeometry = useMemo(() => {
     return buildBaseGeometry(params);
   }, [params]);
+
+  // Libère la VRAM à chaque changement de géométrie pour éviter les context lost
+  useEffect(() => () => helixGeometry.dispose(), [helixGeometry]);
+  useEffect(() => () => cylinderGeometry.dispose(), [cylinderGeometry]);
+  useEffect(() => () => baseGeometry.dispose(), [baseGeometry]);
 
   return (
     <group>
