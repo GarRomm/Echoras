@@ -47,10 +47,12 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
           preserveDrawingBuffer: true,
           powerPreference: 'default',
           failIfMajorPerformanceCaveat: false,
+          stencil: false,
         }}
         style={{ width: '100%', height: '100%' }}
-        onCreated={({ gl }) => {
+        onCreated={({ gl, invalidate }) => {
           gl.domElement.addEventListener('webglcontextlost', (e) => e.preventDefault(), false);
+          gl.domElement.addEventListener('webglcontextrestored', () => invalidate(), false);
         }}
       >
         <color attach="background" args={['#1a1a2e']} />
