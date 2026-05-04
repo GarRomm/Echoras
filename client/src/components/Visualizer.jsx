@@ -1,5 +1,5 @@
-import React, { useMemo, Component } from 'react';
-import { Canvas } from '@react-three/fiber';
+import React, { useEffect, Component } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import WaveformRingMesh from './WaveformRingMesh';
 
@@ -34,6 +34,13 @@ class WebGLErrorBoundary extends Component {
   }
 }
 
+// Invalide la scène à chaque changement de props (requis avec frameloop="demand")
+function SceneInvalidator({ waveformData, params }) {
+  const { invalidate } = useThree();
+  useEffect(() => { invalidate(); }, [waveformData, params, invalidate]);
+  return null;
+}
+
 export default function Visualizer({ waveformData, params, controlsRef, autoRotate }) {
   const gridY = -(params.cylinderHeight / 2 + (params.showBase ? params.baseHeight : 0));
 
@@ -41,7 +48,7 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
     <WebGLErrorBoundary>
       <Canvas
         camera={{ position: [0, 3, 5], fov: 50 }}
-        frameloop="always"
+        frameloop="demand"
         gl={{
           antialias: false,
           preserveDrawingBuffer: true,
@@ -61,6 +68,7 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
         <directionalLight position={[-3, 4, -2]} intensity={0.4} />
         <pointLight position={[-3, 2, -4]} intensity={0.5} color="#40E0D0" />
 
+        <SceneInvalidator waveformData={waveformData} params={params} />
         <WaveformRingMesh waveformData={waveformData} params={params} />
 
         <OrbitControls
