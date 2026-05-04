@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { exportMultiGeometrySTL } from '../utils/stlExporter';
 import {
   buildHelixRibbonGeometry,
@@ -21,12 +22,20 @@ function buildAllGeometries(waveformData, params) {
 
 export default function ExportPanel({ waveformData, params, audioFileName }) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const isAdmin = user?.role === 'ADMIN';
-  const [status, setStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
-  const [renderUrl, setRenderUrl] = useState(null);
-  const [modelId, setModelId] = useState(null);
 
-  // Derive STL filename from audio file name (strip extension)
+  // États rendu photoréaliste
+  const [renderStatus, setRenderStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
+  const [renderUrl, setRenderUrl] = useState(null);
+
+  // États sauvegarde draft
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
+  const [savedSculpture, setSavedSculpture] = useState(null); // { id, materialId, price }
+
+  // État ajout panier
+  const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
+
   const stlFileName = audioFileName
     ? audioFileName.replace(/\.[^.]+$/, '') + '.stl'
     : 'echoras-model.stl';
@@ -42,9 +51,9 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
     URL.revokeObjectURL(url);
   }, [waveformData, params, stlFileName]);
 
-  const handleSaveAndRender = useCallback(async () => {
+  const handleRender = useCallback(async () => {
     try {
-      setStatus('saving');
+      setRenderStatus('saving');
       const geometries = buildAllGeometries(waveformData, params);
       const blob = exportMultiGeometrySTL(geometries);
       const buffer = await blob.arrayBuffer();
@@ -53,46 +62,122 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
         headers: { 'Content-Type': 'application/octet-stream' },
       });
 
-      const id = saveRes.data.id;
-      setModelId(id);
-      setStatus('rendering');
-
-      const renderRes = await axios.post(`/api/render/${id}`, {
+      setRenderStatus('rendering');
+      const renderRes = await axios.post(`/api/render/${saveRes.data.id}`, {
         material: params.material,
       });
 
       setRenderUrl(renderRes.data.renderUrl);
-      setStatus('done');
+      setRenderStatus('done');
     } catch (err) {
       console.error(err);
-      setStatus(null);
+      setRenderStatus(null);
     }
   }, [waveformData, params]);
+
+  // Sauvegarde la sculpture en draft en base de données
+  const handleSaveDraft = useCallback(async () => {
+    if (!user) { navigate('/connexion'); return; }
+    try {
+      setSaveStatus('saving');
+      setSavedSculpture(null);
+      setCartStatus(null);
+
+      const sculName = audioFileName
+        ? audioFileName.replace(/\.[^.]+$/, '')
+        : 'Ma sculpture';
+
+      const res = await axios.post('/api/sculptures', {
+        name:           sculName,
+        audioFileName:  audioFileName || null,
+        materialSlug:   params.material,
+        peakHeight:     params.peakHeight,
+        smoothing:      params.smoothing,
+        cylinderRadius: params.cylinderRadius,
+        cylinderHeight: params.cylinderHeight,
+        ringThickness:  params.ringThickness,
+        segments:       params.segments,
+        helixTurns:     params.helixTurns,
+        ribbonWidth:    params.ribbonWidth,
+        waveformColor:  params.waveformColor,
+        cylinderColor:  params.cylinderColor,
+      }, { withCredentials: true });
+
+      setSavedSculpture({ id: res.data.id, materialId: res.data.materialId, price: res.data.price });
+      setSaveStatus('saved');
+    } catch (err) {
+      console.error(err);
+      setSaveStatus('error');
+    }
+  }, [user, audioFileName, params, navigate]);
+
+  // Ajoute la sculpture sauvegardée au panier
+  const handleAddToCart = useCallback(async () => {
+    if (!savedSculpture) return;
+    try {
+      setCartStatus('adding');
+      await axios.post('/api/cart', {
+        sculptureId: savedSculpture.id,
+        materialId:  savedSculpture.materialId,
+      }, { withCredentials: true });
+
+      setCartStatus('added');
+      navigate('/panier');
+    } catch (err) {
+      console.error(err);
+      setCartStatus('error');
+    }
+  }, [savedSculpture, navigate]);
 
   const disabled = !waveformData || waveformData.length === 0;
 
   return (
     <div className="export">
+      {/* Rendu photoréaliste */}
       <button
         className="export__render-btn"
-        disabled={disabled || status === 'saving' || status === 'rendering'}
-        onClick={handleSaveAndRender}
+        disabled={disabled || renderStatus === 'saving' || renderStatus === 'rendering'}
+        onClick={handleRender}
       >
-        {status === 'saving' && 'Envoi du modèle...'}
-        {status === 'rendering' && 'Rendu en cours...'}
-        {status === 'done' && 'Nouveau rendu'}
-        {!status && 'Rendu photoréaliste'}
+        {renderStatus === 'saving' && 'Envoi du modèle…'}
+        {renderStatus === 'rendering' && 'Rendu en cours…'}
+        {renderStatus === 'done' && 'Nouveau rendu'}
+        {!renderStatus && 'Rendu photoréaliste'}
       </button>
 
+      {/* Téléchargement STL (admin uniquement) */}
       {isAdmin && (
         <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
           Télécharger STL
         </button>
       )}
 
-      <button className="export__btn export__btn--secondary" disabled={disabled}>
-        Commander
-      </button>
+      {/* Sauvegarde draft */}
+      {user && (
+        <button
+          className="export__btn export__btn--secondary"
+          disabled={disabled || saveStatus === 'saving'}
+          onClick={handleSaveDraft}
+        >
+          {saveStatus === 'saving' && 'Sauvegarde…'}
+          {saveStatus === 'saved' && '✓ Sculpture sauvegardée'}
+          {saveStatus === 'error' && 'Erreur — réessayer'}
+          {!saveStatus && 'Sauvegarder ma sculpture'}
+        </button>
+      )}
+
+      {/* Ajouter au panier (disponible après sauvegarde) */}
+      {saveStatus === 'saved' && (
+        <button
+          className="export__btn export__btn--cart"
+          disabled={cartStatus === 'adding'}
+          onClick={handleAddToCart}
+        >
+          {cartStatus === 'adding' && 'Ajout en cours…'}
+          {cartStatus === 'error' && 'Erreur — réessayer'}
+          {!cartStatus && `Ajouter au panier — ${savedSculpture?.price ?? '…'} €`}
+        </button>
+      )}
 
       {renderUrl && (
         <div className="export__preview">

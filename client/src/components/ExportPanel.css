@@ -109,6 +109,13 @@
   border: 1px solid rgba(240, 237, 230, 0.25);
 }
 
+.export__btn--cart {
+  background: var(--violet);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(123, 94, 167, 0.35);
+}
+
 .export__preview {
   border-radius: 8px;
   overflow: hidden;

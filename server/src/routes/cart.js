@@ -59,4 +59,43 @@ router.delete('/:itemId', authJWT, async (req, res) => {
   }
 });
 
+// POST /api/cart — ajoute une sculpture au panier
+router.post('/', authJWT, async (req, res) => {
+  try {
+    const { sculptureId, materialId } = req.body;
+
+    if (!sculptureId || !materialId) {
+      return res.status(400).json({ error: 'sculptureId et materialId requis' });
+    }
+
+    // Vérifie que la sculpture appartient à l'utilisateur
+    const sculpture = await Sculpture.findOne({
+      where: { id: sculptureId, userId: req.user.id },
+    });
+    if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
+
+    // Récupère le prix du matériau
+    const material = await Material.findByPk(materialId);
+    if (!material) return res.status(404).json({ error: 'Matériau introuvable' });
+
+    // Crée ou récupère le panier de l'utilisateur
+    const [cart] = await Cart.findOrCreate({ where: { userId: req.user.id } });
+
+    // Évite les doublons : si la sculpture est déjà dans le panier, on la met à jour
+    const [item, created] = await CartItem.findOrCreate({
+      where: { cartId: cart.id, sculptureId },
+      defaults: { price: material.basePrice, materialId, quantity: 1 },
+    });
+
+    if (!created) {
+      await item.update({ materialId, price: material.basePrice });
+    }
+
+    res.status(created ? 201 : 200).json({ item, created });
+  } catch (err) {
+    console.error('[POST /api/cart]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;
