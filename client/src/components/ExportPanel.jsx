@@ -5,6 +5,7 @@ import {
   buildCentralCylinderGeometry,
   buildBaseGeometry,
 } from '../utils/waveformRing';
+import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import './ExportPanel.css';
 
@@ -19,6 +20,8 @@ function buildAllGeometries(waveformData, params) {
 }
 
 export default function ExportPanel({ waveformData, params, audioFileName }) {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN';
   const [status, setStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
   const [renderUrl, setRenderUrl] = useState(null);
   const [modelId, setModelId] = useState(null);
@@ -81,9 +84,11 @@ export default function ExportPanel({ waveformData, params, audioFileName }) {
         {!status && 'Rendu photoréaliste'}
       </button>
 
-      <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
-        Télécharger STL
-      </button>
+      {isAdmin && (
+        <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
+          Télécharger STL
+        </button>
+      )}
 
       <button className="export__btn export__btn--secondary" disabled={disabled}>
         Commander

@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const requireAdminKey = require('../middleware/requireAdminKey');
+const { authJWT, requireRole } = require('../middleware/authJWT');
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.post('/save', express.raw({ type: 'application/octet-stream', limit: '100
 });
 
 // GET /api/model/:id : download a stored STL (admin only)
-router.get('/:id', requireAdminKey, (req, res) => {
+router.get('/:id', authJWT, requireRole('ADMIN'), (req, res) => {
   const filePath = path.join(STL_DIR, `${req.params.id}.stl`);
 
   if (!fs.existsSync(filePath)) {
@@ -34,7 +34,7 @@ router.get('/:id', requireAdminKey, (req, res) => {
 });
 
 // DELETE /api/model/:id : remove a stored model (admin only)
-router.delete('/:id', requireAdminKey, (req, res) => {
+router.delete('/:id', authJWT, requireRole('ADMIN'), (req, res) => {
   const stlPath = path.join(STL_DIR, `${req.params.id}.stl`);
   const objPath = path.join(OBJ_DIR, `${req.params.id}.obj`);
 
