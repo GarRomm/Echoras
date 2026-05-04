@@ -87,4 +87,18 @@ router.get('/', authJWT, async (req, res) => {
   }
 });
 
+// DELETE /api/sculptures/:id — supprime un draft (ownership vérifié)
+router.delete('/:id', authJWT, async (req, res) => {
+  try {
+    const deleted = await Sculpture.destroy({
+      where: { id: req.params.id, userId: req.user.id, status: 'draft' },
+    });
+    if (!deleted) return res.status(404).json({ error: 'Sculpture introuvable' });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[DELETE /api/sculptures/:id]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;

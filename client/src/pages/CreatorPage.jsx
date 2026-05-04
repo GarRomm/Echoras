@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import AudioUploader from '../components/AudioUploader';
 import Visualizer from '../components/Visualizer';
 import ControlPanel from '../components/ControlPanel';
@@ -6,23 +7,32 @@ import ExportPanel from '../components/ExportPanel';
 import { useAudioAnalysis } from '../hooks/useAudioAnalysis';
 import './CreatorPage.css';
 
+const DEFAULT_PARAMS = {
+  peakHeight: 1.5,
+  smoothing: 0,
+  cylinderRadius: 1.0,
+  cylinderHeight: 4.0,
+  ringThickness: 0.3,
+  segments: 512,
+  material: 'plastic_white',
+  helixTurns: 6,
+  ribbonWidth: 0.15,
+  waveformColor: '#40E0D0',
+  cylinderColor: '#FFFFFF',
+  baseHeight: 0.2,
+  showBase: true,
+};
+
 export default function CreatorPage() {
+  const location = useLocation();
+  const resumed  = location.state ?? null; // { params, sculptureId, sculptureName, audioFileName }
+
   const [audioFile, setAudioFile] = useState(null);
-  const [params, setParams] = useState({
-    peakHeight: 1.5,
-    smoothing: 0,
-    cylinderRadius: 1.0,
-    cylinderHeight: 4.0,
-    ringThickness: 0.3,
-    segments: 512,
-    material: 'plastic_white',
-    helixTurns: 6,
-    ribbonWidth: 0.15,
-    waveformColor: '#40E0D0',
-    cylinderColor: '#FFFFFF',
-    baseHeight: 0.2,
-    showBase: true,
-  });
+  const [params, setParams] = useState(() => ({
+    ...DEFAULT_PARAMS,
+    ...(resumed?.params ?? {}),
+  }));
+  const [resumeBanner, setResumeBanner] = useState(!!resumed);
 
   const { waveformData, isAnalyzing } = useAudioAnalysis(audioFile);
 
@@ -74,6 +84,7 @@ export default function CreatorPage() {
 
   const handleFileSelected = useCallback((file) => {
     setAudioFile(file);
+    if (file) setResumeBanner(false);
   }, []);
 
   const handleParamChange = useCallback((key, value) => {
@@ -90,7 +101,17 @@ export default function CreatorPage() {
 
   return (
     <div className="creator">
-      <div className="creator__left">
+      {resumeBanner && (
+        <div className="creator__resume-banner">
+          <span>
+            Reprise de <strong>{resumed?.sculptureName || 'votre sculpture'}</strong>
+            {resumed?.audioFileName && <> — re-uploadez <em>{resumed.audioFileName}</em> pour retrouver votre son</>}
+          </span>
+          <button className="creator__resume-banner-close" onClick={() => setResumeBanner(false)} aria-label="Fermer">×</button>
+        </div>
+      )}
+      <div className="creator__row">
+        <div className="creator__left">
         <div className="creator__viewer" ref={viewerRef}>
           <Visualizer waveformData={waveformData} params={params} controlsRef={controlsRef} autoRotate={autoRotate} />
           <div className="creator__viewer-controls">
@@ -165,8 +186,14 @@ export default function CreatorPage() {
 
         <ControlPanel params={params} onChange={handleParamChange} />
 
-        <ExportPanel waveformData={waveformData} params={params} audioFileName={audioFile?.name} />
+        <ExportPanel
+          waveformData={waveformData}
+          params={params}
+          audioFileName={audioFile?.name}
+          resumedSculptureId={resumed?.sculptureId ?? null}
+        />
       </aside>
+      </div>
     </div>
   );
 }

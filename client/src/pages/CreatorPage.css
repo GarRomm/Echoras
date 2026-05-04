@@ -5,6 +5,50 @@
   overflow: hidden;
   height: 100%;
   background: var(--bg);
+  flex-direction: column;
+}
+
+/* Bannière reprise sculpture */
+.creator__resume-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  background: rgba(201, 134, 58, 0.12);
+  border-bottom: 1px solid rgba(201, 134, 58, 0.3);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.creator__resume-banner em {
+  font-style: normal;
+  opacity: 0.8;
+}
+
+.creator__resume-banner-close {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.creator__resume-banner-close:hover {
+  opacity: 1;
+}
+
+/* Ligne principale (viewer + panel) */
+.creator__row {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
 }
 
 /* Colonne gauche */

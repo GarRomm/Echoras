@@ -11,6 +11,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 import CommentCaMarchePage from './pages/CommentCaMarchePage';
 import CartPage from './pages/CartPage';
+import MyCreationsPage from './pages/MyCreationsPage';
 import './styles/App.css';
 
 export default function App() {
@@ -39,7 +40,7 @@ export default function App() {
 
           {/* Pages protégées (Phase 3+) */}
           <Route path="/profil" element={<ProtectedRoute><PlaceholderPage title="Mon profil" /></ProtectedRoute>} />
-          <Route path="/mes-creations" element={<ProtectedRoute><PlaceholderPage title="Mes créations" /></ProtectedRoute>} />
+          <Route path="/mes-creations" element={<ProtectedRoute><MyCreationsPage /></ProtectedRoute>} />
           <Route path="/mes-commandes" element={<ProtectedRoute><PlaceholderPage title="Mes commandes" /></ProtectedRoute>} />
           <Route path="/panier" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
 
