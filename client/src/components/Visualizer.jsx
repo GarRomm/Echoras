@@ -35,6 +35,8 @@ class WebGLErrorBoundary extends Component {
 }
 
 export default function Visualizer({ waveformData, params, controlsRef, autoRotate }) {
+  const gridY = -(params.cylinderHeight / 2 + (params.showBase ? params.baseHeight : 0));
+
   return (
     <WebGLErrorBoundary>
       <Canvas
@@ -66,7 +68,7 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
           autoRotateSpeed={2}
         />
 
-        <gridHelper args={[10, 20, '#222233', '#1a1a2e']} position={[0, -0.01, 0]} />
+        <gridHelper args={[10, 20, '#222233', '#1a1a2e']} position={[0, gridY, 0]} />
       </Canvas>
     </WebGLErrorBoundary>
   );
