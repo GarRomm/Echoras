@@ -25,21 +25,34 @@ const DEFAULT_PARAMS = {
 
 export default function CreatorPage() {
   const location = useLocation();
-  const resumed  = location.state ?? null; // { params, sculptureId, sculptureName, audioFileName }
 
   const [audioFile, setAudioFile] = useState(null);
-  const [params, setParams] = useState(() => ({
-    ...DEFAULT_PARAMS,
-    ...(resumed?.params ?? {}),
-  }));
-  const [resumeBanner, setResumeBanner] = useState(!!resumed);
+  const [params, setParams] = useState(() => {
+    const s = location.state;
+    return { ...DEFAULT_PARAMS, ...(s?.params ?? {}) };
+  });
+  const [resumedWaveform, setResumedWaveform] = useState(() => {
+    const wd = location.state?.waveformData;
+    return wd && wd.length > 0 ? new Float32Array(wd) : null;
+  });
+  const [resumeBanner, setResumeBanner] = useState(() => !!location.state);
+
+  // Filet de sécurité : si le useState initializer a tourné avant la propagation
+  // du location.state (rendu concurrent), on le rattrape ici.
+  useEffect(() => {
+    const s = location.state;
+    if (!s) return;
+    if (s.params) {
+      setParams({ ...DEFAULT_PARAMS, ...s.params });
+    }
+    if (s.waveformData && s.waveformData.length > 0) {
+      setResumedWaveform(new Float32Array(s.waveformData));
+    }
+    setResumeBanner(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionnellement vide : s'exécute une seule fois au montage
 
   const { waveformData: analyzedData, isAnalyzing } = useAudioAnalysis(audioFile);
-
-  // Utilise la waveform analysée depuis le fichier, ou la waveform sauvegardée si reprise sans re-upload
-  const resumedWaveform = resumed?.waveformData
-    ? new Float32Array(resumed.waveformData)
-    : null;
   const waveformData = analyzedData ?? resumedWaveform;
 
   const controlsRef = useRef(null);
@@ -110,11 +123,11 @@ export default function CreatorPage() {
       {resumeBanner && (
         <div className="creator__resume-banner">
           <span>
-            Reprise de <strong>{resumed?.sculptureName || 'votre sculpture'}</strong>
-            {resumed?.waveformData
+            Reprise de <strong>{location.state?.sculptureName || 'votre sculpture'}</strong>
+            {resumedWaveform
               ? <> — votre sculpture est prête, vous pouvez modifier les paramètres</>
-              : resumed?.audioFileName
-                ? <> — re-uploadez <em>{resumed.audioFileName}</em> pour retrouver votre son</>
+              : location.state?.audioFileName
+                ? <> — re-uploadez <em>{location.state.audioFileName}</em> pour retrouver votre son</>
                 : null
             }
           </span>
@@ -201,7 +214,7 @@ export default function CreatorPage() {
           waveformData={waveformData}
           params={params}
           audioFileName={audioFile?.name}
-          resumedSculptureId={resumed?.sculptureId ?? null}
+          resumedSculptureId={location.state?.sculptureId ?? null}
         />
       </aside>
       </div>

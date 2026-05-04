@@ -129,7 +129,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       console.error(err);
       setSaveStatus('error');
     }
-  }, [user, audioFileName, params, navigate]);
+  }, [user, audioFileName, waveformData, params, navigate]);
 
   // Ajoute la sculpture sauvegardée au panier
   const handleAddToCart = useCallback(async () => {
