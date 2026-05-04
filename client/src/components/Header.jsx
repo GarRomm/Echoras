@@ -45,7 +45,15 @@ export default function Header() {
 
       <div className="header__actions">
         {user ? (
-          <div className="header__account" ref={accountRef}>
+          <>
+            <Link to="/panier" className="header__btn-cart" aria-label="Mon panier">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 01-8 0" />
+              </svg>
+            </Link>
+            <div className="header__account" ref={accountRef}>
             <button
               className="header__btn-account header__btn-account--logged"
               aria-label="Mon compte"
@@ -74,6 +82,7 @@ export default function Header() {
               </div>
             )}
           </div>
+          </>
         ) : (
           <Link to="/connexion" className="header__btn-account" aria-label="Se connecter">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
