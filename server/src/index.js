@@ -12,6 +12,7 @@ const authRoutes = require('./routes/auth');
 const uploadRoutes = require('./routes/upload');
 const modelRoutes = require('./routes/model');
 const renderRoutes = require('./routes/render');
+const cartRoutes = require('./routes/cart');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -42,6 +43,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/model', modelRoutes);
 app.use('/api/render', renderRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {

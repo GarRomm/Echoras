@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './CartPage.css';
 
@@ -57,21 +57,48 @@ function IconMaterial() {
   );
 }
 
-// Données exemple (plus tard connecté à l'API)
-const CART_ITEMS = [
-  {
-    id: '1',
-    name: 'Danse du mariage',
-    price: 89,
-    material: 'Céramique ivoire',
-    config: 'Relief 75 % · Lissage 40 % · Tours 12 · Épaisseur 6 mm',
-  },
-];
+const API = import.meta.env.VITE_API_URL || '/api';
+
+function formatConfig(params) {
+  if (!params) return null;
+  return `Relief ${Math.round((params.peakHeight / 3) * 100)} % · Lissage ${Math.round(params.smoothing * 100)} % · Tours ${params.helixTurns} · Épaisseur ${Math.round(params.ringThickness * 10)} mm`;
+}
 
 export default function CartPage() {
   const navigate = useNavigate();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const subtotal = CART_ITEMS.reduce((sum, item) => sum + item.price, 0);
+  const fetchCart = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/cart`, { credentials: 'include' });
+      if (!res.ok) throw new Error('Erreur de chargement');
+      const data = await res.json();
+      setItems(data.items || []);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { fetchCart(); }, [fetchCart]);
+
+  const handleDelete = useCallback(async (itemId) => {
+    try {
+      const res = await fetch(`${API}/cart/${itemId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Erreur suppression');
+      setItems((prev) => prev.filter((i) => i.id !== itemId));
+    } catch (err) {
+      alert(err.message);
+    }
+  }, []);
+
+  const subtotal = items.reduce((sum, item) => sum + parseFloat(item.price || 0), 0);
 
   return (
     <div className="cart">
@@ -84,7 +111,11 @@ export default function CartPage() {
       <div className="cart__body">
         {/* Articles */}
         <div className="cart__items">
-          {CART_ITEMS.length === 0 ? (
+          {loading ? (
+            <div className="cart__empty"><p>Chargement…</p></div>
+          ) : error ? (
+            <div className="cart__empty"><p>Erreur : {error}</p></div>
+          ) : items.length === 0 ? (
             <div className="cart__empty">
               <p>Votre panier est vide.</p>
               <Link to="/createur" className="cart__btn cart__btn--primary">
@@ -92,36 +123,46 @@ export default function CartPage() {
               </Link>
             </div>
           ) : (
-            CART_ITEMS.map((item) => (
-              <article key={item.id} className="cart__card">
-                <div className="cart__card-img" aria-hidden="true" />
-                <div className="cart__card-content">
-                  <div className="cart__card-top">
-                    <div className="cart__card-name-price">
-                      <h2 className="cart__card-name">{item.name}</h2>
-                      <span className="cart__card-price">{item.price} €</span>
-                    </div>
-                    <div className="cart__card-details">
-                      <div className="cart__card-material">
-                        <IconMaterial />
-                        <span>Matériau : <strong>{item.material}</strong></span>
+            items.map((item) => {
+              const sculpture = item.Sculpture;
+              const material = item.Material || sculpture?.Material;
+              const config = formatConfig(sculpture?.params);
+              return (
+                <article key={item.id} className="cart__card">
+                  <div className="cart__card-img" aria-hidden="true" />
+                  <div className="cart__card-content">
+                    <div className="cart__card-top">
+                      <div className="cart__card-name-price">
+                        <h2 className="cart__card-name">{sculpture?.name || 'Ma sculpture'}</h2>
+                        <span className="cart__card-price">{parseFloat(item.price).toFixed(0)} €</span>
                       </div>
-                      <p className="cart__card-config">Configuration : {item.config}</p>
+                      <div className="cart__card-details">
+                        {material && (
+                          <div className="cart__card-material">
+                            <IconMaterial />
+                            <span>Matériau : <strong>{material.name}</strong></span>
+                          </div>
+                        )}
+                        {config && <p className="cart__card-config">Configuration : {config}</p>}
+                      </div>
+                    </div>
+                    <div className="cart__card-actions">
+                      <button className="cart__action-btn" onClick={() => navigate('/createur')}>
+                        <IconEdit />
+                        <span>MODIFIER</span>
+                      </button>
+                      <button
+                        className="cart__action-btn cart__action-btn--delete"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        <IconTrash />
+                        <span>SUPPRIMER</span>
+                      </button>
                     </div>
                   </div>
-                  <div className="cart__card-actions">
-                    <button className="cart__action-btn" onClick={() => navigate('/createur')}>
-                      <IconEdit />
-                      <span>MODIFIER</span>
-                    </button>
-                    <button className="cart__action-btn cart__action-btn--delete">
-                      <IconTrash />
-                      <span>SUPPRIMER</span>
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))
+                </article>
+              );
+            })
           )}
         </div>
 
@@ -132,7 +173,7 @@ export default function CartPage() {
           <div className="cart__summary-lines">
             <div className="cart__summary-line">
               <span>Sous-total</span>
-              <span>{subtotal} €</span>
+              <span>{subtotal.toFixed(0)} €</span>
             </div>
             <div className="cart__summary-line cart__summary-line--separator">
               <span>Livraison &amp; assurance</span>
@@ -140,12 +181,12 @@ export default function CartPage() {
             </div>
             <div className="cart__summary-total">
               <span>Total TTC</span>
-              <span className="cart__summary-total-amount">{subtotal} €</span>
+              <span className="cart__summary-total-amount">{subtotal.toFixed(0)} €</span>
             </div>
           </div>
 
           <div className="cart__summary-buttons">
-            <button className="cart__btn cart__btn--primary">
+            <button className="cart__btn cart__btn--primary" disabled={items.length === 0}>
               Passer à la commande
             </button>
             <button className="cart__btn cart__btn--secondary" onClick={() => navigate('/createur')}>
