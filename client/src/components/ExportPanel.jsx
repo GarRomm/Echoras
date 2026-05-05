@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { exportMultiGeometrySTL } from '../utils/stlExporter';
 import {
@@ -33,9 +33,21 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   const navigate = useNavigate();
   const isAdmin = user?.role === 'ADMIN';
 
-  // États rendu photoéaliste
+  // États rendu photoréaliste
   const [renderStatus, setRenderStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
   const [renderUrl, setRenderUrl] = useState(null);
+  const [renderElapsed, setRenderElapsed] = useState(0);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (renderStatus === 'rendering') {
+      setRenderElapsed(0);
+      timerRef.current = setInterval(() => setRenderElapsed((s) => s + 1), 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [renderStatus]);
 
   // États sauvegarde draft
   const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
@@ -164,7 +176,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         onClick={handleRender}
       >
         {renderStatus === 'saving' && 'Envoi du modèle…'}
-        {renderStatus === 'rendering' && 'Rendu en cours…'}
+        {renderStatus === 'rendering' && `Rendu en cours… ${renderElapsed}s`}
         {renderStatus === 'done' && 'Nouveau rendu'}
         {!renderStatus && 'Rendu photoréaliste'}
       </button>

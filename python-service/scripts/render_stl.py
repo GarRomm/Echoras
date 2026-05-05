@@ -103,6 +103,14 @@ def import_stl(filepath):
     return obj
 
 
+def fix_orientation(obj):
+    """Corrige l'axe : Three.js exporte Y-up, Blender attend Z-up."""
+    import math
+    bpy.context.view_layer.objects.active = obj
+    obj.rotation_euler[0] = math.radians(90)
+    bpy.ops.object.transform_apply(rotation=True)
+
+
 def center_and_scale(obj, target_size=2.0):
     """Center origin, place at origin, scale to fit within target_size."""
     bpy.context.view_layer.objects.active = obj
@@ -250,6 +258,7 @@ def main():
     clear_scene()
 
     obj = import_stl(args.input)
+    fix_orientation(obj)
     center_and_scale(obj)
     apply_material(obj, args.material)
 
