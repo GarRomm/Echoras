@@ -7,6 +7,7 @@ import {
   buildBaseGeometry,
 } from '../utils/waveformRing';
 import { useAuth } from '../context/AuthContext';
+import { computePrintCost } from '../utils/printCost';
 import './ExportPanel.css';
 
 async function apiFetch(url, options = {}) {
@@ -182,9 +183,33 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   }, [savedSculpture, navigate]);
 
   const disabled = !waveformData || waveformData.length === 0;
+  const cost = computePrintCost(params);
 
   return (
     <div className="export">
+      {/* Estimation d'impression */}
+      <div className="export__estimate">
+        <div className="export__estimate-header">
+          <span className="export__estimate-label">Estimation d'impression</span>
+          <span className="export__estimate-finish">{cost.finishLabel}</span>
+        </div>
+        <div className="export__estimate-total">~{cost.total} €</div>
+        <div className="export__estimate-breakdown">
+          <div className="export__estimate-line">
+            <span>Matière</span>
+            <span>{cost.materialCost.toFixed(2)} €</span>
+          </div>
+          <div className="export__estimate-line">
+            <span>Temps machine ({cost.printHours}h)</span>
+            <span>{cost.machineCost.toFixed(2)} €</span>
+          </div>
+          <div className="export__estimate-line">
+            <span>Main d'œuvre + marge</span>
+            <span>{cost.laborCost.toFixed(2)} €</span>
+          </div>
+        </div>
+      </div>
+
       {/* Rendu photoréaliste */}
       <button
         className="export__render-btn"

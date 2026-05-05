@@ -6,6 +6,67 @@
   border-top: 1px solid rgba(240, 237, 230, 0.06);
 }
 
+/* Estimation d'impression */
+.export__estimate {
+  padding: 12px 14px;
+  background: rgba(201, 134, 58, 0.06);
+  border: 1px solid rgba(201, 134, 58, 0.2);
+  border-radius: 8px;
+}
+
+.export__estimate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.export__estimate-label {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(240, 237, 230, 0.5);
+}
+
+.export__estimate-finish {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.export__estimate-total {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.export__estimate-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(240, 237, 230, 0.08);
+}
+
+.export__estimate-line {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  color: rgba(240, 237, 230, 0.45);
+}
+
+.export__estimate-line span:last-child {
+  color: rgba(240, 237, 230, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+
 .export__render-btn {
   display: flex;
   align-items: center;
