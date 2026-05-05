@@ -1,6 +1,6 @@
 import React, { useEffect, Component } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Environment } from '@react-three/drei';
 import WaveformRingMesh from './WaveformRingMesh';
 
 class WebGLErrorBoundary extends Component {
@@ -62,12 +62,14 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
           gl.domElement.addEventListener('webglcontextrestored', () => invalidate(), false);
         }}
       >
-        <color attach="background" args={['#1a1a2e']} />
-        <ambientLight intensity={0.5} />
+        <color attach="background" args={['#12121A']} />
+        <ambientLight intensity={0.3} />
         <directionalLight position={[5, 8, 3]} intensity={1.2} />
         <directionalLight position={[-3, 4, -2]} intensity={0.4} />
+        <directionalLight position={[0, -4, 2]} intensity={0.15} />
         <pointLight position={[-3, 2, -4]} intensity={0.5} color="#40E0D0" />
 
+        <Environment preset="studio" />
         <SceneInvalidator waveformData={waveformData} params={params} />
         <WaveformRingMesh waveformData={waveformData} params={params} />
 

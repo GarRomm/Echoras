@@ -6,7 +6,11 @@ import {
   buildBaseGeometry,
 } from '../utils/waveformRing';
 
+const MAT      = { metalness: 0,    roughness: 0.88, envMapIntensity: 0.2 };
+const BRILLANT = { metalness: 0.05, roughness: 0.12, envMapIntensity: 1.8 };
+
 export default function WaveformRingMesh({ waveformData, params }) {
+  const finish = params.finishMode === 'brillant' ? BRILLANT : MAT;
   const helixGeometry = useMemo(() => {
     return buildHelixRibbonGeometry(waveformData, params);
   }, [waveformData, params]);
@@ -30,8 +34,9 @@ export default function WaveformRingMesh({ waveformData, params }) {
       <mesh geometry={cylinderGeometry}>
         <meshStandardMaterial
           color={params.cylinderColor}
-          metalness={0.1}
-          roughness={0.6}
+          metalness={finish.metalness}
+          roughness={finish.roughness}
+          envMapIntensity={finish.envMapIntensity}
         />
       </mesh>
 
@@ -39,8 +44,9 @@ export default function WaveformRingMesh({ waveformData, params }) {
       <mesh geometry={helixGeometry}>
         <meshStandardMaterial
           color={params.waveformColor}
-          metalness={0.3}
-          roughness={0.4}
+          metalness={finish.metalness}
+          roughness={finish.roughness}
+          envMapIntensity={finish.envMapIntensity}
           side={THREE.DoubleSide}
         />
       </mesh>
@@ -50,8 +56,8 @@ export default function WaveformRingMesh({ waveformData, params }) {
         <mesh geometry={baseGeometry}>
           <meshStandardMaterial
             color={params.cylinderColor}
-            metalness={0.1}
-            roughness={0.6}
+            metalness={0}
+            roughness={0.7}
           />
         </mesh>
       )}

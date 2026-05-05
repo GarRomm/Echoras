@@ -21,6 +21,7 @@ const DEFAULT_PARAMS = {
   cylinderColor: '#FFFFFF',
   baseHeight: 0.2,
   showBase: true,
+  finishMode: 'mat',
 };
 
 export default function CreatorPage() {

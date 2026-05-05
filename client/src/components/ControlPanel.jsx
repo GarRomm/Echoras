@@ -44,6 +44,23 @@ export default function ControlPanel({ params, onChange }) {
       <div className="controls__section">
         <h3 className="controls__title">Couleurs</h3>
         <div className="controls__fields">
+          <div className="controls__field">
+            <div className="controls__field-header">
+              <span className="controls__field-label">Finition</span>
+            </div>
+            <div className="controls__finish-toggle">
+              <button
+                className={`controls__finish-btn${params.finishMode === 'mat' ? ' controls__finish-btn--active' : ''}`}
+                onClick={() => onChange('finishMode', 'mat')}
+                type="button"
+              >Mat</button>
+              <button
+                className={`controls__finish-btn${params.finishMode === 'brillant' ? ' controls__finish-btn--active' : ''}`}
+                onClick={() => onChange('finishMode', 'brillant')}
+                type="button"
+              >Brillant</button>
+            </div>
+          </div>
           <label className="controls__field">
             <div className="controls__field-header">
               <span className="controls__field-label">Couleur de l'onde</span>

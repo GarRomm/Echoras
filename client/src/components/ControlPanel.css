@@ -145,6 +145,31 @@
   padding: 2px;
 }
 
+/* Finition toggle */
+.controls__finish-toggle {
+  display: flex;
+  gap: 8px;
+}
+.controls__finish-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--surface, #1a1a26);
+  color: var(--text-muted, #8888aa);
+  border: 1px solid var(--border, #2a2a3a);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.controls__finish-btn--active {
+  background: var(--accent, #C9863A);
+  color: #12121A;
+  border-color: var(--accent, #C9863A);
+  font-weight: 700;
+}
+
 /* Select */
 .controls__field select {
   background: #0e0e16;
