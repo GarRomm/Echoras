@@ -40,7 +40,7 @@ export default function ControlPanel({ params, onChange }) {
         </div>
       </div>
 
-      {/* Section couleurs */
+      {/* Section couleurs */}
       <div className="controls__section">
         <h3 className="controls__title">Couleurs</h3>
         <div className="controls__fields">
