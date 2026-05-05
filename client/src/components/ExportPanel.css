@@ -127,3 +127,26 @@
   width: 100%;
   display: block;
 }
+
+.export__download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px 16px;
+  background: rgba(240, 237, 230, 0.06);
+  border: none;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.export__download-btn:hover {
+  background: rgba(240, 237, 230, 0.12);
+}

@@ -19,8 +19,9 @@ router.post('/:id', (req, res) => {
     return res.status(404).json({ error: 'STL not found' });
   }
 
-  // Extract optional material parameter (defaults handled by Python script)
+  // Extract optional material + color parameters (defaults handled by Python script)
   const material = req.body.material || 'plastic_white';
+  const color = req.body.color || null;
 
   const args = [
     '--background',
@@ -30,6 +31,10 @@ router.post('/:id', (req, res) => {
     '--output', outputPath,
     '--material', material,
   ];
+
+  if (color && /^#[0-9a-fA-F]{6}$/.test(color)) {
+    args.push('--color', color);
+  }
 
   execFile(BLENDER_PATH, args, { timeout: 300_000 }, (err, stdout, stderr) => {
     if (err) {

@@ -91,7 +91,10 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       const renderRes = await apiFetch(`/api/render/${saveRes.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ material: params.material }),
+        body: JSON.stringify({
+          material: params.material,
+          color: params.waveformColor || null,
+        }),
       });
 
       setRenderUrl(renderRes.renderUrl);
@@ -218,6 +221,13 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       {renderUrl && (
         <div className="export__preview">
           <img src={renderUrl} alt="Rendu 3D" />
+          <a
+            className="export__download-btn"
+            href={renderUrl}
+            download="echoras-render.png"
+          >
+            Télécharger le rendu
+          </a>
         </div>
       )}
     </div>

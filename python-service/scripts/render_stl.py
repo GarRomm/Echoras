@@ -41,6 +41,8 @@ def parse_args():
     parser.add_argument("--input", required=True, help="Path to input .stl file")
     parser.add_argument("--output", required=True, help="Path to output .png file")
     parser.add_argument("--material", default="plastic_white", help="Material preset name")
+    parser.add_argument("--color", default=None, help="Override waveform base color (hex, e.g. #40E0D0)")
+    parser.add_argument("--color2", default=None, help="Override cylinder color (hex, e.g. #FFFFFF)")
     parser.add_argument("--resolution", type=int, default=1024, help="Render resolution (square)")
     parser.add_argument("--samples", type=int, default=32, help="Cycles render samples")
     return parser.parse_args(argv)
@@ -48,6 +50,14 @@ def parse_args():
 # ---------------------------------------------------------------------------
 # Material presets
 # ---------------------------------------------------------------------------
+
+def hex_to_linear(hex_color):
+    """Convertit un hex CSS (#RRGGBB) en RGBA lineaire pour Blender."""
+    h = hex_color.lstrip('#')
+    srgb = [int(h[i:i+2], 16) / 255.0 for i in (0, 2, 4)]
+    linear = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in srgb]
+    return (linear[0], linear[1], linear[2], 1.0)
+
 
 MATERIAL_PRESETS = {
     "plastic_white": {
@@ -126,7 +136,7 @@ def center_and_scale(obj, target_size=2.0):
         bpy.ops.object.transform_apply(scale=True)
 
 
-def apply_material(obj, preset_name):
+def apply_material(obj, preset_name, color_override=None):
     """Create and assign a Principled BSDF material."""
     preset = MATERIAL_PRESETS.get(preset_name, MATERIAL_PRESETS["plastic_white"])
 
@@ -134,7 +144,8 @@ def apply_material(obj, preset_name):
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes.get("Principled BSDF")
 
-    bsdf.inputs["Base Color"].default_value = preset["base_color"]
+    base_color = hex_to_linear(color_override) if color_override else preset["base_color"]
+    bsdf.inputs["Base Color"].default_value = base_color
     bsdf.inputs["Metallic"].default_value = preset["metallic"]
     bsdf.inputs["Roughness"].default_value = preset["roughness"]
     # Blender 4.0+ renomme "Specular" en "Specular IOR Level"
@@ -260,7 +271,7 @@ def main():
     obj = import_stl(args.input)
     fix_orientation(obj)
     center_and_scale(obj)
-    apply_material(obj, args.material)
+    apply_material(obj, args.material, color_override=args.color)
 
     # Add a ground plane for shadow catching
     bpy.ops.mesh.primitive_plane_add(size=20, location=(0, 0, -1.01))
