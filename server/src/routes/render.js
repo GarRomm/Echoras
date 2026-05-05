@@ -31,7 +31,7 @@ router.post('/:id', (req, res) => {
     '--material', material,
   ];
 
-  execFile(BLENDER_PATH, args, { timeout: 120_000 }, (err, stdout, stderr) => {
+  execFile(BLENDER_PATH, args, { timeout: 300_000 }, (err, stdout, stderr) => {
     if (err) {
       console.error('Blender render error:', stderr);
       return res.status(500).json({ error: 'Render failed', details: stderr });

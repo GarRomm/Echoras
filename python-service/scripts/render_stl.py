@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument("--output", required=True, help="Path to output .png file")
     parser.add_argument("--material", default="plastic_white", help="Material preset name")
     parser.add_argument("--resolution", type=int, default=1024, help="Render resolution (square)")
-    parser.add_argument("--samples", type=int, default=128, help="Cycles render samples")
+    parser.add_argument("--samples", type=int, default=32, help="Cycles render samples")
     return parser.parse_args(argv)
 
 # ---------------------------------------------------------------------------
