@@ -194,6 +194,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
           <span className="export__estimate-finish">{cost.finishLabel}</span>
         </div>
         <div className="export__estimate-total">{cost.total} €</div>
+
       </div>
 
       {/* Rendu photoréaliste */}
