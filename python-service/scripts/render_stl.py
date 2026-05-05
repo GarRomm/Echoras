@@ -153,14 +153,15 @@ def center_and_scale(obj, target_size=2.0):
 
 
 def smooth_sculpt(obj):
-    """Applique le smooth shading + subdivision niveau 1 pour lisser le maillage STL."""
+    """Applique le smooth shading + subdivision SIMPLE pour lisser sans déformer."""
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.ops.object.shade_smooth()
     mod = obj.modifiers.new(name="Subdivision", type='SUBSURF')
+    mod.subdivision_type = 'SIMPLE'  # n'écrase pas la forme, ajoute juste de la topologie
     mod.levels = 1
-    mod.render_levels = 2
+    mod.render_levels = 1
 
 
 def apply_material(obj, preset_name, color_override=None):
