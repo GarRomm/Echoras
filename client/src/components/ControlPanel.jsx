@@ -2,7 +2,7 @@ import React from 'react';
 import './ControlPanel.css';
 
 const SLIDERS = [
-  { key: 'peakHeight', label: 'Hauteur des pics', min: 0.1, max: 3, step: 0.05, fmt: (v) => v.toFixed(2) },
+  { key: 'peakHeight', label: 'Hauteur des pics', min: 0.1, max: 3, step: 0.05, fmt: (v) => `${v.toFixed(2)} cm` },
   { key: 'smoothing', label: 'Lissage', min: 0, max: 1, step: 0.01, fmt: (v) => v.toFixed(2) },
   { key: 'cylinderRadius', label: 'Rayon du cylindre', min: 0.3, max: 5, step: 0.5, fmt: (v) => `${v.toFixed(1)} cm` },
   { key: 'cylinderHeight', label: 'Hauteur du cylindre', min: 1, max: 15, step: 1.0, fmt: (v) => `${v.toFixed(1)} cm` },
