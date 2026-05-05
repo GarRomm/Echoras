@@ -33,7 +33,7 @@ export function computePrintCost(params) {
   // Coût fixe : main d'œuvre + overhead + finition
   const laborCost = LABOR_BASE + (isBrillant ? BRILLANT_PREMIUM : 0);
 
-  const total = Math.ceil(materialCost + machineCost + laborCost);
+  const total = parseFloat((materialCost + machineCost + laborCost).toFixed(2));
 
   return {
     total,

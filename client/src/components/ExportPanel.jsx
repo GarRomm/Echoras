@@ -193,21 +193,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
           <span className="export__estimate-label">Estimation d'impression</span>
           <span className="export__estimate-finish">{cost.finishLabel}</span>
         </div>
-        <div className="export__estimate-total">~{cost.total} €</div>
-        <div className="export__estimate-breakdown">
-          <div className="export__estimate-line">
-            <span>Matière</span>
-            <span>{cost.materialCost.toFixed(2)} €</span>
-          </div>
-          <div className="export__estimate-line">
-            <span>Temps machine ({cost.printHours}h)</span>
-            <span>{cost.machineCost.toFixed(2)} €</span>
-          </div>
-          <div className="export__estimate-line">
-            <span>Main d'œuvre + marge</span>
-            <span>{cost.laborCost.toFixed(2)} €</span>
-          </div>
-        </div>
+        <div className="export__estimate-total">{cost.total} €</div>
       </div>
 
       {/* Rendu photoréaliste */}
