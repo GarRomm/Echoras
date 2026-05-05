@@ -129,11 +129,14 @@ def apply_material(obj, preset_name):
     bsdf.inputs["Base Color"].default_value = preset["base_color"]
     bsdf.inputs["Metallic"].default_value = preset["metallic"]
     bsdf.inputs["Roughness"].default_value = preset["roughness"]
-    bsdf.inputs["Specular IOR Level"].default_value = preset["specular"]
+    # Blender 4.0+ renomme "Specular" en "Specular IOR Level"
+    specular_key = "Specular IOR Level" if "Specular IOR Level" in bsdf.inputs else "Specular"
+    bsdf.inputs[specular_key].default_value = preset["specular"]
 
-    # Auto smooth for nicer normals
-    obj.data.use_auto_smooth = True
-    obj.data.auto_smooth_angle = math.radians(30)
+    # Auto smooth : API supprimée en Blender 4.1+
+    if hasattr(obj.data, "use_auto_smooth"):
+        obj.data.use_auto_smooth = True
+        obj.data.auto_smooth_angle = math.radians(30)
 
     obj.data.materials.clear()
     obj.data.materials.append(mat)
