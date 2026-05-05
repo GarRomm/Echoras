@@ -228,7 +228,7 @@ def configure_renderer(samples):
         scene.cycles.device = "GPU"
 
     scene.cycles.samples = samples
-    scene.cycles.use_denoising = True
+    scene.cycles.use_denoising = False  # désactivé : OIDN absent sur ce serveur
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
 
