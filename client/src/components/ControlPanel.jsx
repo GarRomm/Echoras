@@ -1,14 +1,6 @@
 import React from 'react';
 import './ControlPanel.css';
 
-const MATERIALS = [
-  { value: 'plastic_white', label: 'Plastique blanc', color: '#E8E8E8' },
-  { value: 'plastic_black', label: 'Plastique noir', color: '#222222' },
-  { value: 'metal_silver', label: 'Métal argent', color: '#A8A8B0' },
-  { value: 'metal_gold', label: 'Métal or', color: '#C9A84C' },
-  { value: 'wood', label: 'Bois', color: '#8B6340' },
-];
-
 const SLIDERS = [
   { key: 'peakHeight', label: 'Hauteur des pics', min: 0.1, max: 3, step: 0.05, fmt: (v) => v.toFixed(2) },
   { key: 'smoothing', label: 'Lissage', min: 0, max: 1, step: 0.01, fmt: (v) => v.toFixed(2) },
@@ -48,25 +40,7 @@ export default function ControlPanel({ params, onChange }) {
         </div>
       </div>
 
-      {/* Section matériaux */}
-      <div className="controls__section">
-        <h3 className="controls__title">Matériau</h3>
-        <div className="controls__materials">
-          {MATERIALS.map((m) => (
-            <button
-              key={m.value}
-              className={`controls__material${params.material === m.value ? ' controls__material--active' : ''}`}
-              onClick={() => onChange('material', m.value)}
-              type="button"
-            >
-              <span className="controls__material-dot" style={{ background: m.color }} />
-              {m.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Section couleurs */}
+      {/* Section couleurs */
       <div className="controls__section">
         <h3 className="controls__title">Couleurs</h3>
         <div className="controls__fields">

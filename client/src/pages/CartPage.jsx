@@ -48,15 +48,6 @@ function IconDiamond() {
   );
 }
 
-function IconMaterial() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <circle cx="18" cy="18" r="10" fill="rgba(240,237,230,0.15)" stroke="#F0EDE6" strokeWidth="1"/>
-    </svg>
-  );
-}
-
 const API = import.meta.env.VITE_API_URL || '/api';
 
 function formatConfig(params) {
@@ -125,7 +116,6 @@ export default function CartPage() {
           ) : (
             items.map((item) => {
               const sculpture = item.Sculpture;
-              const material = item.Material || sculpture?.Material;
               const config = formatConfig(sculpture?.params);
               return (
                 <article key={item.id} className="cart__card">
@@ -137,12 +127,6 @@ export default function CartPage() {
                         <span className="cart__card-price">{parseFloat(item.price).toFixed(0)} €</span>
                       </div>
                       <div className="cart__card-details">
-                        {material && (
-                          <div className="cart__card-material">
-                            <IconMaterial />
-                            <span>Matériau : <strong>{material.name}</strong></span>
-                          </div>
-                        )}
                         {config && <p className="cart__card-config">Configuration : {config}</p>}
                       </div>
                     </div>
