@@ -4,8 +4,8 @@ import './ControlPanel.css';
 const SLIDERS = [
   { key: 'peakHeight', label: 'Hauteur des pics', min: 0.1, max: 3, step: 0.05, fmt: (v) => v.toFixed(2) },
   { key: 'smoothing', label: 'Lissage', min: 0, max: 1, step: 0.01, fmt: (v) => v.toFixed(2) },
-  { key: 'cylinderRadius', label: 'Rayon du cylindre', min: 0.3, max: 3, step: 0.1, fmt: (v) => v.toFixed(1) },
-  { key: 'cylinderHeight', label: 'Hauteur du cylindre', min: 1, max: 10, step: 0.5, fmt: (v) => v.toFixed(1) },
+  { key: 'cylinderRadius', label: 'Rayon du cylindre', min: 0.3, max: 5, step: 0.5, fmt: (v) => v.toFixed(1) },
+  { key: 'cylinderHeight', label: 'Hauteur du cylindre', min: 1, max: 15, step: 1.0, fmt: (v) => v.toFixed(1) },
   { key: 'ringThickness', label: 'Épaisseur', min: 0.1, max: 1.5, step: 0.05, fmt: (v) => v.toFixed(2) },
   { key: 'segments', label: 'Segments', min: 64, max: 512, step: 16, fmt: (v) => v },
   { key: 'helixTurns', label: "Tours d'hélice", min: 1, max: 12, step: 1, fmt: (v) => v },
