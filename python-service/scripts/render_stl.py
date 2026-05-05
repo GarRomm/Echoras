@@ -25,6 +25,7 @@ import sys
 import argparse
 import math
 import os
+import mathutils
 
 # ---------------------------------------------------------------------------
 # Argument parsing (everything after "--" in blender CLI)
@@ -43,6 +44,7 @@ def parse_args():
     parser.add_argument("--material", default="plastic_white", help="Material preset name")
     parser.add_argument("--color", default=None, help="Override waveform base color (hex, e.g. #40E0D0)")
     parser.add_argument("--color2", default=None, help="Override cylinder color (hex, e.g. #FFFFFF)")
+    parser.add_argument("--input2", default=None, help="Path to second .stl file (cylinder/base)")
     parser.add_argument("--resolution", type=int, default=1024, help="Render resolution (square)")
     parser.add_argument("--samples", type=int, default=32, help="Cycles render samples")
     return parser.parse_args(argv)
@@ -121,19 +123,33 @@ def fix_orientation(obj):
     bpy.ops.object.transform_apply(rotation=True)
 
 
-def center_and_scale(obj, target_size=2.0):
-    """Center origin, place at origin, scale to fit within target_size."""
-    bpy.context.view_layer.objects.active = obj
-    bpy.ops.object.origin_set(type="ORIGIN_CENTER_OF_VOLUME", center="MEDIAN")
-    obj.location = (0, 0, 0)
+def center_and_scale_group(objects, target_size=2.0):
+    """Centre et scale un groupe d'objets ensemble (bounding box combinée)."""
+    min_co = [float('inf')] * 3
+    max_co = [float('-inf')] * 3
+    for obj in objects:
+        mw = obj.matrix_world
+        for corner in obj.bound_box:
+            wc = mw @ mathutils.Vector(corner)
+            for i in range(3):
+                min_co[i] = min(min_co[i], wc[i])
+                max_co[i] = max(max_co[i], wc[i])
 
-    # Scale to fit
-    dims = obj.dimensions
-    max_dim = max(dims.x, dims.y, dims.z)
-    if max_dim > 0:
-        scale_factor = target_size / max_dim
+    center = mathutils.Vector([(min_co[i] + max_co[i]) / 2 for i in range(3)])
+    max_dim = max(max_co[i] - min_co[i] for i in range(3))
+    scale_factor = target_size / max_dim if max_dim > 0 else 1.0
+
+    for obj in objects:
+        bpy.context.view_layer.objects.active = obj
+        obj.location -= center
+        bpy.ops.object.transform_apply(location=True)
         obj.scale = (scale_factor, scale_factor, scale_factor)
         bpy.ops.object.transform_apply(scale=True)
+
+
+def center_and_scale(obj, target_size=2.0):
+    """Center origin, place at origin, scale to fit within target_size."""
+    center_and_scale_group([obj], target_size)
 
 
 def apply_material(obj, preset_name, color_override=None):
@@ -268,10 +284,21 @@ def main():
 
     clear_scene()
 
-    obj = import_stl(args.input)
-    fix_orientation(obj)
-    center_and_scale(obj)
-    apply_material(obj, args.material, color_override=args.color)
+    obj1 = import_stl(args.input)
+    fix_orientation(obj1)
+
+    objects = [obj1]
+
+    if args.input2 and os.path.isfile(args.input2):
+        obj2 = import_stl(args.input2)
+        fix_orientation(obj2)
+        objects.append(obj2)
+
+    center_and_scale_group(objects)
+
+    apply_material(obj1, args.material, color_override=args.color)
+    if len(objects) > 1:
+        apply_material(objects[1], args.material, color_override=args.color2)
 
     # Add a ground plane for shadow catching
     bpy.ops.mesh.primitive_plane_add(size=20, location=(0, 0, -1.01))

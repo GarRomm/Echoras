@@ -77,23 +77,36 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   const handleRender = useCallback(async () => {
     try {
       setRenderStatus('saving');
-      const geometries = buildAllGeometries(waveformData, params);
-      const blob = exportMultiGeometrySTL(geometries);
-      const buffer = await blob.arrayBuffer();
 
-      const saveRes = await apiFetch('/api/model/save', {
+      // STL 1 : hélice/onde (waveformColor)
+      const helixBlob = exportMultiGeometrySTL([buildHelixRibbonGeometry(waveformData, params)]);
+      const helixBuffer = await helixBlob.arrayBuffer();
+      const saveRes1 = await apiFetch('/api/model/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/octet-stream' },
-        body: buffer,
+        body: helixBuffer,
+      });
+
+      // STL 2 : cylindre + base (cylinderColor)
+      const cylGeos = [buildCentralCylinderGeometry(params)];
+      if (params.showBase) cylGeos.push(buildBaseGeometry(params));
+      const cylBlob = exportMultiGeometrySTL(cylGeos);
+      const cylBuffer = await cylBlob.arrayBuffer();
+      const saveRes2 = await apiFetch('/api/model/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/octet-stream' },
+        body: cylBuffer,
       });
 
       setRenderStatus('rendering');
-      const renderRes = await apiFetch(`/api/render/${saveRes.id}`, {
+      const renderRes = await apiFetch(`/api/render/${saveRes1.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           material: params.material,
           color: params.waveformColor || null,
+          input2: saveRes2.id,
+          color2: params.cylinderColor || null,
         }),
       });
 
