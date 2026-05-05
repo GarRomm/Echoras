@@ -13,6 +13,7 @@ import CommentCaMarchePage from './pages/CommentCaMarchePage';
 import CartPage from './pages/CartPage';
 import MyCreationsPage from './pages/MyCreationsPage';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import './styles/App.css';
 
 export default function App() {
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/mes-commandes" element={<ProtectedRoute><PlaceholderPage title="Mes commandes" /></ProtectedRoute>} />
           <Route path="/panier" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+          <Route path="/confirmation" element={<ProtectedRoute><OrderConfirmationPage /></ProtectedRoute>} />
 
           {/* Admin (Phase 5) */}
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><PlaceholderPage title="Administration" /></ProtectedRoute>} />

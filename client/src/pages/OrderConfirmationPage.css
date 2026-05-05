@@ -1,0 +1,347 @@
+.confirm {
+  padding: 60px 60px 0;
+  min-height: calc(100vh - 70px);
+}
+
+.confirm__container {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ─── COLONNE GAUCHE ─── */
+.confirm__left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 490px;
+}
+
+/* Header */
+.confirm__header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.confirm__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.confirm__title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.confirm__desc {
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.confirm__order-tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(201, 134, 58, 0.8);
+  color: var(--bg);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 8px 16px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.confirm__email-notice {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Étapes */
+.confirm__steps {
+  background: #9178B4;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.confirm__steps-title {
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 1.8rem;
+  color: var(--bg);
+}
+
+.confirm__steps-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+}
+
+.confirm__steps-list::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 34px;
+  bottom: 34px;
+  width: 1px;
+  background: rgba(18, 18, 26, 0.2);
+}
+
+.confirm__step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.confirm__step-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.confirm__step-icon--muted {
+  opacity: 0.6;
+}
+
+.confirm__step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.confirm__step-body--muted {
+  opacity: 0.55;
+}
+
+.confirm__step-label {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--bg);
+}
+
+.confirm__step-desc {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--bg);
+}
+
+.confirm__step-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--bg);
+}
+
+.confirm__step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(18, 18, 26, 0.3);
+  flex-shrink: 0;
+}
+
+.confirm__step-dot--active {
+  background: var(--bg);
+}
+
+/* Boutons d'action */
+.confirm__actions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.confirm__btn {
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.confirm__btn:hover {
+  opacity: 0.85;
+}
+
+.confirm__btn--primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.15);
+}
+
+.confirm__btn--outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Retour accueil */
+.confirm__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  color: rgba(240, 237, 230, 0.6);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.confirm__back:hover {
+  color: var(--text);
+}
+
+/* ─── COLONNE DROITE ─── */
+.confirm__card {
+  width: 440px;
+  flex-shrink: 0;
+  background: #9178B4;
+  border: 1px solid #7b5ea7;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  overflow: visible;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.confirm__card-preview {
+  height: 240px;
+  background: #d9d9d9;
+  border-radius: 12px 12px 0 0;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+
+.confirm__card-tag {
+  background: #1a1a24;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  line-height: 2.5;
+}
+
+.confirm__card-info {
+  padding: 24px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.confirm__card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-title);
+  font-weight: 500;
+  font-size: 1.8rem;
+  color: var(--bg);
+}
+
+.confirm__card-name,
+.confirm__card-price {
+  line-height: 1.25;
+}
+
+.confirm__card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirm__card-detail {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.confirm__card-detail svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.confirm__card-detail div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.confirm__card-detail-label {
+  font-family: var(--font-title);
+  font-size: 0.65rem;
+  color: var(--bg);
+  opacity: 0.7;
+}
+
+.confirm__card-detail-value {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  color: var(--bg);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .confirm {
+    padding: 40px 20px 0;
+  }
+
+  .confirm__container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .confirm__left {
+    max-width: 100%;
+  }
+
+  .confirm__card {
+    width: 100%;
+  }
+}

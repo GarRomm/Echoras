@@ -71,10 +71,36 @@ export default function CheckoutPage() {
     setCardForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   }
 
+  function generateOrderNumber() {
+    const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const prefix = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
+    const number = Math.floor(10000 + Math.random() * 90000);
+    return `${prefix}-${number}`;
+  }
+
+  function getDeliveryDate(mode) {
+    const days = mode === 'express' ? { min: 2, max: 4 } : { min: 5, max: 7 };
+    const now = new Date();
+    const from = new Date(now);
+    from.setDate(from.getDate() + days.min);
+    const to = new Date(now);
+    to.setDate(to.getDate() + days.max);
+    const fmt = (d) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    return `Entre le ${fmt(from)} et le ${fmt(to)}`;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    // TODO: intégrer la passerelle de paiement
-    navigate('/mes-commandes');
+    const firstItem = items[0];
+    navigate('/confirmation', {
+      state: {
+        orderNumber: generateOrderNumber(),
+        sculptureName: firstItem?.Sculpture?.name || 'Ma sculpture',
+        total,
+        address: [form.address, form.postalCode, form.city, form.country].filter(Boolean).join(', '),
+        deliveryDate: getDeliveryDate(delivery),
+      },
+    });
   }
 
   return (
