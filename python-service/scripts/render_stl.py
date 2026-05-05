@@ -46,7 +46,7 @@ def parse_args():
     parser.add_argument("--color2", default=None, help="Override cylinder color (hex, e.g. #FFFFFF)")
     parser.add_argument("--input2", default=None, help="Path to second .stl file (cylinder/base)")
     parser.add_argument("--resolution", type=int, default=1024, help="Render resolution (square)")
-    parser.add_argument("--samples", type=int, default=32, help="Cycles render samples")
+    parser.add_argument("--samples", type=int, default=64, help="Cycles render samples")
     return parser.parse_args(argv)
 
 # ---------------------------------------------------------------------------
@@ -152,6 +152,17 @@ def center_and_scale(obj, target_size=2.0):
     center_and_scale_group([obj], target_size)
 
 
+def smooth_sculpt(obj):
+    """Applique le smooth shading + subdivision niveau 1 pour lisser le maillage STL."""
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.ops.object.shade_smooth()
+    mod = obj.modifiers.new(name="Subdivision", type='SUBSURF')
+    mod.levels = 1
+    mod.render_levels = 2
+
+
 def apply_material(obj, preset_name, color_override=None):
     """Create and assign a Principled BSDF material."""
     preset = MATERIAL_PRESETS.get(preset_name, MATERIAL_PRESETS["plastic_white"])
@@ -180,28 +191,28 @@ def apply_material(obj, preset_name, color_override=None):
 def setup_lighting():
     """Create a 3-point lighting rig."""
     # Key light
-    bpy.ops.object.light_add(type="AREA", location=(3, -3, 4))
+    bpy.ops.object.light_add(type="AREA", location=(4, -4, 5))
     key = bpy.context.object
     key.name = "KeyLight"
-    key.data.energy = 200
-    key.data.size = 2
-    key.data.color = (1.0, 0.95, 0.9)
+    key.data.energy = 300
+    key.data.size = 3
+    key.data.color = (1.0, 0.97, 0.94)
 
     # Fill light
-    bpy.ops.object.light_add(type="AREA", location=(-3, -1, 2))
+    bpy.ops.object.light_add(type="AREA", location=(-4, -1, 3))
     fill = bpy.context.object
     fill.name = "FillLight"
-    fill.data.energy = 80
-    fill.data.size = 3
-    fill.data.color = (0.85, 0.9, 1.0)
+    fill.data.energy = 120
+    fill.data.size = 4
+    fill.data.color = (0.88, 0.92, 1.0)
 
     # Rim / back light
-    bpy.ops.object.light_add(type="AREA", location=(0, 4, 3))
+    bpy.ops.object.light_add(type="AREA", location=(0, 5, 4))
     rim = bpy.context.object
     rim.name = "RimLight"
-    rim.data.energy = 120
-    rim.data.size = 1.5
-    rim.data.color = (0.7, 0.8, 1.0)
+    rim.data.energy = 180
+    rim.data.size = 2
+    rim.data.color = (0.75, 0.85, 1.0)
 
     # Point all lights at origin
     for light in [key, fill, rim]:
@@ -214,37 +225,52 @@ def setup_lighting():
 
 def setup_camera(resolution):
     """Position the camera for a 3/4 product shot."""
-    bpy.ops.object.camera_add(location=(3.5, -3.5, 2.5))
+    bpy.ops.object.camera_add(location=(4, -4, 2.8))
     cam = bpy.context.object
     cam.name = "RenderCam"
+    cam.data.lens = 85  # focale longue : moins de distorsion perspective
 
-    # Point at origin
+    # Point slightly above origin for better composition
+    target_empty = bpy.data.objects.new("CamTarget", None)
+    target_empty.location = (0, 0, 0.2)
+    bpy.context.collection.objects.link(target_empty)
     constraint = cam.constraints.new(type="TRACK_TO")
-    empty = bpy.data.objects.new("CamTarget", None)
-    bpy.context.collection.objects.link(empty)
-    constraint.target = empty
+    constraint.target = target_empty
     constraint.track_axis = "TRACK_NEGATIVE_Z"
     constraint.up_axis = "UP_Y"
 
     bpy.context.scene.camera = cam
 
-    # Render settings
     scene = bpy.context.scene
     scene.render.resolution_x = resolution
     scene.render.resolution_y = resolution
-    scene.render.film_transparent = True  # transparent background
+    scene.render.film_transparent = False  # fond opaque pour rendu produit propre
 
 
 def setup_world():
-    """Set world background to a soft gradient (no HDRI dependency)."""
+    """Fond studio dégradé, pas de coin dur."""
     world = bpy.data.worlds.get("World")
     if world is None:
         world = bpy.data.worlds.new("World")
     bpy.context.scene.world = world
     world.use_nodes = True
-    bg = world.node_tree.nodes.get("Background")
-    bg.inputs["Color"].default_value = (0.02, 0.02, 0.03, 1.0)
-    bg.inputs["Strength"].default_value = 0.5
+    nt = world.node_tree
+    nodes = nt.nodes
+    links = nt.links
+
+    # Vider les nodes existants
+    nodes.clear()
+
+    # Fond : dégradé vertical via TextureCoordinate + Gradient
+    out_node = nodes.new('ShaderNodeOutputWorld')
+    out_node.location = (400, 0)
+
+    bg_node = nodes.new('ShaderNodeBackground')
+    bg_node.location = (200, 0)
+    bg_node.inputs['Strength'].default_value = 0.0  # lumière monde désactivée (éclairage par lampes)
+    bg_node.inputs['Color'].default_value = (0.08, 0.08, 0.10, 1.0)
+
+    links.new(bg_node.outputs['Background'], out_node.inputs['Surface'])
 
 
 def configure_renderer(samples):
@@ -296,20 +322,31 @@ def main():
 
     center_and_scale_group(objects)
 
+    for obj in objects:
+        smooth_sculpt(obj)
+
     apply_material(obj1, args.material, color_override=args.color)
     if len(objects) > 1:
         apply_material(objects[1], args.material, color_override=args.color2)
 
-    # Add a ground plane for shadow catching
-    bpy.ops.mesh.primitive_plane_add(size=20, location=(0, 0, -1.01))
-    ground = bpy.context.object
-    ground.name = "Ground"
-    ground_mat = bpy.data.materials.new(name="GroundMat")
-    ground_mat.use_nodes = True
-    ground_bsdf = ground_mat.node_tree.nodes.get("Principled BSDF")
-    ground_bsdf.inputs["Base Color"].default_value = (0.05, 0.05, 0.07, 1.0)
-    ground_bsdf.inputs["Roughness"].default_value = 0.9
-    ground.data.materials.append(ground_mat)
+    # Sol studio avec un cyclorama (plan incurvé simulé par deux plans raccordés)
+    backdrop_mat = bpy.data.materials.new(name="BackdropMat")
+    backdrop_mat.use_nodes = True
+    bd_bsdf = backdrop_mat.node_tree.nodes.get("Principled BSDF")
+    bd_bsdf.inputs["Base Color"].default_value = (0.07, 0.07, 0.09, 1.0)
+    bd_bsdf.inputs["Roughness"].default_value = 1.0
+    bd_bsdf.inputs["Metallic"].default_value = 0.0
+
+    bpy.ops.mesh.primitive_plane_add(size=40, location=(0, 0, -1.05))
+    floor = bpy.context.object
+    floor.name = "Floor"
+    floor.data.materials.append(backdrop_mat)
+
+    bpy.ops.mesh.primitive_plane_add(size=40, location=(0, 20, 9))
+    wall = bpy.context.object
+    wall.name = "BackWall"
+    wall.rotation_euler[0] = math.radians(90)
+    wall.data.materials.append(backdrop_mat)
 
     setup_lighting()
     setup_camera(args.resolution)
