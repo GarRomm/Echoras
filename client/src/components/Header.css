@@ -36,7 +36,7 @@
 .header__nav-link {
   font-family: var(--font-nav);
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;

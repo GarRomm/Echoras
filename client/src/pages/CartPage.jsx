@@ -170,7 +170,7 @@ export default function CartPage() {
           </div>
 
           <div className="cart__summary-buttons">
-            <button className="cart__btn cart__btn--primary" disabled={items.length === 0}>
+            <button className="cart__btn cart__btn--primary" disabled={items.length === 0} onClick={() => navigate('/checkout')}>
               Passer à la commande
             </button>
             <button className="cart__btn cart__btn--secondary" onClick={() => navigate('/createur')}>

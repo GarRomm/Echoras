@@ -12,6 +12,7 @@ import PlaceholderPage from './pages/PlaceholderPage';
 import CommentCaMarchePage from './pages/CommentCaMarchePage';
 import CartPage from './pages/CartPage';
 import MyCreationsPage from './pages/MyCreationsPage';
+import CheckoutPage from './pages/CheckoutPage';
 import './styles/App.css';
 
 export default function App() {
@@ -28,7 +29,8 @@ export default function App() {
           <Route path="/createur" element={<CreatorPage />} />
           <Route path="/galerie" element={<PlaceholderPage title="Galerie" />} />
           <Route path="/comment-ca-marche" element={<CommentCaMarchePage />} />
-          <Route path="/faq" element={<PlaceholderPage title="FAQ & Contact" />} />
+          <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
+          <Route path="/contact" element={<PlaceholderPage title="Contact" />} />
           <Route path="/mentions-legales" element={<PlaceholderPage title="Mentions légales" />} />
           <Route path="/confidentialite" element={<PlaceholderPage title="Politique de confidentialité" />} />
 
@@ -43,6 +45,7 @@ export default function App() {
           <Route path="/mes-creations" element={<ProtectedRoute><MyCreationsPage /></ProtectedRoute>} />
           <Route path="/mes-commandes" element={<ProtectedRoute><PlaceholderPage title="Mes commandes" /></ProtectedRoute>} />
           <Route path="/panier" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
 
           {/* Admin (Phase 5) */}
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><PlaceholderPage title="Administration" /></ProtectedRoute>} />

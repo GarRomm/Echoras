@@ -41,6 +41,7 @@ export default function Header() {
         <NavLink to="/createur" className={({ isActive }) => `header__nav-link${isActive ? ' header__nav-link--active' : ''}`} onClick={closeMenu}>Studio 3D</NavLink>
         <NavLink to="/galerie" className={({ isActive }) => `header__nav-link${isActive ? ' header__nav-link--active' : ''}`} onClick={closeMenu}>Galerie</NavLink>
         <NavLink to="/faq" className={({ isActive }) => `header__nav-link${isActive ? ' header__nav-link--active' : ''}`} onClick={closeMenu}>FAQ</NavLink>
+        <NavLink to="/contact" className={({ isActive }) => `header__nav-link${isActive ? ' header__nav-link--active' : ''}`} onClick={closeMenu}>Contact</NavLink>
       </nav>
 
       <div className="header__actions">
