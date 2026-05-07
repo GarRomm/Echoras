@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getCart, removeFromCart } from '../services/cartService';
 import './CartPage.css';
 
 // Icônes inline SVG
@@ -48,8 +49,6 @@ function IconDiamond() {
   );
 }
 
-const API = import.meta.env.VITE_API_URL || '/api';
-
 function formatConfig(params) {
   if (!params) return null;
   return `Relief ${Math.round((params.peakHeight / 3) * 100)} % · Lissage ${Math.round(params.smoothing * 100)} % · Tours ${params.helixTurns} · Épaisseur ${Math.round(params.ringThickness * 10)} mm`;
@@ -63,9 +62,7 @@ export default function CartPage() {
 
   const fetchCart = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/cart`, { credentials: 'include' });
-      if (!res.ok) throw new Error('Erreur de chargement');
-      const data = await res.json();
+      const data = await getCart();
       setItems(data.items || []);
     } catch (err) {
       setError(err.message);
@@ -78,11 +75,7 @@ export default function CartPage() {
 
   const handleDelete = useCallback(async (itemId) => {
     try {
-      const res = await fetch(`${API}/cart/${itemId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error('Erreur suppression');
+      await removeFromCart(itemId);
       setItems((prev) => prev.filter((i) => i.id !== itemId));
     } catch (err) {
       alert(err.message);

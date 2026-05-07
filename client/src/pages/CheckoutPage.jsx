@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCart } from '../services/cartService';
 import './CheckoutPage.css';
-
-const API = import.meta.env.VITE_API_URL || '/api';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -42,9 +41,7 @@ export default function CheckoutPage() {
 
   const fetchCart = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/cart`, { credentials: 'include' });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
+      const data = await getCart();
       setItems(data.items || []);
     } catch {
       // silent

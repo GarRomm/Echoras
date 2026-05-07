@@ -10,7 +10,7 @@ const Material = sequelize.define('Material', {
     primaryKey: true,
   },
   name: {
-    type: DataTypes.ENUM('plastic_white', 'plastic_black', 'metal_silver', 'metal_gold', 'wood'),
+    type: DataTypes.ENUM('pla', 'petg'),
     allowNull: false,
     unique: true,
   },

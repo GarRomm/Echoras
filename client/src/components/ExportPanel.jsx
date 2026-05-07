@@ -8,16 +8,11 @@ import {
 } from '../utils/waveformRing';
 import { useAuth } from '../context/AuthContext';
 import { computePrintCost } from '../utils/printCost';
+import { addToCart } from '../services/cartService';
+import { createSculpture } from '../services/sculptureService';
+import { saveModel } from '../services/modelService';
+import { triggerRender } from '../services/renderService';
 import './ExportPanel.css';
-
-async function apiFetch(url, options = {}) {
-  const res = await fetch(url, { credentials: 'include', ...options });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw Object.assign(new Error(body.error || `HTTP ${res.status}`), { status: res.status });
-  }
-  return res.json();
-}
 
 function buildAllGeometries(waveformData, params) {
   const geometries = [];
@@ -79,36 +74,22 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     try {
       setRenderStatus('saving');
 
-      // STL 1 : hélice/onde (waveformColor)
       const helixBlob = exportMultiGeometrySTL([buildHelixRibbonGeometry(waveformData, params)]);
       const helixBuffer = await helixBlob.arrayBuffer();
-      const saveRes1 = await apiFetch('/api/model/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/octet-stream' },
-        body: helixBuffer,
-      });
+      const saveRes1 = await saveModel(helixBuffer);
 
-      // STL 2 : cylindre + base (cylinderColor)
       const cylGeos = [buildCentralCylinderGeometry(params)];
       if (params.showBase) cylGeos.push(buildBaseGeometry(params));
       const cylBlob = exportMultiGeometrySTL(cylGeos);
       const cylBuffer = await cylBlob.arrayBuffer();
-      const saveRes2 = await apiFetch('/api/model/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/octet-stream' },
-        body: cylBuffer,
-      });
+      const saveRes2 = await saveModel(cylBuffer);
 
       setRenderStatus('rendering');
-      const renderRes = await apiFetch(`/api/render/${saveRes1.id}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          material: params.material,
-          color: params.waveformColor || null,
-          input2: saveRes2.id,
-          color2: params.cylinderColor || null,
-        }),
+      const renderRes = await triggerRender(saveRes1.id, {
+        material: params.finishMode === 'brillant' ? 'petg' : 'pla',
+        color: params.waveformColor || null,
+        input2: saveRes2.id,
+        color2: params.cylinderColor || null,
       });
 
       setRenderUrl(renderRes.renderUrl);
@@ -119,7 +100,6 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     }
   }, [waveformData, params]);
 
-  // Sauvegarde la sculpture en draft en base de données
   const handleSaveDraft = useCallback(async () => {
     if (!user) { navigate('/connexion'); return; }
     try {
@@ -131,25 +111,21 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         ? audioFileName.replace(/\.[^.]+$/, '')
         : 'Ma sculpture';
 
-      const res = await apiFetch('/api/sculptures', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name:           sculName,
-          audioFileName:  audioFileName || null,
-          waveformData:   waveformData ? Array.from(waveformData) : null,
-          materialSlug:   params.material,
-          peakHeight:     params.peakHeight,
-          smoothing:      params.smoothing,
-          cylinderRadius: params.cylinderRadius,
-          cylinderHeight: params.cylinderHeight,
-          ringThickness:  params.ringThickness,
-          segments:       params.segments,
-          helixTurns:     params.helixTurns,
-          ribbonWidth:    params.ribbonWidth,
-          waveformColor:  params.waveformColor,
-          cylinderColor:  params.cylinderColor,
-        }),
+      const res = await createSculpture({
+        name:           sculName,
+        audioFileName:  audioFileName || null,
+        waveformData:   waveformData ? Array.from(waveformData) : null,
+        materialSlug:   params.finishMode === 'brillant' ? 'petg' : 'pla',
+        peakHeight:     params.peakHeight,
+        smoothing:      params.smoothing,
+        cylinderRadius: params.cylinderRadius,
+        cylinderHeight: params.cylinderHeight,
+        ringThickness:  params.ringThickness,
+        segments:       params.segments,
+        helixTurns:     params.helixTurns,
+        ribbonWidth:    params.ribbonWidth,
+        waveformColor:  params.waveformColor,
+        cylinderColor:  params.cylinderColor,
       });
 
       setSavedSculpture({ id: res.id, materialId: res.materialId, price: res.price });
@@ -160,20 +136,11 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     }
   }, [user, audioFileName, waveformData, params, navigate]);
 
-  // Ajoute la sculpture sauvegardée au panier
   const handleAddToCart = useCallback(async () => {
     if (!savedSculpture) return;
     try {
       setCartStatus('adding');
-      await apiFetch('/api/cart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sculptureId: savedSculpture.id,
-          materialId:  savedSculpture.materialId,
-        }),
-      });
-
+      await addToCart(savedSculpture.id, savedSculpture.materialId);
       setCartStatus('added');
       navigate('/panier');
     } catch (err) {

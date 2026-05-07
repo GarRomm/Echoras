@@ -1,4 +1,4 @@
-import React, { useEffect, Component } from 'react';
+import React, { useEffect, useState, useCallback, Component } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import WaveformRingMesh from './WaveformRingMesh';
@@ -42,12 +42,22 @@ function SceneInvalidator({ waveformData, params }) {
 }
 
 export default function Visualizer({ waveformData, params, controlsRef, autoRotate }) {
+  const [canvasKey, setCanvasKey] = useState(0);
   const gridY = -(params.cylinderHeight / 2 + (params.showBase ? params.baseHeight : 0));
+
+  const handleContextLost = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
+  const handleContextRestored = useCallback(() => {
+    setCanvasKey((k) => k + 1);
+  }, []);
 
   return (
     <WebGLErrorBoundary>
       <Canvas
-        camera={{ position: [0, 3, 5], fov: 50 }}
+        key={canvasKey}
+        camera={{ position: [0, 2, 16], fov: 50 }}
         frameloop="demand"
         gl={{
           antialias: false,
@@ -57,9 +67,9 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
           stencil: false,
         }}
         style={{ width: '100%', height: '100%' }}
-        onCreated={({ gl, invalidate }) => {
-          gl.domElement.addEventListener('webglcontextlost', (e) => e.preventDefault(), false);
-          gl.domElement.addEventListener('webglcontextrestored', () => invalidate(), false);
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener('webglcontextlost', handleContextLost, false);
+          gl.domElement.addEventListener('webglcontextrestored', handleContextRestored, false);
         }}
       >
         <color attach="background" args={['#12121A']} />
@@ -77,13 +87,13 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
           ref={controlsRef}
           enableDamping
           dampingFactor={0.08}
-          minDistance={2}
-          maxDistance={15}
+          minDistance={3}
+          maxDistance={50}
           autoRotate={autoRotate}
           autoRotateSpeed={2}
         />
 
-        <gridHelper args={[10, 20, '#222233', '#1a1a2e']} position={[0, gridY, 0]} />
+        <gridHelper args={[20, 20, '#222233', '#1a1a2e']} position={[0, gridY, 0]} />
       </Canvas>
     </WebGLErrorBoundary>
   );

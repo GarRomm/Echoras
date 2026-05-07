@@ -63,11 +63,8 @@ if (process.env.NODE_ENV === 'production') {
 const { Material } = require('./db/models/index');
 
 const DEFAULT_MATERIALS = [
-  { name: 'plastic_white', basePrice: 29.90 },
-  { name: 'plastic_black', basePrice: 29.90 },
-  { name: 'metal_silver',  basePrice: 49.90 },
-  { name: 'metal_gold',    basePrice: 59.90 },
-  { name: 'wood',          basePrice: 39.90 },
+  { name: 'pla',  basePrice: 45 },
+  { name: 'petg', basePrice: 59 },
 ];
 
 app.listen(PORT, async () => {

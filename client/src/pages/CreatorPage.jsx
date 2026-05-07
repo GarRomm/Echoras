@@ -14,7 +14,6 @@ const DEFAULT_PARAMS = {
   cylinderHeight: 10.0,
   ringThickness: 0.35,
   segments: 512,
-  material: 'plastic_white',
   helixTurns: 8,
   ribbonWidth: 0.20,
   waveformColor: '#40E0D0',
@@ -112,7 +111,7 @@ export default function CreatorPage() {
   }, []);
 
   const summaryRows = [
-    { label: 'Matériau', value: params.material.replace('_', ' ') },
+    { label: 'Finition', value: params.finishMode === 'brillant' ? 'PETG brillant' : 'PLA mat' },
     { label: 'Hauteur pics', value: params.peakHeight.toFixed(2) },
     { label: 'Tours hélice', value: params.helixTurns },
     { label: 'Rayon', value: params.cylinderRadius.toFixed(1) },

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { addToCart } from '../services/cartService';
+import { getSculptures, deleteSculpture } from '../services/sculptureService';
 import './MyCreationsPage.css';
 
 const MATERIAL_LABELS = {
-  plastic_white: 'Plastique blanc',
-  plastic_black: 'Plastique noir',
-  metal_silver:  'Métal argent',
-  metal_gold:    'Métal or',
-  wood:          'Bois',
+  pla:  'PLA mat',
+  petg: 'PETG brillant',
 };
 
 function formatDate(iso) {
@@ -62,7 +61,7 @@ function SculptureCard({ sculpture, onDelete }) {
       ribbonWidth:    params?.ribbonWidth    ?? 0.15,
       waveformColor:  params?.waveformColor  || '#40E0D0',
       cylinderColor:  params?.cylinderColor  || '#FFFFFF',
-      material:       material?.name         || 'plastic_white',
+      material:       material?.name         || 'pla',
       baseHeight:     0.2,
       showBase:       true,
     };
@@ -83,13 +82,7 @@ function SculptureCard({ sculpture, onDelete }) {
   async function handleAddToCart() {
     try {
       setCartStatus('adding');
-      const res = await fetch('/api/cart', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sculptureId: sculpture.id, materialId: material?.id }),
-      });
-      if (!res.ok) throw new Error();
+      await addToCart(sculpture.id, material?.id);
       setCartStatus('added');
       navigate('/panier');
     } catch {
@@ -99,11 +92,7 @@ function SculptureCard({ sculpture, onDelete }) {
 
   async function handleDelete() {
     try {
-      const res = await fetch(`/api/sculptures/${sculpture.id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error();
+      await deleteSculpture(sculpture.id);
       onDelete(sculpture.id);
     } catch {
       setConfirmDelete(false);
@@ -201,11 +190,7 @@ export default function MyCreationsPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/sculptures', { credentials: 'include' })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
+    getSculptures()
       .then((data) => { setSculptures(data.sculptures); setLoading(false); })
       .catch(() => { setError('Impossible de charger vos créations.'); setLoading(false); });
   }, []);
