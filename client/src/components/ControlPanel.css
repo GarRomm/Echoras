@@ -182,6 +182,29 @@
   outline: none;
 }
 
+/* Color swatches */
+.controls__color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.controls__color-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.controls__color-swatch--selected {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
 /* Text inputs */
 .controls__text-input {
   width: 100%;

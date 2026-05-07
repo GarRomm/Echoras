@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ControlPanel.css';
 
 const SLIDERS = [
@@ -12,7 +12,69 @@ const SLIDERS = [
   { key: 'ribbonWidth', label: 'Largeur du ruban', min: 0.05, max: 0.5, step: 0.01, fmt: (v) => `${v.toFixed(2)} cm` },
 ];
 
+const PLA_COLORS = [
+  { label: 'Blanc casse',     hex: '#F2EDE4' },
+  { label: 'Noir mat',        hex: '#1C1C1C' },
+  { label: 'Gris beton',      hex: '#7A7A7A' },
+  { label: 'Gris anthracite', hex: '#3D3D3D' },
+  { label: 'Beige sable',     hex: '#C9A97A' },
+  { label: 'Terracotta',      hex: '#C4623A' },
+  { label: 'Vert sauge',      hex: '#7A9B76' },
+  { label: 'Vert foret',      hex: '#3A5A40' },
+  { label: 'Bleu marine',     hex: '#1B3A5C' },
+  { label: 'Bleu ardoise',    hex: '#4A6580' },
+  { label: 'Bordeaux',        hex: '#7C2535' },
+  { label: 'Mauve doux',      hex: '#7B6080' },
+];
+
+const PETG_COLORS = [
+  { label: 'Blanc pur',       hex: '#F8F8F8' },
+  { label: 'Noir brillant',   hex: '#111111' },
+  { label: 'Argent',          hex: '#B8BEC7' },
+  { label: 'Or',              hex: '#C9A84C' },
+  { label: 'Rouge vif',       hex: '#D42B2B' },
+  { label: 'Orange',          hex: '#E8622A' },
+  { label: 'Jaune',           hex: '#E8C22A' },
+  { label: 'Vert emeraude',   hex: '#00A878' },
+  { label: 'Turquoise',       hex: '#3ECFCF' },
+  { label: 'Bleu electrique', hex: '#1A6FD4' },
+  { label: 'Violet',          hex: '#7B3FBE' },
+  { label: 'Rose fuchsia',    hex: '#D42B8A' },
+];
+
+function ColorPicker({ label, value, onChange, colors }) {
+  return (
+    <div className="controls__field">
+      <div className="controls__field-header">
+        <span className="controls__field-label">{label}</span>
+      </div>
+      <div className="controls__color-picker">
+        {colors.map((color) => (
+          <button
+            key={color.hex}
+            className={`controls__color-swatch${value === color.hex ? ' controls__color-swatch--selected' : ''}`}
+            style={{ backgroundColor: color.hex }}
+            title={color.label}
+            onClick={() => onChange(color.hex)}
+            type="button"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function ControlPanel({ params, onChange }) {
+  const palette = params.finishMode === 'brillant' ? PETG_COLORS : PLA_COLORS;
+
+  useEffect(() => {
+    const current = params.finishMode === 'brillant' ? PETG_COLORS : PLA_COLORS;
+    const hexSet = new Set(current.map((c) => c.hex));
+    if (!hexSet.has(params.waveformColor)) onChange('waveformColor', current[0].hex);
+    if (!hexSet.has(params.cylinderColor)) onChange('cylinderColor', current[0].hex);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.finishMode]);
+
   return (
     <div className="controls">
       {/* Section sliders */}
@@ -94,18 +156,18 @@ export default function ControlPanel({ params, onChange }) {
               >Brillant</button>
             </div>
           </div>
-          <label className="controls__field">
-            <div className="controls__field-header">
-              <span className="controls__field-label">Couleur de l'onde</span>
-            </div>
-            <input type="color" value={params.waveformColor} onChange={(e) => onChange('waveformColor', e.target.value)} />
-          </label>
-          <label className="controls__field">
-            <div className="controls__field-header">
-              <span className="controls__field-label">Couleur du cylindre</span>
-            </div>
-            <input type="color" value={params.cylinderColor} onChange={(e) => onChange('cylinderColor', e.target.value)} />
-          </label>
+          <ColorPicker
+            label="Couleur de l'onde"
+            value={params.waveformColor}
+            onChange={(hex) => onChange('waveformColor', hex)}
+            colors={palette}
+          />
+          <ColorPicker
+            label="Couleur du cylindre"
+            value={params.cylinderColor}
+            onChange={(hex) => onChange('cylinderColor', hex)}
+            colors={palette}
+          />
         </div>
       </div>
     </div>
