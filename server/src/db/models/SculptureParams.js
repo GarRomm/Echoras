@@ -59,6 +59,16 @@ const SculptureParams = sequelize.define('SculptureParams', {
     allowNull: false,
     defaultValue: '#FFFFFF',
   },
+  artistName: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    defaultValue: null,
+  },
+  songTitle: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    defaultValue: null,
+  },
 }, {
   timestamps: false,
 });

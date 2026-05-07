@@ -18,9 +18,11 @@ const DEFAULT_PARAMS = {
   ribbonWidth: 0.20,
   waveformColor: '#40E0D0',
   cylinderColor: '#FFFFFF',
-  baseHeight: 0.5,
+  baseHeight: 1.2,
   showBase: true,
   finishMode: 'mat',
+  artistName: '',
+  songTitle: '',
 };
 
 export default function CreatorPage() {

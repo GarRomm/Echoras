@@ -41,10 +41,12 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Render an STL with Blender")
     parser.add_argument("--input", required=True, help="Path to input .stl file")
     parser.add_argument("--output", required=True, help="Path to output .png file")
-    parser.add_argument("--material", default="plastic_white", help="Material preset name")
+    parser.add_argument("--material", default="pla", help="Material preset name")
     parser.add_argument("--color", default=None, help="Override waveform base color (hex, e.g. #40E0D0)")
     parser.add_argument("--color2", default=None, help="Override cylinder color (hex, e.g. #FFFFFF)")
     parser.add_argument("--input2", default=None, help="Path to second .stl file (cylinder/base)")
+    parser.add_argument("--input3", default=None, help="Path to third .stl file (engraved base)")
+    parser.add_argument("--color3", default=None, help="Color for engraved base (hex, e.g. #40E0D0)")
     parser.add_argument("--resolution", type=int, default=1024, help="Render resolution (square)")
     parser.add_argument("--samples", type=int, default=64, help="Cycles render samples")
     return parser.parse_args(argv)
@@ -62,35 +64,17 @@ def hex_to_linear(hex_color):
 
 
 MATERIAL_PRESETS = {
-    "plastic_white": {
+    "pla": {
         "base_color": (0.9, 0.9, 0.9, 1.0),
         "metallic": 0.0,
-        "roughness": 0.35,
-        "specular": 0.5,
-    },
-    "plastic_black": {
-        "base_color": (0.02, 0.02, 0.02, 1.0),
-        "metallic": 0.0,
-        "roughness": 0.3,
-        "specular": 0.6,
-    },
-    "metal_silver": {
-        "base_color": (0.8, 0.8, 0.82, 1.0),
-        "metallic": 1.0,
-        "roughness": 0.2,
-        "specular": 0.9,
-    },
-    "metal_gold": {
-        "base_color": (0.83, 0.69, 0.22, 1.0),
-        "metallic": 1.0,
-        "roughness": 0.25,
-        "specular": 0.9,
-    },
-    "wood": {
-        "base_color": (0.55, 0.35, 0.17, 1.0),
-        "metallic": 0.0,
-        "roughness": 0.7,
+        "roughness": 0.65,
         "specular": 0.3,
+    },
+    "petg": {
+        "base_color": (0.9, 0.9, 0.9, 1.0),
+        "metallic": 0.0,
+        "roughness": 0.12,
+        "specular": 0.8,
     },
 }
 
@@ -166,7 +150,7 @@ def smooth_sculpt(obj):
 
 def apply_material(obj, preset_name, color_override=None):
     """Create and assign a Principled BSDF material."""
-    preset = MATERIAL_PRESETS.get(preset_name, MATERIAL_PRESETS["plastic_white"])
+    preset = MATERIAL_PRESETS.get(preset_name, MATERIAL_PRESETS["pla"])
 
     mat = bpy.data.materials.new(name=f"Echoras_{preset_name}")
     mat.use_nodes = True
@@ -321,6 +305,11 @@ def main():
         fix_orientation(obj2)
         objects.append(obj2)
 
+    if args.input3 and os.path.isfile(args.input3):
+        obj3 = import_stl(args.input3)
+        fix_orientation(obj3)
+        objects.append(obj3)
+
     center_and_scale_group(objects)
 
     for obj in objects:
@@ -329,6 +318,8 @@ def main():
     apply_material(obj1, args.material, color_override=args.color)
     if len(objects) > 1:
         apply_material(objects[1], args.material, color_override=args.color2)
+    if len(objects) > 2:
+        apply_material(objects[2], args.material, color_override=args.color3)
 
     # Sol studio avec un cyclorama (plan incurvé simulé par deux plans raccordés)
     backdrop_mat = bpy.data.materials.new(name="BackdropMat")

@@ -62,8 +62,10 @@ function SculptureCard({ sculpture, onDelete }) {
       waveformColor:  params?.waveformColor  || '#40E0D0',
       cylinderColor:  params?.cylinderColor  || '#FFFFFF',
       material:       material?.name         || 'pla',
-      baseHeight:     0.2,
+      baseHeight:     1.2,
       showBase:       true,
+      artistName:     params?.artistName     || '',
+      songTitle:      params?.songTitle      || '',
     };
   }
 

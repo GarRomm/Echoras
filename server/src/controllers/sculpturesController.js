@@ -19,6 +19,8 @@ async function createSculpture(req, res) {
       ribbonWidth,
       waveformColor,
       cylinderColor,
+      artistName,
+      songTitle,
     } = req.body;
 
     const material = await Material.findOne({ where: { name: materialSlug || 'pla' } });
@@ -35,6 +37,8 @@ async function createSculpture(req, res) {
       ribbonWidth:    ribbonWidth    ?? 0.15,
       waveformColor:  waveformColor  || '#40E0D0',
       cylinderColor:  cylinderColor  || '#FFFFFF',
+      artistName:     artistName     || null,
+      songTitle:      songTitle      || null,
     });
 
     let audioAnalysis = null;

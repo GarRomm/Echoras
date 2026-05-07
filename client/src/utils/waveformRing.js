@@ -192,7 +192,7 @@ export function buildBaseGeometry(params) {
     cylinderRadius = 1.0,
     cylinderHeight = 4.0,
     ringThickness = 0.3,
-    baseHeight = 0.2,
+    baseHeight = 1.2,
   } = params || {};
 
   // Base radius: just slightly larger than the cylinder

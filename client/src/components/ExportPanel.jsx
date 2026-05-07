@@ -86,10 +86,14 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
 
       setRenderStatus('rendering');
       const renderRes = await triggerRender(saveRes1.id, {
-        material: params.finishMode === 'brillant' ? 'petg' : 'pla',
-        color: params.waveformColor || null,
-        input2: saveRes2.id,
-        color2: params.cylinderColor || null,
+        material:       params.finishMode === 'brillant' ? 'petg' : 'pla',
+        color:          params.waveformColor  || null,
+        input2:         saveRes2.id,
+        color2:         params.cylinderColor  || null,
+        artistName:     params.artistName     || null,
+        songTitle:      params.songTitle      || null,
+        cylinderRadius: params.cylinderRadius,
+        baseHeight:     params.baseHeight,
       });
 
       setRenderUrl(renderRes.renderUrl);
@@ -126,6 +130,8 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         ribbonWidth:    params.ribbonWidth,
         waveformColor:  params.waveformColor,
         cylinderColor:  params.cylinderColor,
+        artistName:     params.artistName  || null,
+        songTitle:      params.songTitle   || null,
       });
 
       setSavedSculpture({ id: res.id, materialId: res.materialId, price: res.price });

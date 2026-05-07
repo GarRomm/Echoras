@@ -40,6 +40,39 @@ export default function ControlPanel({ params, onChange }) {
         </div>
       </div>
 
+      {/* Section gravure */}
+      <div className="controls__section">
+        <h3 className="controls__title">Gravure sur socle</h3>
+        <div className="controls__fields">
+          <label className="controls__field">
+            <div className="controls__field-header">
+              <span className="controls__field-label">Nom de l'artiste</span>
+            </div>
+            <input
+              className="controls__text-input"
+              type="text"
+              value={params.artistName || ''}
+              onChange={(e) => onChange('artistName', e.target.value)}
+              placeholder="Optionnel"
+              maxLength={50}
+            />
+          </label>
+          <label className="controls__field">
+            <div className="controls__field-header">
+              <span className="controls__field-label">Titre de la chanson</span>
+            </div>
+            <input
+              className="controls__text-input"
+              type="text"
+              value={params.songTitle || ''}
+              onChange={(e) => onChange('songTitle', e.target.value)}
+              placeholder="Optionnel"
+              maxLength={50}
+            />
+          </label>
+        </div>
+      </div>
+
       {/* Section couleurs */}
       <div className="controls__section">
         <h3 className="controls__title">Couleurs</h3>
