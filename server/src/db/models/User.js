@@ -40,6 +40,26 @@ const User = sequelize.define('User', {
     type: DataTypes.DATE,
     allowNull: true,
   },
+  phone: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+  },
+  address: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  zipCode: {
+    type: DataTypes.STRING(10),
+    allowNull: true,
+  },
+  city: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  country: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
 });
 
 module.exports = User;

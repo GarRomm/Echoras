@@ -78,12 +78,64 @@ function logout(req, res) {
 async function me(req, res) {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: ['id', 'email', 'firstName', 'lastName', 'role'],
+      attributes: ['id', 'email', 'firstName', 'lastName', 'role', 'phone', 'address', 'zipCode', 'city', 'country'],
     });
     if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' });
     res.json(user);
   } catch (err) {
     console.error('me error:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+async function updateProfile(req, res) {
+  const { firstName, lastName, email, phone, address, zipCode, city, country, currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' });
+
+    const updates = {};
+
+    if (firstName && firstName.trim()) updates.firstName = firstName.trim();
+    if (lastName && lastName.trim()) updates.lastName = lastName.trim();
+
+    if (email && email !== user.email) {
+      const existing = await User.findOne({ where: { email } });
+      if (existing) return res.status(409).json({ error: 'Cet email est déjà utilisé' });
+      updates.email = email;
+    }
+
+    updates.phone = phone ?? user.phone;
+    updates.address = address ?? user.address;
+    updates.zipCode = zipCode ?? user.zipCode;
+    updates.city = city ?? user.city;
+    updates.country = country ?? user.country;
+
+    if (newPassword) {
+      if (!currentPassword) return res.status(400).json({ error: 'Le mot de passe actuel est requis' });
+      const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+      if (!valid) return res.status(401).json({ error: 'Mot de passe actuel incorrect' });
+      if (newPassword.length < 8) return res.status(400).json({ error: 'Le nouveau mot de passe doit faire au moins 8 caractères' });
+      updates.passwordHash = await bcrypt.hash(newPassword, 12);
+    }
+
+    await user.update(updates);
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      phone: user.phone,
+      address: user.address,
+      zipCode: user.zipCode,
+      city: user.city,
+      country: user.country,
+    });
+  } catch (err) {
+    console.error('updateProfile error:', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 }
@@ -133,4 +185,4 @@ async function resetPassword(req, res) {
   }
 }
 
-module.exports = { register, login, logout, me, forgotPassword, resetPassword };
+module.exports = { register, login, logout, me, updateProfile, forgotPassword, resetPassword };
