@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../services/cartService';
 import { getSculptures, deleteSculpture } from '../services/sculptureService';
 import './MyCreationsPage.css';
-
-const MATERIAL_LABELS = {
-  pla:  'PLA mat',
-  petg: 'PETG brillant',
-};
+import { MATERIAL_LABELS } from '../utils/materialLabels';
 
 function formatDate(iso) {
   if (!iso) return '';

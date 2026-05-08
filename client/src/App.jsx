@@ -17,6 +17,7 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 import GaleriePage from './pages/GaleriePage';
+import MyOrdersPage from './pages/MyOrdersPage';
 import './styles/App.css';
 
 export default function App() {
@@ -47,7 +48,7 @@ export default function App() {
           {/* Pages protégées (Phase 3+) */}
           <Route path="/profil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/mes-creations" element={<ProtectedRoute><MyCreationsPage /></ProtectedRoute>} />
-          <Route path="/mes-commandes" element={<ProtectedRoute><PlaceholderPage title="Mes commandes" /></ProtectedRoute>} />
+          <Route path="/mes-commandes" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
           <Route path="/panier" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
           <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
           <Route path="/confirmation" element={<ProtectedRoute><OrderConfirmationPage /></ProtectedRoute>} />

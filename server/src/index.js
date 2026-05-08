@@ -15,6 +15,7 @@ const renderRoutes = require('./routes/render');
 const cartRoutes = require('./routes/cart');
 const sculpturesRoutes = require('./routes/sculptures');
 const adminRoutes      = require('./routes/admin');
+const ordersRoutes     = require('./routes/orders');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -48,6 +49,7 @@ app.use('/api/render', renderRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/sculptures', sculpturesRoutes);
 app.use('/api/admin',     adminRoutes);
+app.use('/api/orders',    ordersRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
