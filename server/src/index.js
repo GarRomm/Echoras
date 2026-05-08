@@ -75,7 +75,7 @@ app.listen(PORT, async () => {
   // Synchronise le schéma Sequelize avec MySQL (alter uniquement en dev)
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: false });
     console.log('Database connected and schema synced');
 
     // Seed matériaux si la table est vide
