@@ -154,6 +154,19 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       setSaveStatus('saved');
       onSaved?.(res.id);
 
+      if (waveformData && res.id) {
+        const geometries = buildAllGeometries(waveformData, params);
+        const stlBlob = exportMultiGeometrySTL(geometries);
+        stlBlob.arrayBuffer().then(buffer => {
+          fetch(`/api/sculptures/${res.id}/stl`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/octet-stream' },
+            body: buffer,
+          }).catch(err => console.error('[stl upload]', err));
+        });
+      }
+
       if (canvasDataUrl && res.id) {
         fetch(`/api/sculptures/${res.id}/screenshot`, {
           method: 'POST',

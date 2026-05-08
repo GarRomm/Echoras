@@ -1,5 +1,7 @@
 'use strict';
 
+const fs   = require('fs');
+const path = require('path');
 const { Op } = require('sequelize');
 const { Order, User, Sculpture, SculptureParams, Material, ShippingAddress } = require('../db/models/index');
 
@@ -123,6 +125,25 @@ async function getOrderDetail(req, res) {
     });
   } catch (err) {
     console.error('admin getOrderDetail:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+async function downloadStl(req, res) {
+  try {
+    const order = await Order.findByPk(req.params.id, {
+      include: [{ model: Sculpture, attributes: ['id', 'name', 'stlFilePath'] }],
+    });
+    if (!order) return res.status(404).json({ error: 'Commande introuvable' });
+    const stlPath = order.Sculpture?.stlFilePath;
+    if (!stlPath || !fs.existsSync(stlPath)) {
+      return res.status(404).json({ error: 'Fichier STL non disponible' });
+    }
+    const safeName = (order.Sculpture.name || `commande-${order.id}`)
+      .replace(/[^a-z0-9\-_]/gi, '_');
+    res.download(stlPath, `${safeName}.stl`);
+  } catch (err) {
+    console.error('admin downloadStl:', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 }

@@ -5,6 +5,7 @@ const fs   = require('fs');
 const { Sculpture, SculptureParams, Material, AudioAnalysis, Order } = require('../db/models/index');
 
 const RENDER_DIR = path.join(__dirname, '..', '..', 'storage', 'renders');
+const STL_DIR    = path.join(__dirname, '..', '..', 'storage', 'stl');
 
 async function saveScreenshot(req, res) {
   try {
@@ -182,4 +183,21 @@ async function getMaterials(_req, res) {
   }
 }
 
-module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials, saveScreenshot };
+async function saveStl(req, res) {
+  try {
+    const { id } = req.params;
+    const sculpture = await Sculpture.findOne({ where: { id, userId: req.user.id } });
+    if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
+
+    fs.mkdirSync(STL_DIR, { recursive: true });
+    const filePath = path.join(STL_DIR, `sculpture_${id}.stl`);
+    fs.writeFileSync(filePath, req.body);
+    await sculpture.update({ stlFilePath: filePath });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[POST /api/sculptures/:id/stl]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials, saveScreenshot, saveStl };
