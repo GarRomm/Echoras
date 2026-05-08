@@ -24,7 +24,7 @@ function buildAllGeometries(waveformData, params) {
   return geometries;
 }
 
-export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, onSaved }) {
+export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, onSaved, getCanvasDataUrl }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isAdmin = user?.role === 'ADMIN';
@@ -125,6 +125,8 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       setSavedSculpture(null);
       setCartStatus(null);
 
+      const canvasDataUrl = getCanvasDataUrl?.() ?? null;
+
       const sculName = audioFileName
         ? audioFileName.replace(/\.[^.]+$/, '')
         : 'Ma sculpture';
@@ -151,11 +153,20 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       setSavedSculpture({ id: res.id, materialId: res.materialId, price: res.price });
       setSaveStatus('saved');
       onSaved?.(res.id);
+
+      if (canvasDataUrl && res.id) {
+        fetch(`/api/sculptures/${res.id}/screenshot`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageData: canvasDataUrl }),
+        }).catch((err) => console.error('[screenshot upload]', err));
+      }
     } catch (err) {
       console.error(err);
       setSaveStatus('error');
     }
-  }, [user, audioFileName, waveformData, params, navigate]);
+  }, [user, audioFileName, waveformData, params, navigate, getCanvasDataUrl]);
 
   const handleAddToCart = useCallback(async () => {
     if (!savedSculpture) return;
