@@ -14,15 +14,3 @@ python-service/venv/
 python-service/__pycache__/
 .DS_Store
 Thumbs.db
-
-# Fichiers locaux
-DEPLOY_LOG.md
-.github/
-docs/
-
-# Assets images (non versionnés)
-# client/src/assets/*.png
-# client/src/assets/*.jpg
-# client/src/assets/*.jpeg
-# client/src/assets/*.webp
-# client/src/assets/*.gif
