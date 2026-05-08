@@ -108,6 +108,9 @@ export default function AdminOrderDetailPage() {
   const [deleting, setDeleting]           = useState(false);
 
   // Toast
+  const [sculptureImgFailed, setSculptureImgFailed] = useState(false);
+
+  // Toast
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
@@ -297,13 +300,23 @@ export default function AdminOrderDetailPage() {
 
                   {/* Sculpture summary */}
                   <div className="aod__sculpture-card">
-                    <div
-                      className="aod__sculpture-img"
-                      style={order.sculpture?.params?.waveformColor
-                        ? { background: `linear-gradient(160deg, ${order.sculpture.params.waveformColor}55 0%, #94949455 100%)` }
-                        : {}}
-                      aria-hidden="true"
-                    />
+                    {order.sculpture?.id && !sculptureImgFailed ? (
+                      <img
+                        className="aod__sculpture-img"
+                        src={`/renders/${order.sculpture.id}.png`}
+                        onError={() => setSculptureImgFailed(true)}
+                        alt=""
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <div
+                        className="aod__sculpture-img"
+                        style={order.sculpture?.params?.waveformColor
+                          ? { background: `linear-gradient(160deg, ${order.sculpture.params.waveformColor}55 0%, #94949455 100%)` }
+                          : {}}
+                        aria-hidden="true"
+                      />
+                    )}
                     <div className="aod__sculpture-info">
                       <div className="aod__sculpture-name-area">
                         <h2 className="aod__sculpture-name">{order.sculpture?.name || 'Sans titre'}</h2>

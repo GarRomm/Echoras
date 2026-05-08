@@ -88,6 +88,8 @@
   background: #676767;
   border-radius: 4px;
   flex-shrink: 0;
+  object-fit: cover;
+  display: block;
 }
 
 .cart__card-content {

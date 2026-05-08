@@ -24,7 +24,7 @@ function buildAllGeometries(waveformData, params) {
   return geometries;
 }
 
-export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, onSaved, getCanvasDataUrl }) {
+export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, resumedMaterialId, onSaved, getCanvasDataUrl }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isAdmin = user?.role === 'ADMIN';
@@ -49,7 +49,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
   // Si on reprend une sculpture existante, on la pré-charge comme "déjà sauvegardée"
   const [savedSculpture, setSavedSculpture] = useState(
-    resumedSculptureId ? { id: resumedSculptureId, _resumed: true } : null
+    resumedSculptureId ? { id: resumedSculptureId, materialId: resumedMaterialId, _resumed: true } : null
   );
 
   // Prix de base par matériau (chargés depuis la DB)
@@ -217,7 +217,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       )}
 
       {/* Sauvegarde draft */}
-      {user && !resumedSculptureId && (
+      {user && (
         <button
           className="export__btn export__btn--secondary"
           disabled={disabled || saveStatus === 'saving'}
@@ -226,7 +226,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
           {saveStatus === 'saving' && 'Sauvegarde…'}
           {saveStatus === 'saved' && '✓ Sculpture sauvegardée'}
           {saveStatus === 'error' && 'Erreur — réessayer'}
-          {!saveStatus && 'Sauvegarder ma sculpture'}
+          {!saveStatus && (resumedSculptureId ? 'Sauvegarder les modifications' : 'Sauvegarder ma sculpture')}
         </button>
       )}
 

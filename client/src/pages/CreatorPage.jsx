@@ -233,6 +233,7 @@ export default function CreatorPage() {
           params={params}
           audioFileName={audioFile?.name}
           resumedSculptureId={location.state?.sculptureId ?? null}
+          resumedMaterialId={location.state?.materialId ?? null}
           onSaved={handleSculptureSaved}
           getCanvasDataUrl={getCanvasDataUrl}
         />

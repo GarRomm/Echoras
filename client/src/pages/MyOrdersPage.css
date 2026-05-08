@@ -404,6 +404,8 @@
   flex-shrink: 0;
   background: rgba(148, 148, 148, 0.2);
   align-self: stretch;
+  object-fit: cover;
+  display: block;
 }
 
 .order-card__main {

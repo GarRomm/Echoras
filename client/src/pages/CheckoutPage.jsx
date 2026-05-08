@@ -3,6 +3,44 @@ import { useNavigate } from 'react-router-dom';
 import { getCart } from '../services/cartService';
 import './CheckoutPage.css';
 
+function CheckoutArticle({ item }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const sculpture = item.Sculpture;
+  const waveformColor = sculpture?.params?.waveformColor;
+  return (
+    <div className="checkout__article">
+      {sculpture?.id && !imgFailed ? (
+        <img
+          className="checkout__article-img"
+          src={`/renders/${sculpture.id}.png`}
+          onError={() => setImgFailed(true)}
+          alt=""
+          aria-hidden="true"
+        />
+      ) : (
+        <div
+          className="checkout__article-img"
+          style={waveformColor ? { background: `linear-gradient(160deg, ${waveformColor}55 0%, #94949455 100%)` } : {}}
+          aria-hidden="true"
+        />
+      )}
+      <div className="checkout__article-info">
+        <div className="checkout__article-row">
+          <span className="checkout__article-name">
+            {sculpture?.name || 'Ma sculpture'}
+          </span>
+        </div>
+        <div className="checkout__article-row">
+          <span className="checkout__article-qty">Quantité : 1</span>
+          <span className="checkout__article-price">
+            {parseFloat(item.price).toFixed(2)} €
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CheckoutPage() {
   useEffect(() => { document.title = 'Commande — Echoras'; }, []);
 
@@ -508,22 +546,7 @@ export default function CheckoutPage() {
               <p className="checkout__articles-loading">Votre panier est vide.</p>
             ) : (
               items.map((item) => (
-                <div key={item.id} className="checkout__article">
-                  <div className="checkout__article-img" aria-hidden="true" />
-                  <div className="checkout__article-info">
-                    <div className="checkout__article-row">
-                      <span className="checkout__article-name">
-                        {item.Sculpture?.name || 'Ma sculpture'}
-                      </span>
-                    </div>
-                    <div className="checkout__article-row">
-                      <span className="checkout__article-qty">Quantité : 1</span>
-                      <span className="checkout__article-price">
-                        {parseFloat(item.price).toFixed(2)} €
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <CheckoutArticle key={item.id} item={item} />
               ))
             )}
           </div>

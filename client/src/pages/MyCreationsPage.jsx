@@ -73,6 +73,7 @@ function SculptureCard({ sculpture, onDelete }) {
         audioFileName: sculpture.audioFileName,
         params:        buildCreatorParams(),
         waveformData:  sculpture.analysis?.rmsEnvelope ?? null,
+        materialId:    material?.id ?? null,
       },
     });
   }

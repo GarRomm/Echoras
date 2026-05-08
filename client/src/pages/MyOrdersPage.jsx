@@ -131,13 +131,25 @@ function StatusBadge({ status }) {
 /* ── Order card ── */
 function OrderCard({ order }) {
   const [expanded, setExpanded] = useState(false);
-  const placeholderStyle = order.sculpture?.waveformColor
-    ? { background: `linear-gradient(160deg, ${order.sculpture.waveformColor}55 0%, #94949455 100%)` }
+  const [imgFailed, setImgFailed] = useState(false);
+  const waveformColor = order.sculpture?.waveformColor;
+  const placeholderStyle = waveformColor
+    ? { background: `linear-gradient(160deg, ${waveformColor}55 0%, #94949455 100%)` }
     : {};
 
   return (
     <article className="order-card">
-      <div className="order-card__preview" style={placeholderStyle} aria-hidden="true" />
+      {order.sculpture?.id && !imgFailed ? (
+        <img
+          className="order-card__preview"
+          src={`/renders/${order.sculpture.id}.png`}
+          onError={() => setImgFailed(true)}
+          alt=""
+          aria-hidden="true"
+        />
+      ) : (
+        <div className="order-card__preview" style={placeholderStyle} aria-hidden="true" />
+      )}
       <div className="order-card__main">
         <div className="order-card__info">
           <p className="order-card__number">{order.orderNumber}</p>

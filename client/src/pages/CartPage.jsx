@@ -54,6 +54,57 @@ function formatConfig(params) {
   return `Relief ${Math.round((params.peakHeight / 3) * 100)} % · Lissage ${Math.round(params.smoothing * 100)} % · Tours ${params.helixTurns} · Épaisseur ${Math.round(params.ringThickness * 10)} mm`;
 }
 
+function CartCard({ item, onDelete, navigate }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const sculpture = item.Sculpture;
+  const config = formatConfig(sculpture?.params);
+  const waveformColor = sculpture?.params?.waveformColor;
+
+  return (
+    <article className="cart__card">
+      {sculpture?.id && !imgFailed ? (
+        <img
+          className="cart__card-img"
+          src={`/renders/${sculpture.id}.png`}
+          onError={() => setImgFailed(true)}
+          alt=""
+          aria-hidden="true"
+        />
+      ) : (
+        <div
+          className="cart__card-img"
+          style={waveformColor ? { background: `linear-gradient(160deg, ${waveformColor}55 0%, #94949455 100%)` } : {}}
+          aria-hidden="true"
+        />
+      )}
+      <div className="cart__card-content">
+        <div className="cart__card-top">
+          <div className="cart__card-name-price">
+            <h2 className="cart__card-name">{sculpture?.name || 'Ma sculpture'}</h2>
+            <span className="cart__card-price">{parseFloat(item.price).toFixed(0)} €</span>
+          </div>
+          <div className="cart__card-details">
+            {config && <p className="cart__card-config">Configuration : {config}</p>}
+          </div>
+        </div>
+        <div className="cart__card-actions">
+          <button className="cart__action-btn" onClick={() => navigate('/createur')}>
+            <IconEdit />
+            <span>MODIFIER</span>
+          </button>
+          <button
+            className="cart__action-btn cart__action-btn--delete"
+            onClick={() => onDelete(item.id)}
+          >
+            <IconTrash />
+            <span>SUPPRIMER</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function CartPage() {
   useEffect(() => { document.title = 'Mon panier — Echoras'; }, []);
 
@@ -109,39 +160,9 @@ export default function CartPage() {
               </Link>
             </div>
           ) : (
-            items.map((item) => {
-              const sculpture = item.Sculpture;
-              const config = formatConfig(sculpture?.params);
-              return (
-                <article key={item.id} className="cart__card">
-                  <div className="cart__card-img" aria-hidden="true" />
-                  <div className="cart__card-content">
-                    <div className="cart__card-top">
-                      <div className="cart__card-name-price">
-                        <h2 className="cart__card-name">{sculpture?.name || 'Ma sculpture'}</h2>
-                        <span className="cart__card-price">{parseFloat(item.price).toFixed(0)} €</span>
-                      </div>
-                      <div className="cart__card-details">
-                        {config && <p className="cart__card-config">Configuration : {config}</p>}
-                      </div>
-                    </div>
-                    <div className="cart__card-actions">
-                      <button className="cart__action-btn" onClick={() => navigate('/createur')}>
-                        <IconEdit />
-                        <span>MODIFIER</span>
-                      </button>
-                      <button
-                        className="cart__action-btn cart__action-btn--delete"
-                        onClick={() => handleDelete(item.id)}
-                      >
-                        <IconTrash />
-                        <span>SUPPRIMER</span>
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              );
-            })
+            items.map((item) => (
+              <CartCard key={item.id} item={item} onDelete={handleDelete} navigate={navigate} />
+            ))
           )}
         </div>
 
