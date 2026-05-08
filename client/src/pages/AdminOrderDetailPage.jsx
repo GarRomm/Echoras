@@ -66,6 +66,16 @@ function IconDownload() {
     </svg>
   );
 }
+function IconTrash() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+      <path d="M10 11v6M14 11v6" />
+      <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
+    </svg>
+  );
+}
 function IconArrowLeft() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -92,6 +102,10 @@ export default function AdminOrderDetailPage() {
   const [editingTracking, setEditingTracking] = useState(false);
   const [trackingInput, setTrackingInput]     = useState('');
   const [savingTracking, setSavingTracking]   = useState(false);
+
+  // Delete
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting]           = useState(false);
 
   // Toast
   const [toast, setToast] = useState(null);
@@ -150,6 +164,23 @@ export default function AdminOrderDetailPage() {
       showToast('Erreur lors de l\'enregistrement.');
     } finally {
       setSavingTracking(false);
+    }
+  }
+
+  async function handleDelete() {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error();
+      navigate('/admin');
+    } catch {
+      showToast('Erreur lors de la suppression.');
+      setConfirmDelete(false);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -460,6 +491,11 @@ export default function AdminOrderDetailPage() {
                         <IconDownload />
                         Notifier le client
                       </button>
+
+                      <button className="aod__action-btn aod__action-btn--danger" onClick={() => setConfirmDelete(true)}>
+                        <IconTrash />
+                        Supprimer la commande
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -473,6 +509,26 @@ export default function AdminOrderDetailPage() {
       {toast && (
         <div className="aod__toast" role="status" aria-live="polite">
           {toast}
+        </div>
+      )}
+
+      {/* Confirm delete modal */}
+      {confirmDelete && (
+        <div className="aod__modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+          <div className="aod__modal">
+            <h2 className="aod__modal-title" id="delete-modal-title">Supprimer la commande ?</h2>
+            <p className="aod__modal-body">
+              Cette action est irréversible. La commande <strong>{order?.orderNumber}</strong> sera définitivement supprimée.
+            </p>
+            <div className="aod__modal-actions">
+              <button className="aod__modal-btn aod__modal-btn--cancel" onClick={() => setConfirmDelete(false)} disabled={deleting}>
+                Annuler
+              </button>
+              <button className="aod__modal-btn aod__modal-btn--danger" onClick={handleDelete} disabled={deleting}>
+                {deleting ? 'Suppression…' : 'Supprimer'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

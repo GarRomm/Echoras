@@ -127,4 +127,16 @@ async function getOrderDetail(req, res) {
   }
 }
 
-module.exports = { getStats, getOrders, updateOrderStatus, getOrderDetail };
+async function deleteOrder(req, res) {
+  try {
+    const order = await Order.findByPk(req.params.id);
+    if (!order) return res.status(404).json({ error: 'Commande introuvable' });
+    await order.destroy();
+    res.status(204).end();
+  } catch (err) {
+    console.error('admin deleteOrder:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+module.exports = { getStats, getOrders, updateOrderStatus, getOrderDetail, deleteOrder };

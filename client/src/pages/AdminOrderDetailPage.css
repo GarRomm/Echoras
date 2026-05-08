@@ -592,6 +592,94 @@
   cursor: not-allowed;
 }
 
+.aod__action-btn--danger {
+  background: #8b2020;
+  color: #fff;
+}
+
+.aod__action-btn--danger:hover {
+  background: #a52828;
+}
+
+/* Delete confirm modal */
+.aod__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.aod__modal {
+  background: var(--surface, #1a1a1a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.aod__modal-title {
+  font-family: var(--font-ui);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text, #fff);
+  margin: 0 0 12px;
+}
+
+.aod__modal-body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0 0 28px;
+}
+
+.aod__modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.aod__modal-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.aod__modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aod__modal-btn--cancel {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text, #fff);
+}
+
+.aod__modal-btn--cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.aod__modal-btn--danger {
+  background: #8b2020;
+  color: #fff;
+}
+
+.aod__modal-btn--danger:hover:not(:disabled) {
+  background: #a52828;
+}
+
 /* Tracking edit */
 .aod__tracking-edit {
   display: flex;

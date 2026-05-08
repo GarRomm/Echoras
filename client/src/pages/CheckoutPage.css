@@ -43,6 +43,36 @@
   padding: 10px;
 }
 
+.checkout__section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkout__toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.checkout__toggle-row input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.checkout__toggle-row:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
 /* ─── FORMULAIRE LIVRAISON ─── */
 .checkout__form {
   display: flex;

@@ -12,6 +12,10 @@ export default function CheckoutPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Profil utilisateur (pré-remplissage)
+  const [profileData, setProfileData]         = useState(null);
+  const [differentAddress, setDifferentAddress] = useState(false);
+
   // Infos livraison
   const [form, setForm] = useState({
     firstName: '',
@@ -60,6 +64,27 @@ export default function CheckoutPage() {
     fetchCart();
   }, [fetchCart]);
 
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        setProfileData(data);
+        setForm(prev => ({
+          ...prev,
+          firstName:  data.firstName || '',
+          lastName:   data.lastName  || '',
+          email:      data.email     || '',
+          phone:      data.phone     || '',
+          address:    data.address   || '',
+          postalCode: data.zipCode   || '',
+          city:       data.city      || '',
+          country:    data.country   || 'France',
+        }));
+      })
+      .catch(() => {});
+  }, []);
+
   const subtotal = items.reduce((sum, item) => sum + parseFloat(item.price || 0), 0);
   const deliveryCost = delivery === 'express' ? 8 : 0;
   const total = subtotal + deliveryCost;
@@ -67,6 +92,28 @@ export default function CheckoutPage() {
   function handleFormChange(e) {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+  }
+
+  function handleDifferentAddress(checked) {
+    setDifferentAddress(checked);
+    if (checked) {
+      setForm(prev => ({
+        ...prev,
+        firstName: '', lastName: '', phone: '',
+        address: '', postalCode: '', city: '', country: 'France',
+      }));
+    } else if (profileData) {
+      setForm(prev => ({
+        ...prev,
+        firstName:  profileData.firstName || '',
+        lastName:   profileData.lastName  || '',
+        phone:      profileData.phone     || '',
+        address:    profileData.address   || '',
+        postalCode: profileData.zipCode   || '',
+        city:       profileData.city      || '',
+        country:    profileData.country   || 'France',
+      }));
+    }
   }
 
   function handleCardChange(e) {
@@ -122,7 +169,19 @@ export default function CheckoutPage() {
 
           {/* Informations de livraison */}
           <section className="checkout__section">
-            <h2 className="checkout__section-title">Informations de livraison</h2>
+            <div className="checkout__section-head">
+              <h2 className="checkout__section-title">Informations de livraison</h2>
+              {profileData && (
+                <label className="checkout__toggle-row">
+                  <input
+                    type="checkbox"
+                    checked={differentAddress}
+                    onChange={e => handleDifferentAddress(e.target.checked)}
+                  />
+                  <span>Envoyer à une adresse différente</span>
+                </label>
+              )}
+            </div>
             <div className="checkout__form">
               <div className="checkout__row">
                 <div className="checkout__field">
@@ -230,15 +289,17 @@ export default function CheckoutPage() {
                 />
               </div>
 
-              <label className="checkout__checkbox-row">
-                <input
-                  type="checkbox"
-                  name="saveInfo"
-                  checked={form.saveInfo}
-                  onChange={handleFormChange}
-                />
-                <span>Sauvegardez mes données pour effectuer des paiements rapidement</span>
-              </label>
+              {!profileData && (
+                <label className="checkout__checkbox-row">
+                  <input
+                    type="checkbox"
+                    name="saveInfo"
+                    checked={form.saveInfo}
+                    onChange={handleFormChange}
+                  />
+                  <span>Sauvegardez mes données pour effectuer des paiements rapidement</span>
+                </label>
+              )}
             </div>
           </section>
 
