@@ -78,11 +78,12 @@ async function createSculpture(req, res) {
 async function getSculptures(req, res) {
   try {
     const sculptures = await Sculpture.findAll({
-      where: { userId: req.user.id, status: 'draft' },
+      where: { userId: req.user.id },
       include: [
         { model: Material, attributes: ['id', 'name', 'basePrice'] },
         { model: SculptureParams, as: 'params' },
         { model: AudioAnalysis, as: 'analysis', attributes: ['id', 'rmsEnvelope'] },
+        { model: Order, attributes: ['id', 'status'], required: false },
       ],
       order: [['createdAt', 'DESC']],
     });
