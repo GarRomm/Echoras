@@ -5,7 +5,8 @@ const INFILL_FACTOR     = 0.15; // 15 % gyroïde — parois extérieures + rempl
 const LABOR_BASE      = 43;  // € — finition mat
 const BRILLANT_PREMIUM = 14; // € — surcoût finition brillant (post-traitement + matière premium)
 
-export function computePrintCost(params) {
+export function computePrintCost(params, laborBase) {
+  const LABOR_BASE_RESOLVED = laborBase ?? LABOR_BASE;
   // Hélix : ruban fin → 100 % plein, correction peakHeight (~12 % de volume par unité)
   const helixLength = params.helixTurns * 2 * Math.PI * params.cylinderRadius;
   const helixVolume =
@@ -31,7 +32,7 @@ export function computePrintCost(params) {
   const machineCost  = printHours * 0.07; // amortissement + électricité
 
   // Coût fixe : main d'œuvre + overhead + finition
-  const laborCost = LABOR_BASE + (isBrillant ? BRILLANT_PREMIUM : 0);
+  const laborCost = LABOR_BASE_RESOLVED + (isBrillant ? BRILLANT_PREMIUM : 0);
 
   const total = Math.ceil(materialCost + machineCost + laborCost);
 

@@ -52,6 +52,20 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     resumedSculptureId ? { id: resumedSculptureId, _resumed: true } : null
   );
 
+  // Prix de base par matériau (chargés depuis la DB)
+  const [materialBasePrices, setMaterialBasePrices] = useState({});
+
+  useEffect(() => {
+    fetch('/api/sculptures/materials')
+      .then(r => r.ok ? r.json() : [])
+      .then(list => {
+        const map = {};
+        list.forEach(m => { map[m.name] = parseFloat(m.basePrice); });
+        setMaterialBasePrices(map);
+      })
+      .catch(() => { /* garde les constantes par défaut */ });
+  }, []);
+
   // État ajout panier
   const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
 
@@ -156,7 +170,8 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   }, [savedSculpture, navigate]);
 
   const disabled = !waveformData || waveformData.length === 0;
-  const cost = computePrintCost(params);
+  const laborBase = materialBasePrices[params.finishMode === 'brillant' ? 'petg' : 'pla'];
+  const cost = computePrintCost(params, laborBase);
 
   return (
     <div className="export">

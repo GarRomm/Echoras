@@ -146,4 +146,17 @@ async function getPublicGallery(req, res) {
   }
 }
 
-module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery };
+async function getMaterials(_req, res) {
+  try {
+    const materials = await Material.findAll({
+      attributes: ['id', 'name', 'basePrice'],
+      order: [['id', 'ASC']],
+    });
+    res.json(materials);
+  } catch (err) {
+    console.error('[GET /api/sculptures/materials]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials };

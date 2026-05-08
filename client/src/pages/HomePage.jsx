@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 import imgGallery1 from '../assets/disiz - melodrama feat. theodora (audio officiel).png';
@@ -41,10 +41,10 @@ const STEPS = [
   },
 ];
 
-const GALLERY = [
-  { img: imgGallery1, title: 'Melodrama - Theodora', material: 'Résine violette translucide' },
-  { img: imgGallery2, title: 'Mami Wata - Gazo', material: 'Métal noir satiné' },
-  { img: imgGallery3, title: 'Always Love - Nada Surf', material: 'Céramique ivoire' },
+const GALLERY_FALLBACK = [
+  { id: 'fb1', renderUrl: imgGallery1, name: 'Melodrama - Theodora', material: 'Résine violette translucide' },
+  { id: 'fb2', renderUrl: imgGallery2, name: 'Mami Wata - Gazo',     material: 'Métal noir satiné'         },
+  { id: 'fb3', renderUrl: imgGallery3, name: 'Always Love - Nada Surf', material: 'Céramique ivoire'       },
 ];
 
 const TRUST = [
@@ -83,7 +83,20 @@ const TRUST = [
 ];
 
 export default function HomePage() {
+  const [gallery, setGallery] = useState(GALLERY_FALLBACK);
+
   useEffect(() => { document.title = 'Echoras — Sculptures sonores 3D'; }, []);
+
+  useEffect(() => {
+    fetch('/api/sculptures/gallery')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setGallery(data.slice(0, 3));
+        }
+      })
+      .catch(() => { /* garde le fallback */ });
+  }, []);
 
   return (
     <div className="home">
@@ -132,13 +145,13 @@ export default function HomePage() {
           <Link to="/galerie" className="gallery__link">Explorer tout</Link>
         </div>
         <div className="gallery__grid">
-          {GALLERY.map((item) => (
-            <article key={item.title} className="gallery__card">
+          {gallery.map((item) => (
+            <article key={item.id} className="gallery__card">
               <div className="gallery__card-img-wrap">
-                <img src={item.img} alt={item.title} className="gallery__card-img" />
+                <img src={item.renderUrl} alt={item.name} className="gallery__card-img" />
               </div>
               <div className="gallery__card-body">
-                <h3 className="gallery__card-title">{item.title}</h3>
+                <h3 className="gallery__card-title">{item.name}</h3>
               </div>
             </article>
           ))}

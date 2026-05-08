@@ -2,6 +2,25 @@
 
 const { Cart, CartItem, Sculpture, Material, SculptureParams } = require('../db/models/index');
 
+// Réplique de la formule printCost.js (client) — source de vérité côté serveur
+const PRINT_SPEED_CM3_H = 25;
+const INFILL_FACTOR     = 0.15;
+const BRILLANT_PREMIUM  = 14;
+
+function computePrice(params, laborBase, isBrillant) {
+  const helixLength       = params.helixTurns * 2 * Math.PI * params.cylinderRadius;
+  const helixVolume       = helixLength * params.ribbonWidth * params.ringThickness * (1 + params.peakHeight * 0.12);
+  const cylVolumeEff      = Math.PI * Math.pow(params.cylinderRadius, 2) * params.cylinderHeight * INFILL_FACTOR;
+  const baseVolume        = Math.PI * Math.pow(params.cylinderRadius * 1.1, 2) * 1.2; // baseHeight fixe = 1.2
+  const totalVolume       = helixVolume + cylVolumeEff + baseVolume;
+  const density           = isBrillant ? 1.27 : 1.24;
+  const pricePerKg        = isBrillant ? 30   : 25;
+  const materialCost      = (totalVolume * density / 1000) * pricePerKg;
+  const machineCost       = totalVolume * 1.2 / PRINT_SPEED_CM3_H * 0.07;
+  const laborCost         = laborBase + (isBrillant ? BRILLANT_PREMIUM : 0);
+  return Math.ceil(materialCost + machineCost + laborCost);
+}
+
 async function getCart(req, res) {
   try {
     const cart = await Cart.findOne({
@@ -40,6 +59,7 @@ async function addToCart(req, res) {
 
     const sculpture = await Sculpture.findOne({
       where: { id: sculptureId, userId: req.user.id },
+      include: [{ model: SculptureParams, as: 'params' }],
     });
     if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
 
@@ -51,15 +71,21 @@ async function addToCart(req, res) {
     const material = await Material.findByPk(resolvedMaterialId);
     if (!material) return res.status(404).json({ error: 'Materiau introuvable' });
 
+    const isBrillant   = material.name === 'petg';
+    const laborBase    = parseFloat(material.basePrice);
+    const computedPrice = sculpture.params
+      ? computePrice(sculpture.params, laborBase, isBrillant)
+      : laborBase;
+
     const [cart] = await Cart.findOrCreate({ where: { userId: req.user.id } });
 
     const [item, created] = await CartItem.findOrCreate({
       where: { cartId: cart.id, sculptureId },
-      defaults: { price: material.basePrice, materialId: resolvedMaterialId, quantity: 1 },
+      defaults: { price: computedPrice, materialId: resolvedMaterialId, quantity: 1 },
     });
 
     if (!created) {
-      await item.update({ materialId: resolvedMaterialId, price: material.basePrice });
+      await item.update({ materialId: resolvedMaterialId, price: computedPrice });
     }
 
     res.status(created ? 201 : 200).json({ item, created });
