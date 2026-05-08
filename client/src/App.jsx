@@ -15,6 +15,7 @@ import MyCreationsPage from './pages/MyCreationsPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminPage from './pages/AdminPage';
 import './styles/App.css';
 
 export default function App() {
@@ -51,7 +52,7 @@ export default function App() {
           <Route path="/confirmation" element={<ProtectedRoute><OrderConfirmationPage /></ProtectedRoute>} />
 
           {/* Admin (Phase 5) */}
-          <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><PlaceholderPage title="Administration" /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><AdminPage /></ProtectedRoute>} />
 
           <Route path="*" element={<PlaceholderPage title="Page introuvable" />} />
         </Routes>
