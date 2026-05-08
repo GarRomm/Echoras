@@ -154,45 +154,43 @@ function SculptureCard({ sculpture, onDelete }) {
       </div>
 
       <div className="creation-card__actions">
+        <button className="creation-card__btn creation-card__btn--resume" onClick={handleResume}>
+          <IconResume />
+          Reprendre
+        </button>
+
         {isOrdered ? (
           <button
-            className="creation-card__btn creation-card__btn--resume"
+            className="creation-card__btn creation-card__btn--cart"
             onClick={() => navigate('/mes-commandes')}
           >
             <IconCart />
             Voir ma commande
           </button>
         ) : (
-          <>
-            <button className="creation-card__btn creation-card__btn--resume" onClick={handleResume}>
-              <IconResume />
-              Reprendre
-            </button>
+          <button
+            className="creation-card__btn creation-card__btn--cart"
+            onClick={handleAddToCart}
+            disabled={cartStatus === 'adding'}
+          >
+            <IconCart />
+            {cartStatus === 'adding' && 'Ajout…'}
+            {cartStatus === 'error'  && 'Erreur — réessayer'}
+            {!cartStatus             && 'Ajouter au panier'}
+          </button>
+        )}
 
-            <button
-              className="creation-card__btn creation-card__btn--cart"
-              onClick={handleAddToCart}
-              disabled={cartStatus === 'adding'}
-            >
-              <IconCart />
-              {cartStatus === 'adding' && 'Ajout…'}
-              {cartStatus === 'error'  && 'Erreur — réessayer'}
-              {!cartStatus             && 'Ajouter au panier'}
-            </button>
-
-            {!confirmDelete ? (
-              <button className="creation-card__btn creation-card__btn--delete" onClick={() => setConfirmDelete(true)}>
-                <IconTrash />
-                Supprimer
-              </button>
-            ) : (
-              <div className="creation-card__confirm">
-                <span>Confirmer ?</span>
-                <button className="creation-card__confirm-yes" onClick={handleDelete}>Oui</button>
-                <button className="creation-card__confirm-no" onClick={() => setConfirmDelete(false)}>Non</button>
-              </div>
-            )}
-          </>
+        {!confirmDelete ? (
+          <button className="creation-card__btn creation-card__btn--delete" onClick={() => setConfirmDelete(true)}>
+            <IconTrash />
+            Supprimer
+          </button>
+        ) : (
+          <div className="creation-card__confirm">
+            <span>Confirmer ?</span>
+            <button className="creation-card__confirm-yes" onClick={handleDelete}>Oui</button>
+            <button className="creation-card__confirm-no" onClick={() => setConfirmDelete(false)}>Non</button>
+          </div>
         )}
       </div>
     </article>

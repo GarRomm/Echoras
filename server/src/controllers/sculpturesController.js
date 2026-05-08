@@ -2,7 +2,7 @@
 
 const path = require('path');
 const fs   = require('fs');
-const { Sculpture, SculptureParams, Material, AudioAnalysis, Order } = require('../db/models/index');
+const { Sculpture, SculptureParams, Material, AudioAnalysis, Order, CartItem } = require('../db/models/index');
 
 const RENDER_DIR = path.join(__dirname, '..', '..', 'storage', 'renders');
 const STL_DIR    = path.join(__dirname, '..', '..', 'storage', 'stl');
@@ -119,10 +119,12 @@ async function getSculptures(req, res) {
 
 async function deleteSculpture(req, res) {
   try {
-    const deleted = await Sculpture.destroy({
-      where: { id: req.params.id, userId: req.user.id, status: 'draft' },
-    });
-    if (!deleted) return res.status(404).json({ error: 'Sculpture introuvable' });
+    const sculpture = await Sculpture.findOne({ where: { id: req.params.id, userId: req.user.id } });
+    if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
+
+    await CartItem.destroy({ where: { sculptureId: sculpture.id } });
+    await Order.update({ sculptureId: null }, { where: { sculptureId: sculpture.id } });
+    await sculpture.destroy();
     res.json({ success: true });
   } catch (err) {
     console.error('[DELETE /api/sculptures/:id]', err);
