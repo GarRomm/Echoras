@@ -95,7 +95,8 @@
   font-weight: 400;
 }
 
-.checkout__input:focus {
+.checkout__input:focus,
+.checkout__input:focus-visible {
   border-color: #a06820;
 }
 

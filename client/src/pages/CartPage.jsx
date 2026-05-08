@@ -55,6 +55,8 @@ function formatConfig(params) {
 }
 
 export default function CartPage() {
+  useEffect(() => { document.title = 'Mon panier — Echoras'; }, []);
+
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

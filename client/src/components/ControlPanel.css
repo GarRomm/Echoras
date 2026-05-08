@@ -74,6 +74,12 @@
   outline: none;
 }
 
+.controls__field input[type="range"]:focus-visible {
+  outline: 2px solid #C9863A;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .controls__field input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
@@ -203,6 +209,11 @@
 .controls__color-swatch--selected {
   outline: 2px solid #fff;
   outline-offset: 2px;
+}
+
+.controls__color-swatch:focus-visible {
+  outline: 2px solid #C9863A;
+  outline-offset: 4px;
 }
 
 /* Text inputs */

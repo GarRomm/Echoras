@@ -106,7 +106,8 @@
   min-width: 0;
 }
 
-.auth-form__input:focus {
+.auth-form__input:focus,
+.auth-form__input:focus-visible {
   border-color: var(--accent);
 }
 

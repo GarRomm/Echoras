@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/auth.css';
 
 export default function RegisterPage() {
+  useEffect(() => { document.title = 'Créer un compte — Echoras'; }, []);
+
   const { register } = useAuth();
   const navigate = useNavigate();
 

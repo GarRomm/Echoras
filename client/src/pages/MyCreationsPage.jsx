@@ -186,6 +186,8 @@ function SculptureCard({ sculpture, onDelete }) {
 }
 
 export default function MyCreationsPage() {
+  useEffect(() => { document.title = 'Mes créations — Echoras'; }, []);
+
   const [sculptures, setSculptures] = useState([]);
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState(null);

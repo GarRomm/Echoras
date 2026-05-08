@@ -57,6 +57,8 @@ export default function Visualizer({ waveformData, params, controlsRef, autoRota
     <WebGLErrorBoundary>
       <Canvas
         key={canvasKey}
+        role="img"
+        aria-label="Aperçu 3D interactif de la sculpture"
         camera={{ position: [0, 2, 16], fov: 50 }}
         frameloop="demand"
         gl={{

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/auth.css';
 
 export default function LoginPage() {
+  useEffect(() => { document.title = 'Connexion — Echoras'; }, []);
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();

@@ -28,6 +28,8 @@ const DEFAULT_PARAMS = {
 export default function CreatorPage() {
   const location = useLocation();
 
+  useEffect(() => { document.title = 'Studio 3D — Echoras'; }, []);
+
   const [audioFile, setAudioFile] = useState(null);
   const [params, setParams] = useState(() => {
     const s = location.state;

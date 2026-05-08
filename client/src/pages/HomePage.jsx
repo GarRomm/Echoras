@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 import imgGallery1 from '../assets/disiz - melodrama feat. theodora (audio officiel).png';
@@ -83,6 +83,8 @@ const TRUST = [
 ];
 
 export default function HomePage() {
+  useEffect(() => { document.title = 'Echoras — Sculptures sonores 3D'; }, []);
+
   return (
     <div className="home">
 

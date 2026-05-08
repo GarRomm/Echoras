@@ -48,10 +48,13 @@ function ColorPicker({ label, value, onChange, colors }) {
       <div className="controls__field-header">
         <span className="controls__field-label">{label}</span>
       </div>
-      <div className="controls__color-picker">
+      <div className="controls__color-picker" role="radiogroup" aria-label={label}>
         {colors.map((color) => (
           <button
             key={color.hex}
+            role="radio"
+            aria-checked={value === color.hex}
+            aria-label={color.label}
             className={`controls__color-swatch${value === color.hex ? ' controls__color-swatch--selected' : ''}`}
             style={{ backgroundColor: color.hex }}
             title={color.label}
@@ -93,6 +96,7 @@ export default function ControlPanel({ params, onChange }) {
                 max={max}
                 step={step}
                 value={params[key]}
+                aria-valuetext={fmt(params[key])}
                 onChange={(e) =>
                   onChange(key, step % 1 === 0 ? parseInt(e.target.value, 10) : parseFloat(e.target.value))
                 }

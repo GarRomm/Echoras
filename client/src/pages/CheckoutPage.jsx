@@ -4,6 +4,8 @@ import { getCart } from '../services/cartService';
 import './CheckoutPage.css';
 
 export default function CheckoutPage() {
+  useEffect(() => { document.title = 'Commande — Echoras'; }, []);
+
   const navigate = useNavigate();
 
   // Cart items
