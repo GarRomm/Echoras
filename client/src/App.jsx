@@ -16,6 +16,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
+import GaleriePage from './pages/GaleriePage';
 import './styles/App.css';
 
 export default function App() {
@@ -30,7 +31,7 @@ export default function App() {
           {/* Pages publiques */}
           <Route path="/" element={<HomePage />} />
           <Route path="/createur" element={<CreatorPage />} />
-          <Route path="/galerie" element={<PlaceholderPage title="Galerie" />} />
+          <Route path="/galerie" element={<GaleriePage />} />
           <Route path="/comment-ca-marche" element={<CommentCaMarchePage />} />
           <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
           <Route path="/contact" element={<PlaceholderPage title="Contact" />} />

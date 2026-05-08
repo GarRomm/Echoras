@@ -6,6 +6,9 @@ const sculpturesController = require('../controllers/sculpturesController');
 
 const router = express.Router();
 
+// Route publique — avant authJWT
+router.get('/gallery', sculpturesController.getPublicGallery);
+
 router.post('/', authJWT, sculpturesController.createSculpture);
 router.get('/', authJWT, sculpturesController.getSculptures);
 router.delete('/:id', authJWT, sculpturesController.deleteSculpture);

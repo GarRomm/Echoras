@@ -1,6 +1,12 @@
 'use strict';
 
-const { Sculpture, SculptureParams, Material, AudioAnalysis } = require('../db/models/index');
+const path = require('path');
+const fs   = require('fs');
+const { Sculpture, SculptureParams, Material, AudioAnalysis, Order } = require('../db/models/index');
+
+const RENDER_DIR = path.join(__dirname, '..', '..', 'storage', 'renders');
+
+const MATERIAL_LABELS = { pla: 'PLA mat', petg: 'PETG brillant' };
 
 async function createSculpture(req, res) {
   try {
@@ -100,4 +106,44 @@ async function deleteSculpture(req, res) {
   }
 }
 
-module.exports = { createSculpture, getSculptures, deleteSculpture };
+const PAID_STATUSES = ['paid', 'fabrication', 'shipped', 'delivered'];
+
+async function getPublicGallery(req, res) {
+  try {
+    const sculptures = await Sculpture.findAll({
+      include: [
+        { model: Material, attributes: ['name'] },
+        { model: SculptureParams, as: 'params', attributes: ['waveformColor', 'artistName', 'songTitle'] },
+        {
+          model: Order,
+          required: true,                          // INNER JOIN — exclut les sculptures sans commande
+          attributes: [],
+          where: { status: { [require('sequelize').Op.in]: PAID_STATUSES } },
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+      limit: 12,
+    });
+
+    const result = sculptures.map(s => {
+      const hasRender = fs.existsSync(path.join(RENDER_DIR, `${s.id}.png`));
+      const matName   = s.Material?.name || 'pla';
+      return {
+        id:           s.id,
+        name:         s.name || 'Sans titre',
+        material:     MATERIAL_LABELS[matName] || matName,
+        waveformColor: s.params?.waveformColor || null,
+        artistName:   s.params?.artistName || null,
+        songTitle:    s.params?.songTitle || null,
+        renderUrl:    hasRender ? `/renders/${s.id}.png` : null,
+      };
+    });
+
+    res.json(result);
+  } catch (err) {
+    console.error('[GET /api/sculptures/gallery]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery };
