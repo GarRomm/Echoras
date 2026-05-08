@@ -1,7 +1,7 @@
 'use strict';
 
 const { Op } = require('sequelize');
-const { Order, User } = require('../db/models/index');
+const { Order, User, Sculpture, SculptureParams, Material, ShippingAddress } = require('../db/models/index');
 
 const VALID_STATUSES = ['pending', 'paid', 'fabrication', 'shipped', 'delivered'];
 
@@ -57,4 +57,74 @@ async function updateOrderStatus(req, res) {
   }
 }
 
-module.exports = { getStats, getOrders, updateOrderStatus };
+const MATERIAL_LABELS = { pla: 'PLA mat', petg: 'PETG brillant' };
+
+async function getOrderDetail(req, res) {
+  try {
+    const order = await Order.findByPk(req.params.id, {
+      include: [
+        { model: User, attributes: ['firstName', 'lastName', 'email', 'phone'] },
+        {
+          model: Sculpture,
+          attributes: ['id', 'name', 'stlFilePath'],
+          include: [
+            { model: SculptureParams, as: 'params' },
+            { model: Material, attributes: ['name'] },
+          ],
+        },
+        { model: ShippingAddress },
+      ],
+    });
+
+    if (!order) return res.status(404).json({ error: 'Commande introuvable' });
+
+    const s = order.Sculpture;
+    const p = s?.params;
+    const matName = s?.Material?.name || null;
+
+    res.json({
+      id:                    order.id,
+      orderNumber:           `#ECH-${order.id.toString().padStart(4, '0')}`,
+      status:                order.status,
+      totalPrice:            parseFloat(order.totalPrice),
+      trackingNumber:        order.trackingNumber        || null,
+      estimatedDeliveryDate: order.estimatedDeliveryDate || null,
+      createdAt:             order.createdAt,
+      updatedAt:             order.updatedAt,
+      client: order.User ? {
+        firstName: order.User.firstName,
+        lastName:  order.User.lastName,
+        email:     order.User.email,
+        phone:     order.User.phone || null,
+      } : null,
+      sculpture: s ? {
+        id:       s.id,
+        name:     s.name,
+        hasStl:   !!s.stlFilePath,
+        material: MATERIAL_LABELS[matName] || matName || '—',
+        params:   p ? {
+          peakHeight:     p.peakHeight,
+          cylinderHeight: p.cylinderHeight,
+          cylinderRadius: p.cylinderRadius,
+          helixTurns:     p.helixTurns,
+          waveformColor:  p.waveformColor,
+          artistName:     p.artistName,
+          songTitle:      p.songTitle,
+        } : null,
+      } : null,
+      shipping: order.ShippingAddress ? {
+        name:       order.ShippingAddress.name,
+        street:     order.ShippingAddress.street,
+        city:       order.ShippingAddress.city,
+        postalCode: order.ShippingAddress.postalCode,
+        country:    order.ShippingAddress.country,
+        phone:      order.ShippingAddress.phone || null,
+      } : null,
+    });
+  } catch (err) {
+    console.error('admin getOrderDetail:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+module.exports = { getStats, getOrders, updateOrderStatus, getOrderDetail };

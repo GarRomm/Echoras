@@ -18,6 +18,7 @@ import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 import GaleriePage from './pages/GaleriePage';
 import MyOrdersPage from './pages/MyOrdersPage';
+import AdminOrderDetailPage from './pages/AdminOrderDetailPage';
 import './styles/App.css';
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
 
           {/* Admin (Phase 5) */}
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><AdminPage /></ProtectedRoute>} />
+          <Route path="/admin/commandes/:id" element={<ProtectedRoute requiredRole="ADMIN"><AdminOrderDetailPage /></ProtectedRoute>} />
 
           <Route path="*" element={<PlaceholderPage title="Page introuvable" />} />
         </Routes>

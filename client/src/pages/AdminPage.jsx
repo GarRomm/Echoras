@@ -116,9 +116,6 @@ export default function AdminPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [page, setPage] = useState(1);
   const [filterOpen, setFilterOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [editStatus, setEditStatus] = useState('');
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     document.title = 'Dashboard Admin | Echoras';
@@ -153,28 +150,6 @@ export default function AdminPage() {
     }
   }
 
-  async function handleStatusSave(orderId) {
-    setSaving(true);
-    try {
-      const res = await fetch(`/api/admin/orders/${orderId}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ status: editStatus }),
-      });
-      if (res.ok) {
-        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: editStatus } : o));
-        // Refresh KPI stats
-        const sRes = await fetch('/api/admin/stats', { credentials: 'include' });
-        if (sRes.ok) setStats(await sRes.json());
-      }
-    } catch (err) {
-      console.error('Status update:', err);
-    } finally {
-      setSaving(false);
-      setEditingId(null);
-    }
-  }
 
   async function handleLogout() {
     await logout();
@@ -330,36 +305,12 @@ export default function AdminPage() {
                       <td className="admin__table-amount">{Math.round(order.amount)} €</td>
                       <td><StatusBadge status={order.status} /></td>
                       <td>
-                        {editingId === order.id ? (
-                          <div className="admin__status-edit">
-                            <select
-                              value={editStatus}
-                              onChange={e => setEditStatus(e.target.value)}
-                              className="admin__status-select"
-                            >
-                              {Object.entries(STATUS_CONFIG).map(([k, c]) => (
-                                <option key={k} value={k}>{c.label}</option>
-                              ))}
-                            </select>
-                            <button
-                              className="admin__status-save"
-                              onClick={() => handleStatusSave(order.id)}
-                              disabled={saving}
-                            >
-                              OK
-                            </button>
-                            <button className="admin__status-cancel" onClick={() => setEditingId(null)}>
-                              ✕
-                            </button>
-                          </div>
-                        ) : (
                           <button
                             className="admin__action-btn"
-                            onClick={() => { setEditingId(order.id); setEditStatus(order.status); }}
+                            onClick={() => navigate(`/admin/commandes/${order.id}`)}
                           >
                             Voir la commande
                           </button>
-                        )}
                       </td>
                     </tr>
                   ))}
