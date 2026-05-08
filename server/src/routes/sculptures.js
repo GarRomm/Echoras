@@ -12,6 +12,7 @@ router.get('/materials', sculpturesController.getMaterials);
 
 router.post('/', authJWT, sculpturesController.createSculpture);
 router.get('/', authJWT, sculpturesController.getSculptures);
+router.post('/:id/screenshot', authJWT, sculpturesController.saveScreenshot);
 router.delete('/:id', authJWT, sculpturesController.deleteSculpture);
 
 module.exports = router;

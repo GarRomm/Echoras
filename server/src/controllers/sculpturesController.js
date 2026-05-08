@@ -6,6 +6,28 @@ const { Sculpture, SculptureParams, Material, AudioAnalysis, Order } = require('
 
 const RENDER_DIR = path.join(__dirname, '..', '..', 'storage', 'renders');
 
+async function saveScreenshot(req, res) {
+  try {
+    const { id } = req.params;
+    const { imageData } = req.body;
+    if (!imageData) return res.status(400).json({ error: 'imageData requis' });
+
+    const sculpture = await require('../db/models/index').Sculpture.findOne({
+      where: { id, userId: req.user.id },
+    });
+    if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
+
+    const base64 = imageData.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64, 'base64');
+    fs.mkdirSync(RENDER_DIR, { recursive: true });
+    fs.writeFileSync(path.join(RENDER_DIR, `${id}.png`), buffer);
+    res.json({ success: true, renderUrl: `/renders/${id}.png` });
+  } catch (err) {
+    console.error('[POST /api/sculptures/:id/screenshot]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
 const MATERIAL_LABELS = { pla: 'PLA mat', petg: 'PETG brillant' };
 
 async function createSculpture(req, res) {
@@ -107,7 +129,7 @@ async function deleteSculpture(req, res) {
   }
 }
 
-const PAID_STATUSES = ['paid', 'fabrication', 'shipped', 'delivered'];
+const PAID_STATUSES = ['pending', 'paid', 'fabrication', 'shipped', 'delivered'];
 
 async function getPublicGallery(req, res) {
   try {
@@ -160,4 +182,4 @@ async function getMaterials(_req, res) {
   }
 }
 
-module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials };
+module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials, saveScreenshot };

@@ -59,6 +59,10 @@ export default function CreatorPage() {
   const { waveformData: analyzedData, isAnalyzing } = useAudioAnalysis(audioFile);
   const waveformData = analyzedData ?? resumedWaveform;
 
+  const [savedSculptureId, setSavedSculptureId] = useState(
+    () => location.state?.sculptureId ?? null
+  );
+
   const controlsRef = useRef(null);
   const viewerRef = useRef(null);
   const [autoRotate, setAutoRotate] = useState(false);
@@ -84,13 +88,23 @@ export default function CreatorPage() {
     const canvas = viewerRef.current?.querySelector('canvas');
     if (!canvas) return;
     const url = canvas.toDataURL('image/png');
+
     const a = document.createElement('a');
     a.href = url;
     a.download = audioFile
       ? `${audioFile.name.replace(/\.[^.]+$/, '')}.png`
       : 'echoras-sculpture.png';
     a.click();
-  }, [audioFile]);
+
+    if (savedSculptureId) {
+      fetch(`/api/sculptures/${savedSculptureId}/screenshot`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageData: url }),
+      }).catch(() => {});
+    }
+  }, [audioFile, savedSculptureId]);
 
   const handleReset = useCallback(() => {
     if (controlsRef.current) {
@@ -219,6 +233,7 @@ export default function CreatorPage() {
           params={params}
           audioFileName={audioFile?.name}
           resumedSculptureId={location.state?.sculptureId ?? null}
+          onSaved={setSavedSculptureId}
         />
       </aside>
       </div>

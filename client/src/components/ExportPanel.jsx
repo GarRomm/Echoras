@@ -24,7 +24,7 @@ function buildAllGeometries(waveformData, params) {
   return geometries;
 }
 
-export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId }) {
+export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, onSaved }) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isAdmin = user?.role === 'ADMIN';
@@ -150,6 +150,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
 
       setSavedSculpture({ id: res.id, materialId: res.materialId, price: res.price });
       setSaveStatus('saved');
+      onSaved?.(res.id);
     } catch (err) {
       console.error(err);
       setSaveStatus('error');
