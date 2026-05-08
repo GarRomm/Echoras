@@ -41,6 +41,10 @@ export default function CheckoutPage() {
   // Code promo
   const [promoCode, setPromoCode] = useState('');
 
+  // Soumission
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
   const fetchCart = useCallback(async () => {
     try {
       const data = await getCart();
@@ -70,13 +74,6 @@ export default function CheckoutPage() {
     setCardForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   }
 
-  function generateOrderNumber() {
-    const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-    const prefix = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
-    const number = Math.floor(10000 + Math.random() * 90000);
-    return `${prefix}-${number}`;
-  }
-
   function getDeliveryDate(mode) {
     const days = mode === 'express' ? { min: 2, max: 4 } : { min: 5, max: 7 };
     const now = new Date();
@@ -88,18 +85,32 @@ export default function CheckoutPage() {
     return `Entre le ${fmt(from)} et le ${fmt(to)}`;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const firstItem = items[0];
-    navigate('/confirmation', {
-      state: {
-        orderNumber: generateOrderNumber(),
-        sculptureName: firstItem?.Sculpture?.name || 'Ma sculpture',
-        total,
-        address: [form.address, form.postalCode, form.city, form.country].filter(Boolean).join(', '),
-        deliveryDate: getDeliveryDate(delivery),
-      },
-    });
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ ...form, deliveryType: delivery }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur lors de la commande');
+      navigate('/confirmation', {
+        state: {
+          orderNumber:   data.orderNumber,
+          sculptureName: data.sculptureName,
+          total,
+          address:       [form.address, form.postalCode, form.city, form.country].filter(Boolean).join(', '),
+          deliveryDate:  getDeliveryDate(delivery),
+        },
+      });
+    } catch (err) {
+      setSubmitError(err.message);
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -413,12 +424,15 @@ export default function CheckoutPage() {
           </section>
 
           {/* CTA */}
+          {submitError && (
+            <p className="checkout__error" role="alert">{submitError}</p>
+          )}
           <button
             type="submit"
             className="checkout__cta"
-            disabled={items.length === 0 || loading}
+            disabled={items.length === 0 || loading || submitting}
           >
-            Payer maintenant
+            {submitting ? 'Traitement en cours…' : 'Payer maintenant'}
           </button>
 
         </div>
