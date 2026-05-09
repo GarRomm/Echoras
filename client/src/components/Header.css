@@ -14,16 +14,23 @@
 
 /* Brand */
 .header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
   flex-shrink: 0;
 }
 
-.header__logo-text {
-  font-family: var(--font-title);
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.2em;
-  color: var(--text);
+.header__logo-cercle {
+  height: 38px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.header__logo-horizontal {
+  height: 24px;
+  width: auto;
+  flex-shrink: 0;
 }
 
 /* Nav */

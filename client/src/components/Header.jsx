@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logoCercle from '../assets/03_cercle_couleur_seul_entier.svg';
+import logoHorizontal from '../assets/02_horizontal_couleur_typo_entiere.svg';
 import './Header.css';
 
 export default function Header() {
@@ -32,7 +34,8 @@ export default function Header() {
   return (
     <header className="header">
       <Link to="/" className="header__brand" onClick={closeMenu}>
-        <span className="header__logo-text">ECHORAS</span>
+        <img src={logoCercle} alt="" className="header__logo-cercle" aria-hidden="true" />
+        <img src={logoHorizontal} alt="ECHORAS" className="header__logo-horizontal" />
       </Link>
 
       <nav className={`header__nav${menuOpen ? ' header__nav--open' : ''}`} aria-label="Navigation principale">
