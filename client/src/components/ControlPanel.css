@@ -68,6 +68,7 @@
 .controls__field input[type="range"] {
   width: calc(100% - 10px);
   -webkit-appearance: none;
+  appearance: none;
   height: 3px;
   background: rgba(240, 237, 230, 0.12);
   border-radius: 2px;
