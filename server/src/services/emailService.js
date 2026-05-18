@@ -2,11 +2,20 @@
 
 const { Resend } = require('resend');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.EMAIL_FROM || 'Echoras <noreply@echoras.fr>';
 const CONTACT_TO = process.env.CONTACT_EMAIL || 'romainsics@gmail.com';
 
+function getResendClient() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY is not configured');
+  }
+
+  return new Resend(process.env.RESEND_API_KEY);
+}
+
 async function sendResetPasswordEmail(to, resetUrl) {
+  const resend = getResendClient();
+
   await resend.emails.send({
     from: FROM,
     to,
@@ -26,6 +35,8 @@ async function sendResetPasswordEmail(to, resetUrl) {
 }
 
 async function sendContactEmail({ name, email, subject, message }) {
+  const resend = getResendClient();
+
   await resend.emails.send({
     from: FROM,
     to: CONTACT_TO,
@@ -49,6 +60,8 @@ async function sendContactEmail({ name, email, subject, message }) {
 }
 
 async function sendContactConfirmationEmail({ name, email }) {
+  const resend = getResendClient();
+
   await resend.emails.send({
     from: FROM,
     to: email,
