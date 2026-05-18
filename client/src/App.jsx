@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import PlaceholderPage from './pages/PlaceholderPage';
+import FaqPage from './pages/FaqPage';
 import CommentCaMarchePage from './pages/CommentCaMarchePage';
 import CartPage from './pages/CartPage';
 import MyCreationsPage from './pages/MyCreationsPage';
@@ -35,7 +36,7 @@ export default function App() {
           <Route path="/createur" element={<CreatorPage />} />
           <Route path="/galerie" element={<GaleriePage />} />
           <Route path="/comment-ca-marche" element={<CommentCaMarchePage />} />
-          <Route path="/faq" element={<PlaceholderPage title="FAQ" />} />
+          <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<PlaceholderPage title="Contact" />} />
           <Route path="/mentions-legales" element={<PlaceholderPage title="Mentions légales" />} />
           <Route path="/confidentialite" element={<PlaceholderPage title="Politique de confidentialité" />} />
