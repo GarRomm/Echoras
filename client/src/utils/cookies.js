@@ -1,17 +1,23 @@
 export function initCookies() {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
+  // Chargement différé — ne bloque pas le rendu initial
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(load, { timeout: 3000 });
   } else {
-    run();
+    setTimeout(load, 1000);
   }
 }
 
-function run() {
+function load() {
+  const script = document.createElement('script');
+  script.src = '/tarteaucitron.min.js';
+  script.async = true;
+  script.onload = init;
+  document.head.appendChild(script);
+}
+
+function init() {
   const tarteaucitron = window.tarteaucitron;
-  if (!tarteaucitron || typeof tarteaucitron.init !== 'function') {
-    console.warn('tarteaucitron not loaded');
-    return;
-  }
+  if (!tarteaucitron || typeof tarteaucitron.init !== 'function') return;
 
   tarteaucitron.init({
     privacyUrl:              '/confidentialite',
@@ -38,10 +44,9 @@ function run() {
     mandatoryCta:            true,
   });
 
-  // Cookies de session (nécessaires — aucun consentement requis)
-  // Les cookies JWT HttpOnly sont exemptés de consentement (art. 82 LIL).
+  // JWT HttpOnly — cookies techniques nécessaires, exemptés de consentement (art. 82 LIL)
   tarteaucitron.job = tarteaucitron.job || [];
 
-  // Stripe (paiement — sera activé en v2)
+  // Stripe activé en v2 :
   // tarteaucitron.job.push('stripe');
 }
