@@ -2,6 +2,33 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FaqPage.css';
 
+function IconPricing() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+      <circle cx="13" cy="13" r="11.25" stroke="#F0EDE6" strokeWidth="1.5"/>
+      <path d="M13 7v1.5M13 17.5V19M10 11.5c0-1.38 1.34-2.5 3-2.5s3 1.12 3 2.5c0 1.38-1.34 2.5-3 2.5S10 13.88 10 15.5c0 1.38 1.34 2.5 3 2.5s3-1.12 3-2.5" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function IconAccount() {
+  return (
+    <svg width="24" height="26" viewBox="0 0 24 26" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="5.25" stroke="#F0EDE6" strokeWidth="1.5"/>
+      <path d="M2 24c0-5.52 4.48-10 10-10s10 4.48 10 10" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function IconPrivacy() {
+  return (
+    <svg width="24" height="26" viewBox="0 0 24 26" fill="none" aria-hidden="true">
+      <path d="M12 2L3 6v7c0 5.25 3.9 10.15 9 11.35C17.1 23.15 21 18.25 21 13V6L12 2z" stroke="#F0EDE6" strokeWidth="1.5" strokeLinejoin="round"/>
+      <path d="M8.5 13l2.5 2.5 4.5-4.5" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 function IconCreation() {
   return (
     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
@@ -64,8 +91,40 @@ const FAQ_DATA = [
       },
       {
         id: 'q2',
+        question: "Quelle est la taille maximale d'un fichier audio ?",
+        answer: "La taille maximale acceptée est de 50 Mo par fichier. Cette limite couvre largement la plupart des fichiers musicaux, même en haute qualité.",
+      },
+      {
+        id: 'q3',
         question: 'Puis-je modifier la sculpture après la génération ?',
-        answer: "Oui, vous pouvez ajuster tous les paramètres de personnalisation à tout moment avant de passer commande. Vos créations sont sauvegardées comme brouillons dans votre espace personnel.",
+        answer: "Oui, vous pouvez ajuster les 8 paramètres de personnalisation à tout moment avant de passer commande : hauteur des pics, lissage, rayon, hauteur du cylindre, épaisseur, segments, tours d'hélice et largeur du ruban. La sculpture se met à jour en temps réel.",
+      },
+      {
+        id: 'q4',
+        question: "Puis-je graver le nom d'un artiste ou un titre sur le socle ?",
+        answer: "Oui. Dans le studio 3D, la section « Gravure sur socle » vous permet de renseigner un nom d'artiste et un titre de chanson. Ces informations sont gravées en creux directement sur la base de la sculpture, incluses dans le fichier d'impression.",
+      },
+      {
+        id: 'q5',
+        question: 'Puis-je sauvegarder ma création sans passer commande ?',
+        answer: "Oui. Une fois connecté, le bouton « Sauvegarder ma sculpture » enregistre votre création en brouillon dans votre espace personnel. Vous pouvez la retrouver, la modifier et la commander plus tard depuis la page « Mes créations ».",
+      },
+    ],
+  },
+  {
+    id: 'tarifs',
+    category: 'Tarifs & matériaux',
+    icon: 'pricing',
+    questions: [
+      {
+        id: 'q6',
+        question: 'Quelles finitions et couleurs sont disponibles ?',
+        answer: "Deux finitions sont proposées : PLA mat (12 coloris du blanc cassé au bordeaux en passant par le vert sauge ou le bleu marine) et PETG brillant (12 coloris dont argent, or, violet et rose fuchsia). La finition et la couleur sont sélectionnables directement dans le configurateur.",
+      },
+      {
+        id: 'q7',
+        question: 'Comment est calculé le prix de ma sculpture ?',
+        answer: "Le prix est calculé en temps réel à partir du volume réel de votre sculpture (hélice + cylindre + socle), de la densité du matériau choisi, du coût matière au kilogramme, de l'amortissement de la machine d'impression et des frais fixes de fabrication et d'emballage. Le détail s'affiche dans le studio avant toute commande.",
       },
     ],
   },
@@ -75,9 +134,53 @@ const FAQ_DATA = [
     icon: 'delivery',
     questions: [
       {
-        id: 'q3',
+        id: 'q8',
+        question: "Quelles sont les étapes d'une commande ?",
+        answer: "Une fois votre sculpture configurée, ajoutez-la au panier, renseignez votre adresse de livraison et validez. Votre commande passe ensuite par les statuts suivants : Reçue → En fabrication → Expédiée → Livrée. Vous pouvez suivre l'avancement à tout moment depuis « Mes commandes ».",
+      },
+      {
+        id: 'q9',
         question: 'Comment suivre ma commande ?',
-        answer: 'Vous pouvez suivre votre commande depuis votre espace personnel, dans la section "Mes commandes". Un e-mail vous sera également envoyé à chaque changement de statut.',
+        answer: 'Connectez-vous et rendez-vous dans « Mes commandes » pour consulter le statut en temps réel de chaque commande. Un e-mail vous est envoyé automatiquement à chaque changement de statut.',
+      },
+    ],
+  },
+  {
+    id: 'compte',
+    category: 'Compte & espace personnel',
+    icon: 'account',
+    questions: [
+      {
+        id: 'q10',
+        question: 'Faut-il un compte pour créer une sculpture ?',
+        answer: "Non. Le configurateur 3D est accessible sans inscription : vous pouvez importer un fichier audio, personnaliser la sculpture et voir l'estimation de prix librement. Un compte est uniquement nécessaire pour sauvegarder une création ou passer commande.",
+      },
+      {
+        id: 'q11',
+        question: 'Comment réinitialiser mon mot de passe ?',
+        answer: "Sur la page de connexion, cliquez sur « Mot de passe oublié » et renseignez votre adresse e-mail. Vous recevrez un lien de réinitialisation valable 1 heure. Si vous ne recevez pas l'e-mail, vérifiez vos spams.",
+      },
+      {
+        id: 'q12',
+        question: 'Puis-je supprimer mon compte ?',
+        answer: "Oui. Depuis votre page profil, une option vous permet de supprimer définitivement votre compte ainsi que toutes les données associées (sculptures, historique de commandes, adresses). Cette action est irréversible.",
+      },
+    ],
+  },
+  {
+    id: 'confidentialite',
+    category: 'Données & confidentialité',
+    icon: 'privacy',
+    questions: [
+      {
+        id: 'q13',
+        question: 'Mes fichiers audio sont-ils conservés ?',
+        answer: "Non. Vos fichiers audio sont utilisés uniquement pour générer la sculpture et ne sont pas stockés durablement sur nos serveurs. Conformément au RGPD, aucune donnée audio n'est conservée au-delà de la livraison de votre commande.",
+      },
+      {
+        id: 'q14',
+        question: 'Mes données bancaires sont-elles stockées ?',
+        answer: "Non. Echoras ne stocke aucune donnée bancaire. Le paiement est entièrement géré par un prestataire certifié PCI DSS. Vos informations de carte ne transitent jamais par nos serveurs.",
       },
     ],
   },
@@ -125,7 +228,11 @@ export default function FaqPage() {
         {FAQ_DATA.map(section => (
           <div key={section.id} className="faq-page__section">
             <div className="faq-page__section-header">
-              {section.icon === 'creation' ? <IconCreation /> : <IconDelivery />}
+              {section.icon === 'creation'  && <IconCreation />}
+              {section.icon === 'delivery'  && <IconDelivery />}
+              {section.icon === 'pricing'   && <IconPricing />}
+              {section.icon === 'account'   && <IconAccount />}
+              {section.icon === 'privacy'   && <IconPrivacy />}
               <h2 className="faq-page__section-title">{section.category}</h2>
             </div>
             <div className="faq-page__questions">
