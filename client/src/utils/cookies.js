@@ -1,6 +1,10 @@
-import tarteaucitron from 'tarteaucitronjs/tarteaucitron.js';
-
 export function initCookies() {
+  const tarteaucitron = window.tarteaucitron;
+  if (!tarteaucitron || typeof tarteaucitron.init !== 'function') {
+    console.warn('tarteaucitron not loaded');
+    return;
+  }
+
   tarteaucitron.init({
     privacyUrl:              '/confidentialite',
     bodyPosition:            'bottom',
