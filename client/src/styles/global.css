@@ -46,60 +46,52 @@ input[type="range"] {
 }
 
 /* ── Tarteaucitron – thème Echoras ───────────────────────────────────────── */
-#tarteaucitronRoot #tarteaucitron,
-#tarteaucitronRoot #tarteaucitronAlertBig {
-  background: #12121A !important;
-  color: #F0EDE6 !important;
+
+/* Tout l'espace tarteaucitron */
+#tarteaucitronRoot * {
   font-family: 'Manrope', sans-serif !important;
-  border-top: 1px solid #2a2a3a !important;
+  color: #F0EDE6 !important;
+  background: #1a1a26 !important;
+  border-color: #2a2a3a !important;
 }
 
+/* Overlay */
+#tarteaucitronBack {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Bannière basse */
 #tarteaucitronRoot #tarteaucitronAlertBig {
+  background: #12121A !important;
+  border-top: 1px solid #2a2a3a !important;
   padding: 20px 24px !important;
 }
 
-#tarteaucitronRoot #tarteaucitronAlertBig #tarteaucitronPrivacyUrl,
-#tarteaucitronRoot #tarteaucitronAlertBig #tarteaucitronPrivacyUrlDialog {
+/* Liens */
+#tarteaucitronRoot a,
+#tarteaucitronRoot #tarteaucitronPrivacyUrl,
+#tarteaucitronRoot #tarteaucitronPrivacyUrlDialog {
+  background: transparent !important;
   color: #C9863A !important;
   text-decoration: underline !important;
 }
 
-/* Boutons Accepter / Refuser */
+/* Tous les boutons : base orange */
+#tarteaucitronRoot button,
 #tarteaucitronRoot .tarteaucitronCTAButton,
 #tarteaucitronRoot #tarteaucitronPersonalize2,
-#tarteaucitronRoot #tarteaucitronAllDenied2 {
+#tarteaucitronRoot #tarteaucitronAllDenied2,
+#tarteaucitronRoot #tarteaucitronAllAllowed,
+#tarteaucitronRoot #tarteaucitronAllDenied,
+#tarteaucitronRoot #tarteaucitronSaveButton,
+#tarteaucitronRoot .tarteaucitronAllow,
+#tarteaucitronRoot .tarteaucitronDeny,
+#tarteaucitronRoot #tarteaucitronClosePanel {
   background: #C9863A !important;
   color: #12121A !important;
   border: none !important;
   border-radius: 6px !important;
-  font-family: 'Manrope', sans-serif !important;
   font-weight: 700 !important;
-  padding: 10px 20px !important;
-}
-
-#tarteaucitronRoot #tarteaucitronAllDenied2 {
-  background: transparent !important;
-  color: #F0EDE6 !important;
-  border: 1px solid #2a2a3a !important;
-}
-
-#tarteaucitronRoot #tarteaucitronAllDenied2:hover {
-  border-color: #C9863A !important;
-  color: #C9863A !important;
-}
-
-/* Panneau de gestion détaillé */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronH1,
-#tarteaucitronRoot #tarteaucitron .tarteaucitronH2,
-#tarteaucitronRoot #tarteaucitron .tarteaucitronH3 {
-  color: #F0EDE6 !important;
-  font-family: 'Epilogue', sans-serif !important;
-}
-
-#tarteaucitronRoot #tarteaucitron .tarteaucitronDetails,
-#tarteaucitronRoot #tarteaucitron #tarteaucitronServices .tarteaucitronDetails {
-  background: #1a1a26 !important;
-  color: #8888aa !important;
 }
 
 /* Icône flottante */
@@ -111,154 +103,4 @@ input[type="range"] {
 
 #tarteaucitronRoot #tarteaucitronIcon svg path {
   fill: #C9863A !important;
-}
-
-/* ── Modale détaillée ────────────────────────────────────────────────────── */
-
-/* Overlay / fond */
-#tarteaucitronBack {
-  background: rgba(0, 0, 0, 0.7) !important;
-}
-
-/* Panneau principal */
-#tarteaucitronRoot #tarteaucitron {
-  background: #1a1a26 !important;
-  color: #F0EDE6 !important;
-  border: 1px solid #2a2a3a !important;
-  border-radius: 12px !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6) !important;
-  font-family: 'Manrope', sans-serif !important;
-}
-
-/* Barre de titre */
-#tarteaucitronRoot #tarteaucitron #tarteaucitronClosePanel {
-  background: #12121A !important;
-  color: #F0EDE6 !important;
-  font-family: 'Manrope', sans-serif !important;
-  border-bottom: 1px solid #2a2a3a !important;
-  border-radius: 11px 11px 0 0 !important;
-  opacity: 1 !important;
-}
-
-/* Titre principal */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronH1 {
-  color: #F0EDE6 !important;
-  font-family: 'Epilogue', sans-serif !important;
-  font-weight: 700 !important;
-}
-
-/* Lien politique de confidentialité */
-#tarteaucitronRoot #tarteaucitron #tarteaucitronPrivacyUrl {
-  color: #C9863A !important;
-  text-decoration: underline !important;
-}
-
-/* Ligne séparatrice */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronBorderBottom,
-#tarteaucitronRoot #tarteaucitron hr {
-  border-color: #2a2a3a !important;
-}
-
-/* Zone "Préférences pour tous les services" */
-#tarteaucitronRoot #tarteaucitron #tarteaucitronServices_api {
-  background: #12121A !important;
-  border-bottom: 1px solid #2a2a3a !important;
-  color: #8888aa !important;
-}
-
-/* Titres de groupes de services (H3) */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronH3 {
-  background: #12121A !important;
-  color: #F0EDE6 !important;
-  font-family: 'Manrope', sans-serif !important;
-  font-weight: 700 !important;
-  border-bottom: 1px solid #2a2a3a !important;
-}
-
-/* Items de service */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronLine,
-#tarteaucitronRoot #tarteaucitron ul#tarteaucitronServices li {
-  background: #1a1a26 !important;
-  border-bottom: 1px solid #2a2a3a !important;
-  color: #F0EDE6 !important;
-}
-
-#tarteaucitronRoot #tarteaucitron .tarteaucitronLine:hover {
-  background: rgba(123, 94, 167, 0.08) !important;
-}
-
-/* Texte de description des services */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronDetails,
-#tarteaucitronRoot #tarteaucitron .tarteaucitronListCookies {
-  background: #12121A !important;
-  color: #8888aa !important;
-}
-
-/* Boutons Autoriser / Interdire par service */
-#tarteaucitronRoot #tarteaucitron .tarteaucitronAllow {
-  background: rgba(201, 134, 58, 0.15) !important;
-  color: #C9863A !important;
-  border: 1px solid rgba(201, 134, 58, 0.4) !important;
-  border-radius: 6px !important;
-  font-family: 'Manrope', sans-serif !important;
-  font-weight: 700 !important;
-}
-
-#tarteaucitronRoot #tarteaucitron .tarteaucitronAllow:hover {
-  background: #C9863A !important;
-  color: #12121A !important;
-}
-
-#tarteaucitronRoot #tarteaucitron .tarteaucitronDeny {
-  background: transparent !important;
-  color: #8888aa !important;
-  border: 1px solid #2a2a3a !important;
-  border-radius: 6px !important;
-  font-family: 'Manrope', sans-serif !important;
-  font-weight: 700 !important;
-}
-
-#tarteaucitronRoot #tarteaucitron .tarteaucitronDeny:hover {
-  border-color: #ff7070 !important;
-  color: #ff7070 !important;
-}
-
-/* Boutons globaux Tout accepter / Tout refuser */
-#tarteaucitronRoot #tarteaucitron #tarteaucitronAllAllowed,
-#tarteaucitronRoot #tarteaucitron .tarteaucitronCTAButton {
-  background: #C9863A !important;
-  color: #12121A !important;
-  border: none !important;
-  border-radius: 6px !important;
-  font-family: 'Manrope', sans-serif !important;
-  font-weight: 700 !important;
-}
-
-#tarteaucitronRoot #tarteaucitron #tarteaucitronAllDenied {
-  background: transparent !important;
-  color: #F0EDE6 !important;
-  border: 1px solid #2a2a3a !important;
-  border-radius: 6px !important;
-  font-family: 'Manrope', sans-serif !important;
-  font-weight: 700 !important;
-}
-
-#tarteaucitronRoot #tarteaucitron #tarteaucitronAllDenied:hover {
-  border-color: #C9863A !important;
-  color: #C9863A !important;
-}
-
-/* Bouton Enregistrer */
-#tarteaucitronRoot #tarteaucitron #tarteaucitronSaveButton {
-  background: #C9863A !important;
-  color: #12121A !important;
-  border: none !important;
-  border-radius: 6px !important;
-  font-family: 'Manrope', sans-serif !important;
-  font-weight: 700 !important;
-  padding: 10px 24px !important;
-}
-
-#tarteaucitronRoot #tarteaucitron #tarteaucitronSaveButton:hover {
-  background: #d9a060 !important;
 }
