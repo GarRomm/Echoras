@@ -1,4 +1,12 @@
 export function initCookies() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+}
+
+function run() {
   const tarteaucitron = window.tarteaucitron;
   if (!tarteaucitron || typeof tarteaucitron.init !== 'function') {
     console.warn('tarteaucitron not loaded');
@@ -31,10 +39,9 @@ export function initCookies() {
   });
 
   // Cookies de session (nécessaires — aucun consentement requis)
-  // Les cookies JWT HttpOnly sont des cookies techniques strictement nécessaires
-  // au fonctionnement du service. Ils sont exemptés de consentement (art. 82 LIL).
+  // Les cookies JWT HttpOnly sont exemptés de consentement (art. 82 LIL).
   tarteaucitron.job = tarteaucitron.job || [];
 
-  // Préparer Stripe (paiement — sera activé en v2)
+  // Stripe (paiement — sera activé en v2)
   // tarteaucitron.job.push('stripe');
 }
