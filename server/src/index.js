@@ -17,6 +17,7 @@ const sculpturesRoutes = require('./routes/sculptures');
 const adminRoutes      = require('./routes/admin');
 const ordersRoutes     = require('./routes/orders');
 const checkoutRoutes   = require('./routes/checkout');
+const contactRoutes    = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -52,6 +53,7 @@ app.use('/api/sculptures', sculpturesRoutes);
 app.use('/api/admin',     adminRoutes);
 app.use('/api/orders',    ordersRoutes);
 app.use('/api/checkout',  checkoutRoutes);
+app.use('/api/contact',   contactRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {

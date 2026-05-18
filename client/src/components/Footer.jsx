@@ -12,7 +12,7 @@ export default function Footer() {
         <nav className="footer__nav" aria-label="Liens légaux">
           <Link to="/mentions-legales" className="footer__nav-link">Mentions légales</Link>
           <Link to="/confidentialite" className="footer__nav-link">Confidentialité</Link>
-          <Link to="/faq" className="footer__nav-link">Contact</Link>
+          <Link to="/contact" className="footer__nav-link">Contact</Link>
         </nav>
         <span className="footer__copy">© {year} Echoras - Le Souvenir Musical</span>
       </div>
