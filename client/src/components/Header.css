@@ -22,7 +22,7 @@
 }
 
 .header__logo {
-  height: 36px;
+  height: 100px;
   width: auto;
   flex-shrink: 0;
 }
