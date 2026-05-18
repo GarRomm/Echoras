@@ -9,12 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/epilogue": "^5.2.8",
+    "@fontsource/manrope": "^5.2.8",
+    "@fontsource/montserrat": "^5.2.8",
+    "@fontsource/poppins": "^5.2.7",
     "@react-three/drei": "^9.92.1",
     "@react-three/fiber": "^8.15.12",
     "axios": "^1.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.13.2",
+    "tarteaucitronjs": "^1.32.0",
     "three": "^0.160.0"
   },
   "devDependencies": {

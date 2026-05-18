@@ -5,6 +5,19 @@ import { AuthProvider } from './context/AuthContext';
 import App from './App';
 import './styles/global.css';
 
+// Polices auto-hébergées (conformité CNIL — aucun transfert vers Google)
+import '@fontsource/epilogue/500.css';
+import '@fontsource/epilogue/700.css';
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/700.css';
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/500.css';
+
+import { initCookies } from './utils/cookies';
+initCookies();
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
