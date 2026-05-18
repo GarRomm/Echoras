@@ -21,14 +21,8 @@
   flex-shrink: 0;
 }
 
-.header__logo-cercle {
-  height: 38px;
-  width: auto;
-  flex-shrink: 0;
-}
-
-.header__logo-horizontal {
-  height: 24px;
+.header__logo {
+  height: 36px;
   width: auto;
   flex-shrink: 0;
 }
