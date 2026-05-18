@@ -47,7 +47,7 @@ input[type="range"] {
 
 /* ── Tarteaucitron – thème Echoras ───────────────────────────────────────── */
 
-/* Tout l'espace tarteaucitron */
+/* Base commune */
 #tarteaucitronRoot * {
   font-family: 'Manrope', sans-serif !important;
   color: #F0EDE6 !important;
@@ -55,14 +55,18 @@ input[type="range"] {
   border-color: #2a2a3a !important;
 }
 
-/* Overlay */
+/* Overlay flou */
 #tarteaucitronBack {
-  background: rgba(0, 0, 0, 0.7) !important;
+  background: rgba(18, 18, 26, 0.55) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
 /* Bannière basse */
 #tarteaucitronRoot #tarteaucitronAlertBig {
-  background: #12121A !important;
+  background: rgba(18, 18, 26, 0.92) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
   border-top: 1px solid #2a2a3a !important;
   padding: 20px 24px !important;
 }
@@ -76,22 +80,56 @@ input[type="range"] {
   text-decoration: underline !important;
 }
 
-/* Tous les boutons : base orange */
+/* Reset boutons – fond transparent par défaut */
 #tarteaucitronRoot button,
 #tarteaucitronRoot .tarteaucitronCTAButton,
+#tarteaucitronRoot .tarteaucitronAllow,
+#tarteaucitronRoot .tarteaucitronDeny,
 #tarteaucitronRoot #tarteaucitronPersonalize2,
 #tarteaucitronRoot #tarteaucitronAllDenied2,
 #tarteaucitronRoot #tarteaucitronAllAllowed,
 #tarteaucitronRoot #tarteaucitronAllDenied,
 #tarteaucitronRoot #tarteaucitronSaveButton,
-#tarteaucitronRoot .tarteaucitronAllow,
-#tarteaucitronRoot .tarteaucitronDeny,
 #tarteaucitronRoot #tarteaucitronClosePanel {
+  background: transparent !important;
+  color: #F0EDE6 !important;
+  border: 1px solid #2a2a3a !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+}
+
+/* Boutons CTA principaux – orange plein */
+#tarteaucitronRoot #tarteaucitronAllAllowed,
+#tarteaucitronRoot #tarteaucitronSaveButton,
+#tarteaucitronRoot .tarteaucitronAllow {
   background: #C9863A !important;
   color: #12121A !important;
   border: none !important;
-  border-radius: 6px !important;
   font-weight: 700 !important;
+}
+
+/* Bouton "Tout refuser" – outline orange discret */
+#tarteaucitronRoot #tarteaucitronAllDenied,
+#tarteaucitronRoot #tarteaucitronAllDenied2,
+#tarteaucitronRoot .tarteaucitronDeny {
+  background: transparent !important;
+  color: #C9863A !important;
+  border: 1px solid rgba(201, 134, 58, 0.4) !important;
+}
+
+/* Bouton "Personnaliser" (bannière basse) */
+#tarteaucitronRoot #tarteaucitronPersonalize2 {
+  background: transparent !important;
+  color: #F0EDE6 !important;
+  border: 1px solid #2a2a3a !important;
+}
+
+/* Bouton Fermer – outline neutre */
+#tarteaucitronRoot #tarteaucitronClosePanel {
+  background: transparent !important;
+  color: #8888aa !important;
+  border: 1px solid #2a2a3a !important;
+  font-size: 0.8rem !important;
 }
 
 /* Icône flottante */
