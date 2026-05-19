@@ -205,4 +205,10 @@
   .faq-page__contact-title {
     font-size: 26px;
   }
+
+  .faq-page__contact-btn {
+    width: 100%;
+    justify-content: center;
+    white-space: normal;
+  }
 }
