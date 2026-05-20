@@ -490,41 +490,12 @@ function CheckoutPage() {
                 </div>
               )}
 
-              {/* Apple Pay */}
-              <div className={`checkout__payment-row${paymentMethod === 'apple' ? ' checkout__payment-row--selected' : ''}`}>
-                <label className="checkout__payment-option">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="apple"
-                    checked={paymentMethod === 'apple'}
-                    onChange={() => setPaymentMethod('apple')}
-                  />
-                  <span className={`checkout__radio-indicator${paymentMethod === 'apple' ? ' checkout__radio-indicator--active' : ''}`} />
-                  <span className="checkout__payment-label">Apple Pay</span>
-                </label>
-                <svg width="50" height="20" viewBox="0 0 50 20" fill="none" aria-label="Apple Pay">
-                  <text x="0" y="15" fill="#fff" fontSize="13" fontFamily="-apple-system, sans-serif" fontWeight="600"> Pay</text>
+              {/* Badge Stripe */}
+              <div className="checkout__stripe-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 1L3 5v6c0 5.25 3.75 10.15 9 11.35C17.25 21.15 21 16.25 21 11V5l-9-4z" fill="#6772e5" />
                 </svg>
-              </div>
-
-              {/* PayPal */}
-              <div className={`checkout__payment-row checkout__payment-row--bottom${paymentMethod === 'paypal' ? ' checkout__payment-row--selected' : ''}`}>
-                <label className="checkout__payment-option">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="paypal"
-                    checked={paymentMethod === 'paypal'}
-                    onChange={() => setPaymentMethod('paypal')}
-                  />
-                  <span className={`checkout__radio-indicator${paymentMethod === 'paypal' ? ' checkout__radio-indicator--active' : ''}`} />
-                  <span className="checkout__payment-label">PayPal</span>
-                </label>
-                <svg width="60" height="20" viewBox="0 0 60 20" fill="none" aria-label="PayPal">
-                  <text x="0" y="15" fill="#009cde" fontSize="13" fontFamily="sans-serif" fontWeight="700">Pay</text>
-                  <text x="24" y="15" fill="#012169" fontSize="13" fontFamily="sans-serif" fontWeight="700">Pal</text>
-                </svg>
+                <span>Paiement 100% sécurisé — traité par <strong>Stripe</strong></span>
               </div>
 
             </div>
