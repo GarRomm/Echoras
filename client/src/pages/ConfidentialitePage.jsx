@@ -43,7 +43,7 @@ export default function ConfidentialitePage() {
               </tr>
               <tr>
                 <td><strong>Mot de passe</strong></td>
-                <td>Authentification (stocké chiffré via bcrypt — jamais en clair)</td>
+                <td>Authentification (stocké chiffré via bcrypt, jamais en clair)</td>
                 <td>Durée de vie du compte</td>
               </tr>
               <tr>
@@ -129,9 +129,10 @@ export default function ConfidentialitePage() {
               votre connexion.
             </li>
             <li>
-              <strong>Cookies optionnels</strong> : aucun cookie optionnel n'est actif à ce jour.
-              Si des services tiers devaient être ajoutés (ex : paiement en ligne), votre
-              consentement vous sera demandé via la bannière cookies.
+              <strong>Cookies de paiement</strong> : lors du processus de paiement, Stripe dépose
+              des cookies techniques nécessaires à la sécurisation de la transaction (détection de
+              fraude). Ces cookies sont considérés comme techniquement nécessaires à l'exécution
+              du contrat et sont exemptés de consentement au même titre que les cookies de session.
             </li>
           </ul>
           <p>

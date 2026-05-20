@@ -16,8 +16,8 @@ export default function MentionsLegalesPage() {
         <section className="legal-page__section">
           <h2 className="legal-page__section-title">1. Éditeur du site</h2>
           <p>
-            Le site Echoras (<strong>echoras.duckdns.org</strong>) est un projet étudiant réalisé dans le cadre
-            du cursus <strong>MyDigitalSchool Paris</strong> — promotion 2026.
+            Le site Echoras (<strong>echoras.dedyn.io</strong>) est un projet étudiant réalisé dans le cadre
+            du cursus <strong>MyDigitalSchool Paris</strong>, promotion 2026.
           </p>
           <p>Membres de l'équipe projet :</p>
           <ul>
