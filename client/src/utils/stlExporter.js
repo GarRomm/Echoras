@@ -1,5 +1,24 @@
 import * as THREE from 'three';
 
+// Three.js uses centimetre-scale units; slicers expect millimetres.
+const CM_TO_MM = 10;
+
+/**
+ * Convert a Three.js vertex (Y-up, cm) to slicer space (Z-up, mm).
+ * Rotation: (x, y, z) → (x, -z, y)  — equivalent to −90° around X.
+ * Mutates and returns the vector.
+ * @param {THREE.Vector3} v
+ * @returns {THREE.Vector3}
+ */
+function toSlicerCoords(v) {
+  const sx = v.x * CM_TO_MM;
+  const sy = v.y * CM_TO_MM;
+  const sz = v.z * CM_TO_MM;
+  // Y-up → Z-up: new_x = sx, new_y = -sz, new_z = sy
+  v.set(sx, -sz, sy);
+  return v;
+}
+
 /**
  * Export a THREE.BufferGeometry to a binary STL Blob.
  *
@@ -10,6 +29,8 @@ import * as THREE from 'three';
  *     12 bytes normal (3x float32)
  *     36 bytes vertices (3x3 float32)
  *      2 bytes attribute byte count (0)
+ *
+ * Coordinates are converted from Three.js Y-up (cm) to slicer Z-up (mm).
  *
  * @param {THREE.BufferGeometry} geometry
  * @returns {Blob}
@@ -42,11 +63,11 @@ export function exportSTLBinary(geometry) {
 
   for (let i = 0; i < triangleCount; i++) {
     const i3 = i * 3;
-    vA.fromBufferAttribute(positions, i3);
-    vB.fromBufferAttribute(positions, i3 + 1);
-    vC.fromBufferAttribute(positions, i3 + 2);
+    toSlicerCoords(vA.fromBufferAttribute(positions, i3));
+    toSlicerCoords(vB.fromBufferAttribute(positions, i3 + 1));
+    toSlicerCoords(vC.fromBufferAttribute(positions, i3 + 2));
 
-    // Compute face normal
+    // Compute face normal from transformed vertices
     cb.subVectors(vC, vB);
     ab.subVectors(vA, vB);
     normal.crossVectors(cb, ab).normalize();
@@ -82,6 +103,8 @@ export function exportSTLBinary(geometry) {
  * Export multiple THREE.BufferGeometry objects into a single binary STL Blob.
  * Merges all geometries by concatenating their triangle data.
  *
+ * Coordinates are converted from Three.js Y-up (cm) to slicer Z-up (mm).
+ *
  * @param {THREE.BufferGeometry[]} geometries
  * @returns {Blob}
  */
@@ -96,6 +119,18 @@ export function exportMultiGeometrySTL(geometries) {
     nonIndexedList.push(posAttr);
     totalTriangles += posAttr.count / 3;
   }
+
+  // First pass: find minimum Y across all vertices (= minimum Z after conversion).
+  // After toSlicerCoords, new_z = old_y * CM_TO_MM.
+  // We shift the model up so z_min = 0 (model sits on the print bed).
+  let minY = Infinity;
+  for (const posAttr of nonIndexedList) {
+    for (let i = 0; i < posAttr.count; i++) {
+      const y = posAttr.getY(i);
+      if (y < minY) minY = y;
+    }
+  }
+  const zLift = -minY * CM_TO_MM; // positive offset to bring z_min to 0
 
   const bufferLength = 80 + 4 + totalTriangles * 50;
   const buffer = new ArrayBuffer(bufferLength);
@@ -122,9 +157,14 @@ export function exportMultiGeometrySTL(geometries) {
     const triCount = posAttr.count / 3;
     for (let i = 0; i < triCount; i++) {
       const i3 = i * 3;
-      vA.fromBufferAttribute(posAttr, i3);
-      vB.fromBufferAttribute(posAttr, i3 + 1);
-      vC.fromBufferAttribute(posAttr, i3 + 2);
+      toSlicerCoords(vA.fromBufferAttribute(posAttr, i3));
+      toSlicerCoords(vB.fromBufferAttribute(posAttr, i3 + 1));
+      toSlicerCoords(vC.fromBufferAttribute(posAttr, i3 + 2));
+
+      // Lift so the bottom of the model rests on z = 0
+      vA.z += zLift;
+      vB.z += zLift;
+      vC.z += zLift;
 
       cb.subVectors(vC, vB);
       ab.subVectors(vA, vB);
