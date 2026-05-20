@@ -6,6 +6,7 @@ import {
   buildCentralCylinderGeometry,
   buildBaseGeometry,
   buildEngravingGeometry,
+  buildNameplateGeometry,
   loadFont,
 } from '../utils/waveformRing';
 import { useAuth } from '../context/AuthContext';
@@ -22,6 +23,8 @@ async function buildAllGeometries(waveformData, params) {
   geometries.push(buildHelixRibbonGeometry(waveformData, params));
   if (params.showBase) {
     geometries.push(buildBaseGeometry(params));
+    const nameplate = buildNameplateGeometry(params.artistName, params.songTitle, params);
+    if (nameplate) geometries.push(nameplate);
     const font = await loadFont().catch(() => null);
     const engraving = buildEngravingGeometry(params.artistName, params.songTitle, params, font);
     if (engraving) geometries.push(engraving);

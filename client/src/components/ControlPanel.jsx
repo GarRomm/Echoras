@@ -73,8 +73,10 @@ export default function ControlPanel({ params, onChange }) {
   useEffect(() => {
     const current = params.finishMode === 'brillant' ? PETG_COLORS : PLA_COLORS;
     const hexSet = new Set(current.map((c) => c.hex));
-    if (!hexSet.has(params.waveformColor)) onChange('waveformColor', current[0].hex);
-    if (!hexSet.has(params.cylinderColor)) onChange('cylinderColor', current[0].hex);
+    if (!hexSet.has(params.waveformColor))   onChange('waveformColor',   current[0].hex);
+    if (!hexSet.has(params.cylinderColor))   onChange('cylinderColor',   current[0].hex);
+    if (!hexSet.has(params.nameplateColor))  onChange('nameplateColor',  current[0].hex);
+    if (!hexSet.has(params.engravingColor))  onChange('engravingColor',  current[0].hex);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.finishMode]);
 
@@ -136,6 +138,18 @@ export default function ControlPanel({ params, onChange }) {
               maxLength={50}
             />
           </label>
+          <ColorPicker
+            label="Fond de l'encart"
+            value={params.nameplateColor}
+            onChange={(hex) => onChange('nameplateColor', hex)}
+            colors={palette}
+          />
+          <ColorPicker
+            label="Couleur du texte"
+            value={params.engravingColor}
+            onChange={(hex) => onChange('engravingColor', hex)}
+            colors={palette}
+          />
         </div>
       </div>
 

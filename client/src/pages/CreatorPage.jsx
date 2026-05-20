@@ -18,6 +18,8 @@ const DEFAULT_PARAMS = {
   ribbonWidth: 0.20,
   waveformColor: '#40E0D0',
   cylinderColor: '#FFFFFF',
+  nameplateColor: '#FFFFFF',
+  engravingColor: '#40E0D0',
   baseHeight: 1.2,
   showBase: true,
   finishMode: 'mat',

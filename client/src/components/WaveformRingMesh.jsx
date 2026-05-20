@@ -88,7 +88,7 @@ export default function WaveformRingMesh({ waveformData, params }) {
       {params.showBase && nameplateGeometry && (
         <mesh geometry={nameplateGeometry}>
           <meshStandardMaterial
-            color={params.cylinderColor}
+            color={params.nameplateColor}
             metalness={0}
             roughness={0.65}
           />
@@ -99,7 +99,7 @@ export default function WaveformRingMesh({ waveformData, params }) {
       {params.showBase && engravingGeometry && (
         <mesh geometry={engravingGeometry}>
           <meshStandardMaterial
-            color={params.waveformColor}
+            color={params.engravingColor}
             metalness={finish.metalness}
             roughness={finish.roughness}
           />
