@@ -39,9 +39,9 @@ export default function MentionsLegalesPage() {
             Le site est hébergé sur un serveur privé virtuel (VPS) fourni par :
           </p>
           <p>
-            <strong>IONOS SE</strong><br />
-            Elgendorfer Str. 57, 56410 Montabaur, Allemagne<br />
-            <a href="https://www.ionos.fr" target="_blank" rel="noopener noreferrer">www.ionos.fr</a>
+            <strong>Groupe LWS SARL</strong><br />
+            2 rue Jules Ferry, 88190 Golbey, France<br />
+            <a href="https://www.lws.fr" target="_blank" rel="noopener noreferrer">www.lws.fr</a>
           </p>
         </section>
 

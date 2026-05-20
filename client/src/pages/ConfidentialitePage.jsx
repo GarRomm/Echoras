@@ -94,7 +94,7 @@ export default function ConfidentialitePage() {
           </p>
           <ul>
             <li>
-              <strong>IONOS</strong> — hébergement du serveur (données stockées en Europe)
+              <strong>LWS (Groupe LWS SARL)</strong> — hébergement du serveur (données stockées en France)
             </li>
             <li>
               <strong>Resend</strong> — envoi des e-mails transactionnels (reset de mot de passe,
