@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import { useThree } from '@react-three/fiber';
 import {
   buildHelixRibbonGeometry,
   buildCentralCylinderGeometry,
@@ -12,6 +13,7 @@ const MAT      = { metalness: 0,    roughness: 0.88, envMapIntensity: 0.2 };
 const BRILLANT = { metalness: 0.05, roughness: 0.12, envMapIntensity: 1.8 };
 
 export default function WaveformRingMesh({ waveformData, params }) {
+  const { invalidate } = useThree();
   const finish = params.finishMode === 'brillant' ? BRILLANT : MAT;
   const helixGeometry = useMemo(() => {
     return buildHelixRibbonGeometry(waveformData, params);
@@ -27,6 +29,8 @@ export default function WaveformRingMesh({ waveformData, params }) {
 
   const [font, setFont] = useState(null);
   useEffect(() => { loadFont().then(setFont).catch(() => {}); }, []);
+  // Déclenche un re-render Three.js après que React a commité le chargement de la font
+  useEffect(() => { if (font) invalidate(); }, [font, invalidate]);
 
   const engravingGeometry = useMemo(() => {
     if (!params.showBase || !font) return null;
