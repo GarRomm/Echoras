@@ -14,3 +14,4 @@ python-service/venv/
 python-service/__pycache__/
 .DS_Store
 Thumbs.db
+DEPLOY_LOG.md

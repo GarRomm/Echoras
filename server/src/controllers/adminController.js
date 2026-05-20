@@ -4,6 +4,7 @@ const fs   = require('fs');
 const path = require('path');
 const { Op } = require('sequelize');
 const { Order, User, Sculpture, SculptureParams, Material, ShippingAddress } = require('../db/models/index');
+const { sendOrderStatusEmail } = require('../services/emailService');
 
 const VALID_STATUSES = ['pending', 'paid', 'fabrication', 'shipped', 'delivered'];
 
@@ -49,9 +50,22 @@ async function updateOrderStatus(req, res) {
     return res.status(400).json({ error: 'Statut invalide' });
   }
   try {
-    const order = await Order.findByPk(id);
+    const order = await Order.findByPk(id, {
+      include: [{ model: User, attributes: ['email', 'firstName'] }],
+    });
     if (!order) return res.status(404).json({ error: 'Commande introuvable' });
     await order.update({ status });
+
+    // Email de statut — fire-and-forget pour fabrication, shipped, delivered
+    if (order.User) {
+      sendOrderStatusEmail({
+        to:          order.User.email,
+        firstName:   order.User.firstName,
+        orderNumber: `#ECH-${String(order.id).padStart(4, '0')}`,
+        status,
+      }).catch(err => console.error('[email] sendOrderStatusEmail:', err));
+    }
+
     res.json({ id: order.id, status: order.status });
   } catch (err) {
     console.error('admin updateOrderStatus:', err);

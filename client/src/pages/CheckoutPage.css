@@ -375,9 +375,27 @@
 .checkout__card-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   padding: 20px;
   border-top: 1px solid rgba(240, 237, 230, 0.1);
+}
+
+.checkout__stripe-element {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(240, 237, 230, 0.15);
+  border-radius: 8px;
+  transition: border-color 0.15s;
+}
+
+.checkout__stripe-element:focus-within {
+  border-color: rgba(240, 237, 230, 0.45);
+}
+
+.checkout__card-error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin: 0;
 }
 
 /* ─── CTA ─── */

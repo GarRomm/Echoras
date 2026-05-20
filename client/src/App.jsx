@@ -21,6 +21,8 @@ import AdminPage from './pages/AdminPage';
 import GaleriePage from './pages/GaleriePage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import AdminOrderDetailPage from './pages/AdminOrderDetailPage';
+import MentionsLegalesPage from './pages/MentionsLegalesPage';
+import ConfidentialitePage from './pages/ConfidentialitePage';
 import './styles/App.css';
 
 export default function App() {
@@ -39,8 +41,8 @@ export default function App() {
           <Route path="/comment-ca-marche" element={<CommentCaMarchePage />} />
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/mentions-legales" element={<PlaceholderPage title="Mentions légales" />} />
-          <Route path="/confidentialite" element={<PlaceholderPage title="Politique de confidentialité" />} />
+          <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
+          <Route path="/confidentialite" element={<ConfidentialitePage />} />
 
           {/* Auth */}
           <Route path="/connexion" element={<LoginPage />} />

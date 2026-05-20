@@ -1,7 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { getCart } from '../services/cartService';
 import './CheckoutPage.css';
+
+const stripePromise = import.meta.env.VITE_STRIPE_PUBLIC_KEY
+  ? loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
+  : null;
+
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      color: '#ffffff',
+      fontFamily: '"Manrope", sans-serif',
+      fontSize: '14px',
+      fontSmoothing: 'antialiased',
+      '::placeholder': { color: '#888888' },
+    },
+    invalid: { color: '#ff6b6b', iconColor: '#ff6b6b' },
+  },
+};
 
 function CheckoutArticle({ item }) {
   const [imgFailed, setImgFailed] = useState(false);
@@ -41,7 +60,9 @@ function CheckoutArticle({ item }) {
   );
 }
 
-export default function CheckoutPage() {
+function CheckoutPage() {
+  const stripe = useStripe();
+  const elements = useElements();
   useEffect(() => { document.title = 'Commande — Echoras'; }, []);
 
   const navigate = useNavigate();
@@ -72,13 +93,7 @@ export default function CheckoutPage() {
 
   // Paiement
   const [paymentMethod, setPaymentMethod] = useState('card');
-  const [cardForm, setCardForm] = useState({
-    number: '',
-    expiry: '',
-    cvv: '',
-    holder: '',
-    billingAddress: false,
-  });
+  const [cardError, setCardError] = useState(null);
 
   // Code promo
   const [promoCode, setPromoCode] = useState('');
@@ -154,11 +169,6 @@ export default function CheckoutPage() {
     }
   }
 
-  function handleCardChange(e) {
-    const { name, value, type, checked } = e.target;
-    setCardForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-  }
-
   function getDeliveryDate(mode) {
     const days = mode === 'express' ? { min: 2, max: 4 } : { min: 5, max: 7 };
     const now = new Date();
@@ -174,15 +184,53 @@ export default function CheckoutPage() {
     e.preventDefault();
     setSubmitting(true);
     setSubmitError(null);
+    setCardError(null);
+
     try {
+      let paymentIntentId = null;
+
+      // Paiement par carte avec Stripe
+      if (paymentMethod === 'card' && stripe && elements) {
+        // 1. Créer le PaymentIntent côté serveur
+        const piRes = await fetch('/api/checkout/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ deliveryType: delivery }),
+        });
+        const piData = await piRes.json();
+        if (!piRes.ok) throw new Error(piData.error || 'Erreur de paiement');
+
+        // 2. Confirmer le paiement avec la carte Stripe
+        const cardElement = elements.getElement(CardElement);
+        const { error, paymentIntent } = await stripe.confirmCardPayment(piData.clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: `${form.firstName} ${form.lastName}`.trim(),
+              email: form.email,
+            },
+          },
+        });
+
+        if (error) {
+          setCardError(error.message);
+          setSubmitting(false);
+          return;
+        }
+        paymentIntentId = paymentIntent.id;
+      }
+
+      // 3. Créer la commande en base
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ ...form, deliveryType: delivery }),
+        body: JSON.stringify({ ...form, deliveryType: delivery, paymentIntentId }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur lors de la commande');
+
       navigate('/confirmation', {
         state: {
           orderNumber:   data.orderNumber,
@@ -425,60 +473,20 @@ export default function CheckoutPage() {
 
               {paymentMethod === 'card' && (
                 <div className="checkout__card-form">
-                  <div className="checkout__field checkout__field--full">
-                    <input
-                      className="checkout__input"
-                      name="number"
-                      placeholder="Numéro de carte"
-                      value={cardForm.number}
-                      onChange={handleCardChange}
-                      maxLength={19}
-                      autoComplete="cc-number"
+                  <div className="checkout__stripe-element">
+                    <CardElement
+                      options={CARD_ELEMENT_OPTIONS}
+                      onChange={() => setCardError(null)}
                     />
                   </div>
-                  <div className="checkout__row">
-                    <div className="checkout__field">
-                      <input
-                        className="checkout__input"
-                        name="expiry"
-                        placeholder="MM/AA"
-                        value={cardForm.expiry}
-                        onChange={handleCardChange}
-                        maxLength={5}
-                        autoComplete="cc-exp"
-                      />
-                    </div>
-                    <div className="checkout__field">
-                      <input
-                        className="checkout__input"
-                        name="cvv"
-                        placeholder="CVV"
-                        value={cardForm.cvv}
-                        onChange={handleCardChange}
-                        maxLength={4}
-                        autoComplete="cc-csc"
-                      />
-                    </div>
-                  </div>
-                  <div className="checkout__field checkout__field--full">
-                    <input
-                      className="checkout__input"
-                      name="holder"
-                      placeholder="Nom du titulaire"
-                      value={cardForm.holder}
-                      onChange={handleCardChange}
-                      autoComplete="cc-name"
-                    />
-                  </div>
-                  <label className="checkout__checkbox-row checkout__checkbox-row--light">
-                    <input
-                      type="checkbox"
-                      name="billingAddress"
-                      checked={cardForm.billingAddress}
-                      onChange={handleCardChange}
-                    />
-                    <span>Utiliser l'adresse d'expédition comme adresse de facturation</span>
-                  </label>
+                  {cardError && (
+                    <p className="checkout__card-error" role="alert">{cardError}</p>
+                  )}
+                  {!stripe && (
+                    <p className="checkout__card-error">
+                      Stripe non configuré — ajoutez VITE_STRIPE_PUBLIC_KEY dans client/.env
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -584,5 +592,13 @@ export default function CheckoutPage() {
 
       </form>
     </div>
+  );
+}
+
+export default function CheckoutPageWrapper() {
+  return (
+    <Elements stripe={stripePromise} options={{ locale: 'fr' }}>
+      <CheckoutPage />
+    </Elements>
   );
 }

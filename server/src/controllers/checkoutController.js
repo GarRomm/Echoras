@@ -1,14 +1,40 @@
 'use strict';
 
 const sequelize = require('../db/index');
-const { Cart, CartItem, Sculpture, Order, ShippingAddress } = require('../db/models/index');
+const { Cart, CartItem, Sculpture, Order, ShippingAddress, User } = require('../db/models/index');
+const { sendOrderConfirmationEmail } = require('../services/emailService');
 
 const DELIVERY_FEE_EXPRESS = 8;
+
+async function verifyPayment(paymentIntentId) {
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  if (!stripeKey || stripeKey === 'sk_test_...') return; // pas de clé → on laisse passer en dev
+  const stripe = require('stripe')(stripeKey);
+  const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  if (intent.status !== 'succeeded') {
+    throw Object.assign(new Error('Paiement non complété'), { status: 402 });
+  }
+}
 
 async function placeOrder(req, res) {
   const t = await sequelize.transaction();
   try {
-    const { firstName, lastName, phone, address, postalCode, city, country, deliveryType } = req.body;
+    const { firstName, lastName, phone, address, postalCode, city, country, deliveryType, paymentIntentId } = req.body;
+
+    // Vérification Stripe si une clé est configurée
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (stripeKey && stripeKey !== 'sk_test_...') {
+      if (!paymentIntentId) {
+        await t.rollback();
+        return res.status(400).json({ error: 'Identifiant de paiement manquant' });
+      }
+      try {
+        await verifyPayment(paymentIntentId);
+      } catch (err) {
+        await t.rollback();
+        return res.status(err.status || 402).json({ error: err.message });
+      }
+    }
 
     if (!address || !postalCode || !city) {
       await t.rollback();
@@ -74,6 +100,17 @@ async function placeOrder(req, res) {
     await t.commit();
 
     const total = createdOrders.reduce((s, o) => s + o.price, 0);
+
+    // Email de confirmation — fire-and-forget, ne bloque pas la réponse
+    const user = await User.findByPk(req.user.id, { attributes: ['email', 'firstName'] });
+    if (user) {
+      sendOrderConfirmationEmail({
+        to:        user.email,
+        firstName: user.firstName,
+        orders:    createdOrders,
+        total,
+      }).catch(err => console.error('[email] sendOrderConfirmationEmail:', err));
+    }
 
     res.json({
       orders:        createdOrders,
