@@ -6,6 +6,7 @@ import {
   buildCentralCylinderGeometry,
   buildBaseGeometry,
   buildEngravingGeometry,
+  buildNameplateGeometry,
   loadFont,
 } from '../utils/waveformRing';
 
@@ -37,11 +38,17 @@ export default function WaveformRingMesh({ waveformData, params }) {
     return buildEngravingGeometry(params.artistName, params.songTitle, params, font);
   }, [font, params]);
 
+  const nameplateGeometry = useMemo(() => {
+    if (!params.showBase) return null;
+    return buildNameplateGeometry(params.artistName, params.songTitle, params);
+  }, [params]);
+
   // Libère la VRAM à chaque changement de géométrie pour éviter les context lost
   useEffect(() => () => helixGeometry.dispose(), [helixGeometry]);
   useEffect(() => () => cylinderGeometry.dispose(), [cylinderGeometry]);
   useEffect(() => () => baseGeometry.dispose(), [baseGeometry]);
   useEffect(() => () => engravingGeometry?.dispose(), [engravingGeometry]);
+  useEffect(() => () => nameplateGeometry?.dispose(), [nameplateGeometry]);
 
   return (
     <group>
@@ -77,7 +84,18 @@ export default function WaveformRingMesh({ waveformData, params }) {
         </mesh>
       )}
 
-      {/* Raised text engraving on top of base */}
+      {/* Flat nameplate backing plate — bridges the gap between curved base and flat text */}
+      {params.showBase && nameplateGeometry && (
+        <mesh geometry={nameplateGeometry}>
+          <meshStandardMaterial
+            color={params.cylinderColor}
+            metalness={0}
+            roughness={0.65}
+          />
+        </mesh>
+      )}
+
+      {/* Raised text engraving on top of nameplate */}
       {params.showBase && engravingGeometry && (
         <mesh geometry={engravingGeometry}>
           <meshStandardMaterial
