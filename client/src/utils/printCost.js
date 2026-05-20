@@ -1,12 +1,14 @@
-const PRINT_SPEED_CM3_H = 25;  // Bambu P1S / Prusa MK4 en mode qualité
-const INFILL_FACTOR     = 0.15; // 15 % gyroïde — parois extérieures + remplissage sparse
+const PRINT_SPEED_CM3_H = 25;   // Bambu P1S / Prusa MK4 en mode qualité
+const INFILL_FACTOR     = 0.15;  // 15 % gyroïde — parois extérieures + remplissage sparse
+const MACHINE_RATE      = 0.35;  // €/h — amortissement imprimante + électricité
 
-// Frais fixes par pièce : traitement audio, création du modèle, QC, packaging, SAV, marge artisanale
-const LABOR_BASE      = 43;  // € — finition mat
-const BRILLANT_PREMIUM = 14; // € — surcoût finition brillant (post-traitement + matière premium)
+// Frais fixes par pièce : packaging, main d'œuvre (QC + emballage ~20 min), frais plateforme, marge Echoras
+const LABOR_BASE       = 28;  // € — finition mat
+const BRILLANT_PREMIUM =  9;  // € — surcoût finition brillant (post-traitement + matière PETG premium)
 
 export function computePrintCost(params, laborBase) {
   const LABOR_BASE_RESOLVED = laborBase ?? LABOR_BASE;
+
   // Hélix : ruban fin → 100 % plein, correction peakHeight (~12 % de volume par unité)
   const helixLength = params.helixTurns * 2 * Math.PI * params.cylinderRadius;
   const helixVolume =
@@ -29,7 +31,7 @@ export function computePrintCost(params, laborBase) {
 
   const materialCost = (totalVolume * density / 1000) * pricePerKg;
   const printHours   = (cylVolumeEffective + helixVolume + baseVolume) * 1.2 / PRINT_SPEED_CM3_H;
-  const machineCost  = printHours * 0.07; // amortissement + électricité
+  const machineCost  = printHours * MACHINE_RATE;
 
   // Coût fixe : main d'œuvre + overhead + finition
   const laborCost = LABOR_BASE_RESOLVED + (isBrillant ? BRILLANT_PREMIUM : 0);

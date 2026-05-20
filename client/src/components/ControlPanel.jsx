@@ -108,6 +108,42 @@ export default function ControlPanel({ params, onChange }) {
         </div>
       </div>
 
+      {/* Section couleurs */}
+      <div className="controls__section">
+        <h3 className="controls__title">Couleurs</h3>
+        <div className="controls__fields">
+          <div className="controls__field">
+            <div className="controls__field-header">
+              <span className="controls__field-label">Finition</span>
+            </div>
+            <div className="controls__finish-toggle">
+              <button
+                className={`controls__finish-btn${params.finishMode === 'mat' ? ' controls__finish-btn--active' : ''}`}
+                onClick={() => onChange('finishMode', 'mat')}
+                type="button"
+              >Mat</button>
+              <button
+                className={`controls__finish-btn${params.finishMode === 'brillant' ? ' controls__finish-btn--active' : ''}`}
+                onClick={() => onChange('finishMode', 'brillant')}
+                type="button"
+              >Brillant</button>
+            </div>
+          </div>
+          <ColorPicker
+            label="Couleur de l'onde"
+            value={params.waveformColor}
+            onChange={(hex) => onChange('waveformColor', hex)}
+            colors={palette}
+          />
+          <ColorPicker
+            label="Couleur du cylindre"
+            value={params.cylinderColor}
+            onChange={(hex) => onChange('cylinderColor', hex)}
+            colors={palette}
+          />
+        </div>
+      </div>
+
       {/* Section gravure */}
       <div className="controls__section">
         <h3 className="controls__title">Gravure sur socle</h3>
@@ -148,42 +184,6 @@ export default function ControlPanel({ params, onChange }) {
             label="Couleur du texte"
             value={params.engravingColor}
             onChange={(hex) => onChange('engravingColor', hex)}
-            colors={palette}
-          />
-        </div>
-      </div>
-
-      {/* Section couleurs */}
-      <div className="controls__section">
-        <h3 className="controls__title">Couleurs</h3>
-        <div className="controls__fields">
-          <div className="controls__field">
-            <div className="controls__field-header">
-              <span className="controls__field-label">Finition</span>
-            </div>
-            <div className="controls__finish-toggle">
-              <button
-                className={`controls__finish-btn${params.finishMode === 'mat' ? ' controls__finish-btn--active' : ''}`}
-                onClick={() => onChange('finishMode', 'mat')}
-                type="button"
-              >Mat</button>
-              <button
-                className={`controls__finish-btn${params.finishMode === 'brillant' ? ' controls__finish-btn--active' : ''}`}
-                onClick={() => onChange('finishMode', 'brillant')}
-                type="button"
-              >Brillant</button>
-            </div>
-          </div>
-          <ColorPicker
-            label="Couleur de l'onde"
-            value={params.waveformColor}
-            onChange={(hex) => onChange('waveformColor', hex)}
-            colors={palette}
-          />
-          <ColorPicker
-            label="Couleur du cylindre"
-            value={params.cylinderColor}
-            onChange={(hex) => onChange('cylinderColor', hex)}
             colors={palette}
           />
         </div>
