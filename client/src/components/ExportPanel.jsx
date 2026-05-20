@@ -5,6 +5,8 @@ import {
   buildHelixRibbonGeometry,
   buildCentralCylinderGeometry,
   buildBaseGeometry,
+  buildEngravingGeometry,
+  loadFont,
 } from '../utils/waveformRing';
 import { useAuth } from '../context/AuthContext';
 import { computePrintCost } from '../utils/printCost';
@@ -14,12 +16,15 @@ import { saveModel } from '../services/modelService';
 import { triggerRender } from '../services/renderService';
 import './ExportPanel.css';
 
-function buildAllGeometries(waveformData, params) {
+async function buildAllGeometries(waveformData, params) {
   const geometries = [];
   geometries.push(buildCentralCylinderGeometry(params));
   geometries.push(buildHelixRibbonGeometry(waveformData, params));
   if (params.showBase) {
     geometries.push(buildBaseGeometry(params));
+    const font = await loadFont().catch(() => null);
+    const engraving = buildEngravingGeometry(params.artistName, params.songTitle, params, font);
+    if (engraving) geometries.push(engraving);
   }
   return geometries;
 }
@@ -73,8 +78,8 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     ? audioFileName.replace(/\.[^.]+$/, '') + '.stl'
     : 'echoras-model.stl';
 
-  const handleExportSTL = useCallback(() => {
-    const geometries = buildAllGeometries(waveformData, params);
+  const handleExportSTL = useCallback(async () => {
+    const geometries = await buildAllGeometries(waveformData, params);
     const blob = exportMultiGeometrySTL(geometries);
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -155,7 +160,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       onSaved?.(res.id);
 
       if (waveformData && res.id) {
-        const geometries = buildAllGeometries(waveformData, params);
+        const geometries = await buildAllGeometries(waveformData, params);
         const stlBlob = exportMultiGeometrySTL(geometries);
         stlBlob.arrayBuffer().then(buffer => {
           fetch(`/api/sculptures/${res.id}/stl`, {
