@@ -45,8 +45,8 @@ function init() {
   });
 
   // JWT HttpOnly — cookies techniques nécessaires, exemptés de consentement (art. 82 LIL)
+  // Stripe — cookies de détection de fraude nécessaires à la transaction de paiement,
+  // exemptés de consentement (même base légale). Stripe est chargé via @stripe/stripe-js
+  // directement dans CheckoutPage, pas via tarteaucitron.job.
   tarteaucitron.job = tarteaucitron.job || [];
-
-  // Stripe activé en v2 :
-  // tarteaucitron.job.push('stripe');
 }
