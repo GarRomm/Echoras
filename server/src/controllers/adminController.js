@@ -210,4 +210,4 @@ async function deleteOrder(req, res) {
   }
 }
 
-module.exports = { getStats, getOrders, updateOrderStatus, getOrderDetail, deleteOrder, downloadStl };
+module.exports = { getStats, getOrders, updateOrderStatus, getOrderDetail, deleteOrder, downloadStl, download3mf };
