@@ -14,6 +14,7 @@ router.post('/', authJWT, sculpturesController.createSculpture);
 router.get('/', authJWT, sculpturesController.getSculptures);
 router.post('/:id/screenshot', authJWT, sculpturesController.saveScreenshot);
 router.post('/:id/stl/:suffix', authJWT, express.raw({ type: 'application/octet-stream', limit: '100mb' }), sculpturesController.saveStl);
+router.post('/:id/3mf', authJWT, express.raw({ type: 'application/octet-stream', limit: '100mb' }), sculpturesController.save3mf);
 router.delete('/:id', authJWT, sculpturesController.deleteSculpture);
 
 module.exports = router;

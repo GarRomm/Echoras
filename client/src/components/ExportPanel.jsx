@@ -40,21 +40,10 @@ async function buildSeparatedGeometries(waveformData, params) {
   return { waveformGeos, bodyGeos, plaqueGeos };
 }
 
-function downloadBlob(blob, filename, delayMs = 0) {
-  setTimeout(() => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-  }, delayMs);
-}
 
 export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, resumedMaterialId, onSaved, getCanvasDataUrl }) {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const isAdmin = user?.role === 'ADMIN';
 
   // États rendu photoréaliste
   const [renderStatus, setRenderStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
@@ -95,31 +84,6 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
 
   // État ajout panier
   const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
-
-  const handleExportSTL = useCallback(async () => {
-    const { waveformGeos, bodyGeos, plaqueGeos } = await buildSeparatedGeometries(waveformData, params);
-    const baseName = (audioFileName ? audioFileName.replace(/\.[^.]+$/, '') : 'echoras-model');
-    // All files share the same zLift so they align when imported together in the slicer
-    const zLift = computeZLift([...waveformGeos, ...bodyGeos, ...plaqueGeos]);
-    downloadBlob(exportMultiGeometrySTL(waveformGeos, zLift), baseName + '_waveform.stl', 0);
-    downloadBlob(exportMultiGeometrySTL(bodyGeos, zLift), baseName + '_corps.stl', 300);
-    if (plaqueGeos.length > 0) {
-      downloadBlob(exportMultiGeometrySTL(plaqueGeos, zLift), baseName + '_plaque.stl', 600);
-    }
-  }, [waveformData, params, audioFileName]);
-
-  const handleExport3MF = useCallback(async () => {
-    const { waveformGeos, bodyGeos, plaqueGeos } = await buildSeparatedGeometries(waveformData, params);
-    const zLift = computeZLift([...waveformGeos, ...bodyGeos, ...plaqueGeos]);
-    const parts = [
-      { geometries: waveformGeos, color: params.waveformColor || '#888888' },
-      { geometries: bodyGeos,     color: params.cylinderColor || '#444444' },
-    ];
-    if (plaqueGeos.length > 0) parts.push({ geometries: plaqueGeos, color: params.cylinderColor || '#444444' });
-    const baseName = audioFileName ? audioFileName.replace(/\.[^.]+$/, '') : 'echoras-model';
-    const blob = await export3MF(parts, zLift);
-    downloadBlob(blob, baseName + '.3mf', 0);
-  }, [waveformData, params, audioFileName]);
 
   const handleRender = useCallback(async () => {
     try {
@@ -206,6 +170,22 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         uploadStl(exportMultiGeometrySTL(waveformGeos, zLift), 'waveform');
         uploadStl(exportMultiGeometrySTL(bodyGeos, zLift), 'corps');
         if (plaqueGeos.length > 0) uploadStl(exportMultiGeometrySTL(plaqueGeos, zLift), 'plaque');
+
+        const parts3mf = [
+          { geometries: waveformGeos, color: params.waveformColor || '#888888' },
+          { geometries: bodyGeos,     color: params.cylinderColor || '#444444' },
+        ];
+        if (plaqueGeos.length > 0) parts3mf.push({ geometries: plaqueGeos, color: params.cylinderColor || '#444444' });
+        export3MF(parts3mf, zLift).then(blob =>
+          blob.arrayBuffer().then(buffer =>
+            fetch(`/api/sculptures/${res.id}/3mf`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/octet-stream' },
+              body: buffer,
+            }).catch(err => console.error('[3mf upload]', err))
+          )
+        );
       }
 
       if (canvasDataUrl && res.id) {
@@ -262,18 +242,6 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         {renderStatus === 'done' && 'Nouveau rendu'}
         {!renderStatus && 'Rendu photoréaliste'}
       </button>
-
-      {/* Téléchargements (admin uniquement) */}
-      {isAdmin && (
-        <>
-          <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
-            Télécharger STL (3 fichiers)
-          </button>
-          <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExport3MF}>
-            Télécharger 3MF
-          </button>
-        </>
-      )}
 
       {/* Sauvegarde draft */}
       {user && (

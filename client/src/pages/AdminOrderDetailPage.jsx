@@ -462,11 +462,14 @@ export default function AdminOrderDetailPage() {
                           <a href={`/api/admin/orders/${id}/stl/plaque`} className="aod__action-btn" download>
                             <IconDownload /> STL Plaque
                           </a>
+                          <a href={`/api/admin/orders/${id}/3mf`} className="aod__action-btn" download>
+                            <IconDownload /> 3MF (multi-couleur)
+                          </a>
                         </>
                       ) : (
-                        <button className="aod__action-btn" disabled title="STL non disponible">
+                        <button className="aod__action-btn" disabled title="Fichiers non disponibles">
                           <IconDownload />
-                          Télécharger le STL
+                          Fichiers non disponibles
                         </button>
                       )}
 

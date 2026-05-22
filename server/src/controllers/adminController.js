@@ -179,6 +179,25 @@ async function downloadStl(req, res) {
   }
 }
 
+async function download3mf(req, res) {
+  try {
+    const { id } = req.params;
+    const order = await Order.findByPk(id, {
+      include: [{ model: Sculpture, attributes: ['id', 'name', 'stlFilePath'] }],
+    });
+    if (!order) return res.status(404).json({ error: 'Commande introuvable' });
+    const stlPath = order.Sculpture?.stlFilePath;
+    if (!stlPath) return res.status(404).json({ error: 'Fichier 3MF non disponible' });
+    const threeMfPath = path.join(path.dirname(stlPath), `sculpture_${order.Sculpture.id}.3mf`);
+    if (!fs.existsSync(threeMfPath)) return res.status(404).json({ error: 'Fichier 3MF non disponible' });
+    const safeName = (order.Sculpture.name || `commande-${id}`).replace(/[^a-z0-9\-_]/gi, '_');
+    res.download(threeMfPath, `${safeName}.3mf`);
+  } catch (err) {
+    console.error('admin download3mf:', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
 async function deleteOrder(req, res) {
   try {
     const order = await Order.findByPk(req.params.id);

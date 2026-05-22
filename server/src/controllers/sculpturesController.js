@@ -208,4 +208,18 @@ async function saveStl(req, res) {
   }
 }
 
-module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials, saveScreenshot, saveStl };
+async function save3mf(req, res) {
+  try {
+    const { id } = req.params;
+    const sculpture = await Sculpture.findOne({ where: { id, userId: req.user.id } });
+    if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
+    fs.mkdirSync(STL_DIR, { recursive: true });
+    fs.writeFileSync(path.join(STL_DIR, `sculpture_${id}.3mf`), req.body);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[POST /api/sculptures/:id/3mf]', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
+
+module.exports = { createSculpture, getSculptures, deleteSculpture, getPublicGallery, getMaterials, saveScreenshot, saveStl, save3mf };
