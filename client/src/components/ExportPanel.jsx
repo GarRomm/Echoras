@@ -17,21 +17,6 @@ import { saveModel } from '../services/modelService';
 import { triggerRender } from '../services/renderService';
 import './ExportPanel.css';
 
-async function buildAllGeometries(waveformData, params) {
-  const geometries = [];
-  geometries.push(buildCentralCylinderGeometry(params));
-  geometries.push(buildHelixRibbonGeometry(waveformData, params));
-  if (params.showBase) {
-    geometries.push(buildBaseGeometry(params));
-    const nameplate = buildNameplateGeometry(params.artistName, params.songTitle, params);
-    if (nameplate) geometries.push(nameplate);
-    const font = await loadFont().catch(() => null);
-    const engraving = buildEngravingGeometry(params.artistName, params.songTitle, params, font);
-    if (engraving) geometries.push(engraving);
-  }
-  return geometries;
-}
-
 // Returns { waveformGeos, bodyGeos, plaqueGeos } — three groups for multi-color export.
 // waveformGeos → helix ribbon (color 1)
 // bodyGeos     → cylinder + base (color 2)
@@ -54,13 +39,15 @@ async function buildSeparatedGeometries(waveformData, params) {
   return { waveformGeos, bodyGeos, plaqueGeos };
 }
 
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+function downloadBlob(blob, filename, delayMs = 0) {
+  setTimeout(() => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, delayMs);
 }
 
 export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, resumedMaterialId, onSaved, getCanvasDataUrl }) {
@@ -113,10 +100,10 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     const baseName = (audioFileName ? audioFileName.replace(/\.[^.]+$/, '') : 'echoras-model');
     // All files share the same zLift so they align when imported together in the slicer
     const zLift = computeZLift([...waveformGeos, ...bodyGeos, ...plaqueGeos]);
-    downloadBlob(exportMultiGeometrySTL(waveformGeos, zLift), baseName + '_waveform.stl');
-    downloadBlob(exportMultiGeometrySTL(bodyGeos, zLift), baseName + '_corps.stl');
+    downloadBlob(exportMultiGeometrySTL(waveformGeos, zLift), baseName + '_waveform.stl', 0);
+    downloadBlob(exportMultiGeometrySTL(bodyGeos, zLift), baseName + '_corps.stl', 300);
     if (plaqueGeos.length > 0) {
-      downloadBlob(exportMultiGeometrySTL(plaqueGeos, zLift), baseName + '_plaque.stl');
+      downloadBlob(exportMultiGeometrySTL(plaqueGeos, zLift), baseName + '_plaque.stl', 600);
     }
   }, [waveformData, params, audioFileName]);
 
@@ -191,16 +178,20 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
       onSaved?.(res.id);
 
       if (waveformData && res.id) {
-        const geometries = await buildAllGeometries(waveformData, params);
-        const stlBlob = exportMultiGeometrySTL(geometries);
-        stlBlob.arrayBuffer().then(buffer => {
-          fetch(`/api/sculptures/${res.id}/stl`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/octet-stream' },
-            body: buffer,
-          }).catch(err => console.error('[stl upload]', err));
-        });
+        const { waveformGeos, bodyGeos, plaqueGeos } = await buildSeparatedGeometries(waveformData, params);
+        const zLift = computeZLift([...waveformGeos, ...bodyGeos, ...plaqueGeos]);
+        const uploadStl = (blob, suffix) =>
+          blob.arrayBuffer().then(buffer =>
+            fetch(`/api/sculptures/${res.id}/stl/${suffix}`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/octet-stream' },
+              body: buffer,
+            }).catch(err => console.error(`[stl upload ${suffix}]`, err))
+          );
+        uploadStl(exportMultiGeometrySTL(waveformGeos, zLift), 'waveform');
+        uploadStl(exportMultiGeometrySTL(bodyGeos, zLift), 'corps');
+        if (plaqueGeos.length > 0) uploadStl(exportMultiGeometrySTL(plaqueGeos, zLift), 'plaque');
       }
 
       if (canvasDataUrl && res.id) {

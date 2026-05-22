@@ -145,17 +145,34 @@ async function getOrderDetail(req, res) {
 
 async function downloadStl(req, res) {
   try {
-    const order = await Order.findByPk(req.params.id, {
+    const { id, suffix } = req.params;
+    const validSuffixes = ['waveform', 'corps', 'plaque'];
+    if (!validSuffixes.includes(suffix)) return res.status(400).json({ error: 'Suffix invalide' });
+
+    const order = await Order.findByPk(id, {
       include: [{ model: Sculpture, attributes: ['id', 'name', 'stlFilePath'] }],
     });
     if (!order) return res.status(404).json({ error: 'Commande introuvable' });
+
     const stlPath = order.Sculpture?.stlFilePath;
-    if (!stlPath || !fs.existsSync(stlPath)) {
+    if (!stlPath) return res.status(404).json({ error: 'Fichier STL non disponible' });
+
+    // New format: sculpture_123_waveform.stl — dérive les autres suffixes
+    // Legacy format: sculpture_123.stl — seul waveform disponible
+    let targetPath;
+    if (stlPath.endsWith('_waveform.stl')) {
+      targetPath = stlPath.replace('_waveform.stl', `_${suffix}.stl`);
+    } else {
+      targetPath = suffix === 'waveform' ? stlPath : null;
+    }
+
+    if (!targetPath || !fs.existsSync(targetPath)) {
       return res.status(404).json({ error: 'Fichier STL non disponible' });
     }
-    const safeName = (order.Sculpture.name || `commande-${order.id}`)
+
+    const safeName = (order.Sculpture.name || `commande-${id}`)
       .replace(/[^a-z0-9\-_]/gi, '_');
-    res.download(stlPath, `${safeName}.stl`);
+    res.download(targetPath, `${safeName}_${suffix}.stl`);
   } catch (err) {
     console.error('admin downloadStl:', err);
     res.status(500).json({ error: 'Erreur serveur' });

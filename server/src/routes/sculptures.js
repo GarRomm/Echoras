@@ -13,7 +13,7 @@ router.get('/materials', sculpturesController.getMaterials);
 router.post('/', authJWT, sculpturesController.createSculpture);
 router.get('/', authJWT, sculpturesController.getSculptures);
 router.post('/:id/screenshot', authJWT, sculpturesController.saveScreenshot);
-router.post('/:id/stl', authJWT, express.raw({ type: 'application/octet-stream', limit: '100mb' }), sculpturesController.saveStl);
+router.post('/:id/stl/:suffix', authJWT, express.raw({ type: 'application/octet-stream', limit: '100mb' }), sculpturesController.saveStl);
 router.delete('/:id', authJWT, sculpturesController.deleteSculpture);
 
 module.exports = router;

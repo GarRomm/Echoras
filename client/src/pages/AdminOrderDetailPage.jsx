@@ -452,14 +452,17 @@ export default function AdminOrderDetailPage() {
                     <h3 className="aod__panel-title">Actions</h3>
                     <div className="aod__actions">
                       {order.sculpture?.hasStl ? (
-                        <a
-                          href={`/api/admin/orders/${id}/stl`}
-                          className="aod__action-btn"
-                          download
-                        >
-                          <IconDownload />
-                          Télécharger le STL
-                        </a>
+                        <>
+                          <a href={`/api/admin/orders/${id}/stl/waveform`} className="aod__action-btn" download>
+                            <IconDownload /> STL Waveform
+                          </a>
+                          <a href={`/api/admin/orders/${id}/stl/corps`} className="aod__action-btn" download>
+                            <IconDownload /> STL Corps
+                          </a>
+                          <a href={`/api/admin/orders/${id}/stl/plaque`} className="aod__action-btn" download>
+                            <IconDownload /> STL Plaque
+                          </a>
+                        </>
                       ) : (
                         <button className="aod__action-btn" disabled title="STL non disponible">
                           <IconDownload />

@@ -11,7 +11,7 @@ router.get('/stats', getStats);
 router.get('/orders', getOrders);
 router.get('/orders/:id', getOrderDetail);
 router.put('/orders/:id/status', updateOrderStatus);
-router.get('/orders/:id/stl', downloadStl);
+router.get('/orders/:id/stl/:suffix', downloadStl);
 router.delete('/orders/:id', deleteOrder);
 
 module.exports = router;

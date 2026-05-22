@@ -187,17 +187,23 @@ async function getMaterials(_req, res) {
 
 async function saveStl(req, res) {
   try {
-    const { id } = req.params;
+    const { id, suffix } = req.params;
+    const validSuffixes = ['waveform', 'corps', 'plaque'];
+    if (!validSuffixes.includes(suffix)) return res.status(400).json({ error: 'Suffix invalide' });
+
     const sculpture = await Sculpture.findOne({ where: { id, userId: req.user.id } });
     if (!sculpture) return res.status(404).json({ error: 'Sculpture introuvable' });
 
     fs.mkdirSync(STL_DIR, { recursive: true });
-    const filePath = path.join(STL_DIR, `sculpture_${id}.stl`);
+    const filePath = path.join(STL_DIR, `sculpture_${id}_${suffix}.stl`);
     fs.writeFileSync(filePath, req.body);
-    await sculpture.update({ stlFilePath: filePath });
+    // stlFilePath tracks the waveform file — used for hasStl detection
+    if (suffix === 'waveform') {
+      await sculpture.update({ stlFilePath: filePath });
+    }
     res.json({ success: true });
   } catch (err) {
-    console.error('[POST /api/sculptures/:id/stl]', err);
+    console.error('[POST /api/sculptures/:id/stl/:suffix]', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 }
