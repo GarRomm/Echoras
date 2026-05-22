@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { exportMultiGeometrySTL, computeZLift } from '../utils/stlExporter';
+import { export3MF } from '../utils/3mfExporter';
 import {
   buildHelixRibbonGeometry,
   buildCentralCylinderGeometry,
@@ -105,6 +106,19 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
     if (plaqueGeos.length > 0) {
       downloadBlob(exportMultiGeometrySTL(plaqueGeos, zLift), baseName + '_plaque.stl', 600);
     }
+  }, [waveformData, params, audioFileName]);
+
+  const handleExport3MF = useCallback(async () => {
+    const { waveformGeos, bodyGeos, plaqueGeos } = await buildSeparatedGeometries(waveformData, params);
+    const zLift = computeZLift([...waveformGeos, ...bodyGeos, ...plaqueGeos]);
+    const parts = [
+      { geometries: waveformGeos, color: params.waveformColor || '#888888' },
+      { geometries: bodyGeos,     color: params.cylinderColor || '#444444' },
+    ];
+    if (plaqueGeos.length > 0) parts.push({ geometries: plaqueGeos, color: params.cylinderColor || '#444444' });
+    const baseName = audioFileName ? audioFileName.replace(/\.[^.]+$/, '') : 'echoras-model';
+    const blob = await export3MF(parts, zLift);
+    downloadBlob(blob, baseName + '.3mf', 0);
   }, [waveformData, params, audioFileName]);
 
   const handleRender = useCallback(async () => {
@@ -249,11 +263,16 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         {!renderStatus && 'Rendu photoréaliste'}
       </button>
 
-      {/* Téléchargement STL (admin uniquement) */}
+      {/* Téléchargements (admin uniquement) */}
       {isAdmin && (
-        <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
-          Télécharger STL
-        </button>
+        <>
+          <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExportSTL}>
+            Télécharger STL (3 fichiers)
+          </button>
+          <button className="export__btn export__btn--primary" disabled={disabled} onClick={handleExport3MF}>
+            Télécharger 3MF
+          </button>
+        </>
       )}
 
       {/* Sauvegarde draft */}

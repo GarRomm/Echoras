@@ -10,7 +10,7 @@ const CM_TO_MM = 10;
  * @param {THREE.Vector3} v
  * @returns {THREE.Vector3}
  */
-function toSlicerCoords(v) {
+export function toSlicerCoords(v) {
   const sx = v.x * CM_TO_MM;
   const sy = v.y * CM_TO_MM;
   const sz = v.z * CM_TO_MM;
