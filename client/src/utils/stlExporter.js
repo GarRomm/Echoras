@@ -100,15 +100,35 @@ export function exportSTLBinary(geometry) {
 }
 
 /**
+ * Compute the Z lift (mm) needed to bring the bottom of a set of geometries to z=0.
+ * Both STL files of a multi-color pair must use the same lift to stay aligned.
+ *
+ * @param {THREE.BufferGeometry[]} geometries
+ * @returns {number}
+ */
+export function computeZLift(geometries) {
+  let minY = Infinity;
+  for (const geo of geometries) {
+    const posAttr = (geo.index ? geo.toNonIndexed() : geo).getAttribute('position');
+    for (let i = 0; i < posAttr.count; i++) {
+      const y = posAttr.getY(i);
+      if (y < minY) minY = y;
+    }
+  }
+  return minY === Infinity ? 0 : -minY * CM_TO_MM;
+}
+
+/**
  * Export multiple THREE.BufferGeometry objects into a single binary STL Blob.
  * Merges all geometries by concatenating their triangle data.
  *
  * Coordinates are converted from Three.js Y-up (cm) to slicer Z-up (mm).
  *
  * @param {THREE.BufferGeometry[]} geometries
+ * @param {number|null} forcedZLift - shared lift value for multi-color pairs; auto-computed if null
  * @returns {Blob}
  */
-export function exportMultiGeometrySTL(geometries) {
+export function exportMultiGeometrySTL(geometries, forcedZLift = null) {
   // Convert all geometries to non-indexed and count total triangles
   const nonIndexedList = [];
   let totalTriangles = 0;
@@ -120,17 +140,20 @@ export function exportMultiGeometrySTL(geometries) {
     totalTriangles += posAttr.count / 3;
   }
 
-  // First pass: find minimum Y across all vertices (= minimum Z after conversion).
-  // After toSlicerCoords, new_z = old_y * CM_TO_MM.
-  // We shift the model up so z_min = 0 (model sits on the print bed).
-  let minY = Infinity;
-  for (const posAttr of nonIndexedList) {
-    for (let i = 0; i < posAttr.count; i++) {
-      const y = posAttr.getY(i);
-      if (y < minY) minY = y;
+  // Use provided lift or compute from this geometry set
+  let zLift;
+  if (forcedZLift !== null) {
+    zLift = forcedZLift;
+  } else {
+    let minY = Infinity;
+    for (const posAttr of nonIndexedList) {
+      for (let i = 0; i < posAttr.count; i++) {
+        const y = posAttr.getY(i);
+        if (y < minY) minY = y;
+      }
     }
+    zLift = -minY * CM_TO_MM;
   }
-  const zLift = -minY * CM_TO_MM; // positive offset to bring z_min to 0
 
   const bufferLength = 80 + 4 + totalTriangles * 50;
   const buffer = new ArrayBuffer(bufferLength);

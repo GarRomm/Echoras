@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { exportMultiGeometrySTL } from '../utils/stlExporter';
+import { exportMultiGeometrySTL, computeZLift } from '../utils/stlExporter';
 import {
   buildHelixRibbonGeometry,
   buildCentralCylinderGeometry,
@@ -30,6 +30,37 @@ async function buildAllGeometries(waveformData, params) {
     if (engraving) geometries.push(engraving);
   }
   return geometries;
+}
+
+// Returns { waveformGeos, bodyGeos, plaqueGeos } — three groups for multi-color export.
+// waveformGeos → helix ribbon (color 1)
+// bodyGeos     → cylinder + base (color 2)
+// plaqueGeos   → nameplate + engraving (color 3) — empty array if no base
+async function buildSeparatedGeometries(waveformData, params) {
+  const waveformGeos = [buildHelixRibbonGeometry(waveformData, params)];
+
+  const bodyGeos = [buildCentralCylinderGeometry(params)];
+  const plaqueGeos = [];
+
+  if (params.showBase) {
+    bodyGeos.push(buildBaseGeometry(params));
+    const nameplate = buildNameplateGeometry(params.artistName, params.songTitle, params);
+    if (nameplate) plaqueGeos.push(nameplate);
+    const font = await loadFont().catch(() => null);
+    const engraving = buildEngravingGeometry(params.artistName, params.songTitle, params, font);
+    if (engraving) plaqueGeos.push(engraving);
+  }
+
+  return { waveformGeos, bodyGeos, plaqueGeos };
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 export default function ExportPanel({ waveformData, params, audioFileName, resumedSculptureId, resumedMaterialId, onSaved, getCanvasDataUrl }) {
@@ -77,20 +108,17 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   // État ajout panier
   const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
 
-  const stlFileName = audioFileName
-    ? audioFileName.replace(/\.[^.]+$/, '') + '.stl'
-    : 'echoras-model.stl';
-
   const handleExportSTL = useCallback(async () => {
-    const geometries = await buildAllGeometries(waveformData, params);
-    const blob = exportMultiGeometrySTL(geometries);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = stlFileName;
-    a.click();
-    URL.revokeObjectURL(url);
-  }, [waveformData, params, stlFileName]);
+    const { waveformGeos, bodyGeos, plaqueGeos } = await buildSeparatedGeometries(waveformData, params);
+    const baseName = (audioFileName ? audioFileName.replace(/\.[^.]+$/, '') : 'echoras-model');
+    // All files share the same zLift so they align when imported together in the slicer
+    const zLift = computeZLift([...waveformGeos, ...bodyGeos, ...plaqueGeos]);
+    downloadBlob(exportMultiGeometrySTL(waveformGeos, zLift), baseName + '_waveform.stl');
+    downloadBlob(exportMultiGeometrySTL(bodyGeos, zLift), baseName + '_corps.stl');
+    if (plaqueGeos.length > 0) {
+      downloadBlob(exportMultiGeometrySTL(plaqueGeos, zLift), baseName + '_plaque.stl');
+    }
+  }, [waveformData, params, audioFileName]);
 
   const handleRender = useCallback(async () => {
     try {
