@@ -50,62 +50,57 @@ input[type="range"] {
 }
 
 /* ── Tarteaucitron – thème Echoras ───────────────────────────────────────── */
-/* Toutes les tailles en px (stable quel que soit le zoom navigateur)        */
 
-/* Typographie de base – scoped au root tarteaucitron */
+/* Typographie */
 #tarteaucitronRoot {
   font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
   font-size: 14px !important;
-  line-height: 1.5 !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
 }
 
-/* Couleur texte sur les descendants (hors boutons déjà stylés) */
+/* Couleur texte */
 #tarteaucitronRoot,
 #tarteaucitronRoot p,
 #tarteaucitronRoot span,
 #tarteaucitronRoot li,
 #tarteaucitronRoot label,
-#tarteaucitronRoot h1,
-#tarteaucitronRoot h2,
-#tarteaucitronRoot h3 {
+#tarteaucitronRoot div {
   color: #F0EDE6 !important;
 }
 
-/* Overlay – fond solide avec légère transparence (pas de backdrop-filter pour la cohérence cross-browser) */
+/* Overlay – aplat opaque, pas de transparence */
 #tarteaucitronBack {
   background: #0f0a19 !important;
-  opacity: 0.92 !important;
+  opacity: 1 !important;
 }
 
-/* ── Panneau de gestion – compact et scrollable ── */
+/* ── Panneau principal – centré, taille fixe, scroll interne ── */
 #tarteaucitronRoot div#tarteaucitron {
   position: fixed !important;
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
-  margin: 0 !important;            /* écrase le margin: 0 auto 0 -430px de tarteaucitron */
+  margin: 0 !important;       /* neutralise le margin-left: -430px natif */
   width: 92vw !important;
-  max-width: 560px !important;
-  max-height: 72vh !important;
+  max-width: 520px !important;
+  max-height: 68vh !important;
   border-radius: 12px !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+  overflow-y: auto !important;   /* le panneau entier défile – pas de flex */
+  overflow-x: hidden !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7) !important;
   border: 1px solid rgba(240, 237, 230, 0.1) !important;
-  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
+  background: #251c38 !important;
 }
 
-/* Wrapper interne scrollable */
-#tarteaucitronRoot .tarteaucitronBorder {
+/* Tous les conteneurs internes : même fond foncé */
+#tarteaucitronRoot .tarteaucitronBorder,
+#tarteaucitronRoot #tarteaucitronScrollbar,
+#tarteaucitronRoot #tarteaucitronSave,
+#tarteaucitronRoot #tarteaucitronContentMessage,
+#tarteaucitronRoot .tarteaucitronIsRequired {
   background: #251c38 !important;
   border: none !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  display: block !important;
 }
 
 /* Bouton fermer */
