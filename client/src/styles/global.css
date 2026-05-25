@@ -75,7 +75,8 @@ input[type="range"] {
 
 /* Overlay – fond solide avec légère transparence (pas de backdrop-filter pour la cohérence cross-browser) */
 #tarteaucitronBack {
-  background: rgba(15, 10, 25, 0.82) !important;
+  background: #0f0a19 !important;
+  opacity: 0.92 !important;
 }
 
 /* ── Panneau de gestion – compact et scrollable ── */
