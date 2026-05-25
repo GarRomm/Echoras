@@ -50,26 +50,41 @@ input[type="range"] {
 }
 
 /* ── Tarteaucitron – thème Echoras ───────────────────────────────────────── */
+/* Toutes les tailles en px (stable quel que soit le zoom navigateur)        */
 
-/* Typographie + couleur texte uniquement sur tous les descendants */
-#tarteaucitronRoot * {
-  font-family: 'Manrope', sans-serif !important;
+/* Typographie de base – scoped au root tarteaucitron */
+#tarteaucitronRoot {
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Couleur texte sur les descendants (hors boutons déjà stylés) */
+#tarteaucitronRoot,
+#tarteaucitronRoot p,
+#tarteaucitronRoot span,
+#tarteaucitronRoot li,
+#tarteaucitronRoot label,
+#tarteaucitronRoot h1,
+#tarteaucitronRoot h2,
+#tarteaucitronRoot h3 {
   color: #F0EDE6 !important;
 }
 
-/* Overlay flou */
+/* Overlay – fond solide avec légère transparence (pas de backdrop-filter pour la cohérence cross-browser) */
 #tarteaucitronBack {
-  background: rgba(31, 23, 45, 0.75) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  background: rgba(15, 10, 25, 0.82) !important;
 }
 
 /* ── Panneau de gestion ── */
 #tarteaucitronRoot div#tarteaucitron {
-  border-radius: 16px !important;
+  border-radius: 12px !important;
   overflow: hidden !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
   border: 1px solid rgba(240, 237, 230, 0.1) !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 #tarteaucitronRoot .tarteaucitronBorder {
@@ -80,11 +95,13 @@ input[type="range"] {
 /* Bouton fermer */
 #tarteaucitronRoot #tarteaucitronClosePanel {
   background: transparent !important;
-  color: rgba(240, 237, 230, 0.5) !important;
-  border: 1px solid rgba(240, 237, 230, 0.12) !important;
+  color: rgba(240, 237, 230, 0.55) !important;
+  border: 1px solid rgba(240, 237, 230, 0.15) !important;
   border-radius: 6px !important;
-  font-size: 0.8rem !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
+  padding: 6px 14px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* En-têtes de catégorie */
@@ -92,16 +109,18 @@ input[type="range"] {
 #tarteaucitronRoot #tarteaucitron #tarteaucitronServices .tarteaucitronTitle button,
 #tarteaucitronRoot #tarteaucitron #tarteaucitronInfo,
 #tarteaucitronRoot .asCatToggleBtn {
-  background: rgba(123, 94, 167, 0.2) !important;
+  background: rgba(123, 94, 167, 0.18) !important;
   color: #F0EDE6 !important;
   border-left: 3px solid #7B5EA7 !important;
   border-radius: 0 !important;
-  font-size: 0.68rem !important;
+  font-size: 11px !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
+  font-weight: 700 !important;
   padding: 10px 20px !important;
   margin: 0 !important;
   width: 100% !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* Lignes de service */
@@ -140,8 +159,9 @@ input[type="range"] {
   border: none !important;
   border-radius: 4px !important;
   font-weight: 700 !important;
-  font-size: 0.65rem !important;
+  font-size: 11px !important;
   padding: 5px 12px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 #tarteaucitronRoot #tarteaucitron #tarteaucitronServices .tarteaucitronDeny {
@@ -149,17 +169,17 @@ input[type="range"] {
   color: rgba(240, 237, 230, 0.55) !important;
   border: 1px solid rgba(240, 237, 230, 0.15) !important;
   border-radius: 4px !important;
-  font-size: 0.65rem !important;
+  font-size: 11px !important;
   padding: 5px 12px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* ── Bannière basse ── */
 #tarteaucitronRoot #tarteaucitronAlertBig {
-  background: rgba(31, 23, 45, 0.96) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  background: #1c1428 !important;
   border-top: 1px solid rgba(240, 237, 230, 0.1) !important;
   padding: 20px 32px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* Liens */
@@ -174,37 +194,45 @@ input[type="range"] {
 /* Boutons CTA principaux – accepter */
 #tarteaucitronRoot #tarteaucitronAllAllowed,
 #tarteaucitronRoot #tarteaucitronSaveButton,
-#tarteaucitronRoot .tarteaucitronCTAButton.tarteaucitronAllow,
-#tarteaucitronRoot #tarteaucitronPersonalize2 + button {
+#tarteaucitronRoot .tarteaucitronCTAButton.tarteaucitronAllow {
   background: #C9863A !important;
   color: #12121A !important;
   border: none !important;
   font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 10px 20px !important;
   border-radius: 6px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* Bouton "Personnaliser" */
 #tarteaucitronRoot #tarteaucitronPersonalize2 {
   background: transparent !important;
   color: #F0EDE6 !important;
-  border: 1px solid rgba(240, 237, 230, 0.2) !important;
+  border: 1px solid rgba(240, 237, 230, 0.25) !important;
   border-radius: 6px !important;
   font-weight: 600 !important;
+  font-size: 13px !important;
+  padding: 10px 20px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* Bouton "Tout refuser" */
 #tarteaucitronRoot #tarteaucitronAllDenied,
 #tarteaucitronRoot #tarteaucitronAllDenied2 {
   background: transparent !important;
-  color: #C9863A !important;
-  border: 1px solid rgba(201, 134, 58, 0.4) !important;
+  color: #F0EDE6 !important;
+  border: 1px solid rgba(240, 237, 230, 0.25) !important;
   border-radius: 6px !important;
+  font-size: 13px !important;
+  padding: 10px 20px !important;
+  font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
 /* ── Icône flottante — cercle pur ── */
 #tarteaucitronRoot #tarteaucitronIcon {
   background: #1F172D !important;
-  border: 1.5px solid rgba(240, 237, 230, 0.15) !important;
+  border: 1px solid rgba(240, 237, 230, 0.15) !important;
   border-radius: 50% !important;
   overflow: hidden !important;
   width: 52px !important;
