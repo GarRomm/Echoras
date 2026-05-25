@@ -75,7 +75,13 @@ input[type="range"] {
   opacity: 1 !important;
 }
 
-/* ── Panneau principal – centré, taille fixe, scroll interne ── */
+/* Verrouille le scroll de la page quand le panneau est ouvert */
+html:has(#tarteaucitronBack[style*="block"]),
+html:has(#tarteaucitronBack[style*="block"]) body {
+  overflow: hidden !important;
+}
+
+/* ── Panneau principal – centré, taille fixe, sans scroll ── */
 #tarteaucitronRoot div#tarteaucitron {
   position: fixed !important;
   top: 50% !important;
@@ -84,10 +90,8 @@ input[type="range"] {
   margin: 0 !important;       /* neutralise le margin-left: -430px natif */
   width: 92vw !important;
   max-width: 520px !important;
-  max-height: 68vh !important;
   border-radius: 12px !important;
-  overflow-y: auto !important;   /* le panneau entier défile – pas de flex */
-  overflow-x: hidden !important;
+  overflow: visible !important;  /* pas de scroll sur le panneau */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7) !important;
   border: 1px solid rgba(240, 237, 230, 0.1) !important;
   background: #251c38 !important;
