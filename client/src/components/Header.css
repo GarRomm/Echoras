@@ -138,7 +138,7 @@
   top: calc(100% + 10px);
   right: 0;
   min-width: 200px;
-  background: var(--surface);
+  background: var(--surface-dark);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 6px;
@@ -148,7 +148,7 @@
 
 .header__account-email {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: rgba(240, 237, 230, 0.6);
   padding: 8px 10px 10px;
   border-bottom: 1px solid var(--border);
   margin-bottom: 4px;

@@ -287,7 +287,7 @@
   top: calc(100% + 6px);
   right: 0;
   min-width: 180px;
-  background: var(--surface);
+  background: var(--surface-dark);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 6px;

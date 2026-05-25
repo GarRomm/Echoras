@@ -257,7 +257,7 @@
 }
 
 .confirm__card-tag {
-  background: #1a1a24;
+  background: var(--surface-dark);
   border: 1px solid rgba(0, 0, 0, 0.5);
   color: var(--text);
   font-family: var(--font-title);

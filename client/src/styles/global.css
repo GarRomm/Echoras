@@ -10,14 +10,18 @@
 }
 
 :root {
-  --bg: #12121A;
-  --surface: #1a1a26;
-  --border: #2a2a3a;
+  --bg: #1F172D;
+  --surface: #9178B4;
+  --surface-dark: #251c38;
+  --border: rgba(240, 237, 230, 0.12);
+  --border-card: #A98FD1;
   --text: #F0EDE6;
-  --text-muted: #8888aa;
+  --text-muted: rgba(240, 237, 230, 0.6);
   --accent: #C9863A;
-  --accent-light: #d9a060;
+  --accent-light: #DD8536;
   --violet: #7B5EA7;
+  --footer-bg: #F0EDE6;
+  --footer-text: #1F172D;
   --font-title: 'Epilogue', sans-serif;
   --font-nav: 'Montserrat', sans-serif;
   --font-body: 'Poppins', sans-serif;
@@ -51,8 +55,8 @@ input[type="range"] {
 #tarteaucitronRoot * {
   font-family: 'Manrope', sans-serif !important;
   color: #F0EDE6 !important;
-  background: #1a1a26 !important;
-  border-color: #2a2a3a !important;
+  background: #251c38 !important;
+  border-color: rgba(240, 237, 230, 0.12) !important;
 }
 
 /* Overlay flou */
@@ -64,10 +68,10 @@ input[type="range"] {
 
 /* Bannière basse */
 #tarteaucitronRoot #tarteaucitronAlertBig {
-  background: rgba(18, 18, 26, 0.92) !important;
+  background: rgba(31, 23, 45, 0.92) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border-top: 1px solid #2a2a3a !important;
+  border-top: 1px solid rgba(240, 237, 230, 0.12) !important;
   padding: 20px 24px !important;
 }
 
@@ -93,7 +97,7 @@ input[type="range"] {
 #tarteaucitronRoot #tarteaucitronClosePanel {
   background: transparent !important;
   color: #F0EDE6 !important;
-  border: 1px solid #2a2a3a !important;
+  border: 1px solid rgba(240, 237, 230, 0.12) !important;
   border-radius: 6px !important;
   font-weight: 600 !important;
 }
@@ -121,21 +125,21 @@ input[type="range"] {
 #tarteaucitronRoot #tarteaucitronPersonalize2 {
   background: transparent !important;
   color: #F0EDE6 !important;
-  border: 1px solid #2a2a3a !important;
+  border: 1px solid rgba(240, 237, 230, 0.12) !important;
 }
 
 /* Bouton Fermer – outline neutre */
 #tarteaucitronRoot #tarteaucitronClosePanel {
   background: transparent !important;
-  color: #8888aa !important;
-  border: 1px solid #2a2a3a !important;
+  color: rgba(240, 237, 230, 0.6) !important;
+  border: 1px solid rgba(240, 237, 230, 0.12) !important;
   font-size: 0.8rem !important;
 }
 
 /* Icône flottante */
 #tarteaucitronRoot #tarteaucitronIcon {
-  background: #12121A !important;
-  border: 1px solid #2a2a3a !important;
+  background: #1F172D !important;
+  border: 1px solid rgba(240, 237, 230, 0.12) !important;
   border-radius: 50% !important;
 }
 

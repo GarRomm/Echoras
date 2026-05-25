@@ -51,8 +51,8 @@
 
 /* ─── Card ─── */
 .galerie__card {
-  background: var(--violet);
-  border: 2px solid #a98fd1;
+  background: var(--surface);
+  border: 2px solid var(--border-card);
   border-radius: 8px;
   padding: 10px;
   display: flex;

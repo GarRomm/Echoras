@@ -105,7 +105,7 @@
   width: 390px;
   min-height: 380px;
   padding: 40px 20px;
-  background: rgba(18, 18, 26, 0.6);
+  background: var(--surface-dark);
   border: 1px solid var(--violet);
   border-radius: 8px;
   overflow: hidden;

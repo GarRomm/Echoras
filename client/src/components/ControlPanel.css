@@ -147,7 +147,7 @@
   height: 32px;
   border: 1px solid rgba(240, 237, 230, 0.1);
   border-radius: 6px;
-  background: #0e0e16;
+  background: var(--bg);
   cursor: pointer;
   padding: 2px;
 }
@@ -161,9 +161,9 @@
   flex: 1;
   padding: 8px;
   border-radius: 6px;
-  background: var(--surface, #1a1a26);
-  color: var(--text-muted, #8888aa);
-  border: 1px solid var(--border, #2a2a3a);
+  background: var(--surface-dark, #251c38);
+  color: var(--text-muted, rgba(240, 237, 230, 0.6));
+  border: 1px solid var(--border, rgba(240, 237, 230, 0.12));
   font-family: var(--font-ui);
   font-size: 0.8rem;
   letter-spacing: 0.05em;
@@ -179,7 +179,7 @@
 
 /* Select */
 .controls__field select {
-  background: #0e0e16;
+  background: var(--bg);
   color: var(--text);
   border: 1px solid rgba(240, 237, 230, 0.1);
   border-radius: 6px;
@@ -220,7 +220,7 @@
 /* Text inputs */
 .controls__text-input {
   width: 100%;
-  background: #0e0e16;
+  background: var(--bg);
   color: var(--text);
   border: 1px solid rgba(240, 237, 230, 0.1);
   border-radius: 6px;

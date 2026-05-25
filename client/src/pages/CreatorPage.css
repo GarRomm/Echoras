@@ -64,7 +64,7 @@
   flex: 1;
   max-height: calc(100vh - var(--header-height, 70px) - 140px);
   position: relative;
-  background: #0e0e16;
+  background: #12121a;
   overflow: hidden;
 }
 
@@ -85,7 +85,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: rgba(20, 20, 32, 0.85);
+  background: rgba(31, 23, 45, 0.85);
   border: 1px solid rgba(240, 237, 230, 0.08);
   border-radius: 100px;
   backdrop-filter: blur(8px);
@@ -137,7 +137,7 @@
 }
 
 .creator__summary {
-  background: #1a1a28;
+  background: var(--surface-dark);
   border: 1px solid rgba(240, 237, 230, 0.05);
   border-radius: 8px;
   padding: 10px 14px;
@@ -177,7 +177,7 @@
 }
 
 .creator__waveform-info {
-  background: #1a1a28;
+  background: var(--surface-dark);
   border: 1px solid rgba(240, 237, 230, 0.05);
   border-radius: 8px;
   padding: 10px 14px;
@@ -221,7 +221,7 @@
 .creator__panel {
   width: 380px;
   flex-shrink: 0;
-  background: #13131e;
+  background: var(--surface-dark);
   border-left: 1px solid rgba(240, 237, 230, 0.06);
   overflow-y: auto;
   display: flex;

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './AudioUploader.css';
 
-const MAX_SIZE_BYTES = 50 * 1024 * 1024;
+const MAX_SIZE_BYTES = 50 * 1024 * 1024; // 50 Mo
 const ALLOWED_EXTS = ['.mp3', '.wav', '.ogg', '.flac', '.m4a'];
 
 function validateFile(file) {
