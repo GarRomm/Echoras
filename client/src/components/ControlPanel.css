@@ -177,6 +177,69 @@
   font-weight: 700;
 }
 
+.controls__finish-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.controls__finish-item .controls__finish-btn {
+  flex: 1;
+}
+
+/* Badge "?" matériau */
+.controls__material-info {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(201, 134, 58, 0.2);
+  border: 1px solid rgba(201, 134, 58, 0.5);
+  color: var(--accent, #C9863A);
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  font-weight: 700;
+  cursor: default;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.controls__material-info:hover .controls__material-tooltip {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.controls__material-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 200px;
+  background: #1e1530;
+  border: 1px solid rgba(201, 134, 58, 0.35);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: rgba(240, 237, 230, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.controls__material-tooltip strong {
+  color: var(--accent, #C9863A);
+  font-weight: 700;
+}
+
 /* Select */
 .controls__field select {
   background: var(--bg);

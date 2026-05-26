@@ -117,16 +117,32 @@ export default function ControlPanel({ params, onChange }) {
               <span className="controls__field-label">Finition</span>
             </div>
             <div className="controls__finish-toggle">
-              <button
-                className={`controls__finish-btn${params.finishMode === 'mat' ? ' controls__finish-btn--active' : ''}`}
-                onClick={() => onChange('finishMode', 'mat')}
-                type="button"
-              >Mat</button>
-              <button
-                className={`controls__finish-btn${params.finishMode === 'brillant' ? ' controls__finish-btn--active' : ''}`}
-                onClick={() => onChange('finishMode', 'brillant')}
-                type="button"
-              >Brillant</button>
+              <div className="controls__finish-item">
+                <button
+                  className={`controls__finish-btn${params.finishMode === 'mat' ? ' controls__finish-btn--active' : ''}`}
+                  onClick={() => onChange('finishMode', 'mat')}
+                  type="button"
+                >Mat</button>
+                <span className="controls__material-info" aria-label="En savoir plus sur le PLA">
+                  ?
+                  <span className="controls__material-tooltip">
+                    <strong>PLA</strong> — Plastique biosourcé à finition mate. Rigide, précis et écoresponsable. Idéal pour les détails fins.
+                  </span>
+                </span>
+              </div>
+              <div className="controls__finish-item">
+                <button
+                  className={`controls__finish-btn${params.finishMode === 'brillant' ? ' controls__finish-btn--active' : ''}`}
+                  onClick={() => onChange('finishMode', 'brillant')}
+                  type="button"
+                >Brillant</button>
+                <span className="controls__material-info" aria-label="En savoir plus sur le PETG">
+                  ?
+                  <span className="controls__material-tooltip">
+                    <strong>PETG</strong> — Plastique à finition brillante, résistant aux chocs et à l'humidité. Rendu plus lumineux et satiné.
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
           <ColorPicker
