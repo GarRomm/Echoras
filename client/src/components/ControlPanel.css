@@ -240,6 +240,17 @@
   font-weight: 700;
 }
 
+/* Tooltip PETG (côté droit) : aligné vers la gauche pour rester dans le panel */
+.controls__finish-item:last-child .controls__material-tooltip {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(4px);
+}
+
+.controls__finish-item:last-child .controls__material-info:hover .controls__material-tooltip {
+  transform: translateX(0) translateY(0);
+}
+
 /* Select */
 .controls__field select {
   background: var(--bg);
