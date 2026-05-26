@@ -122,7 +122,7 @@ export default function ControlPanel({ params, onChange }) {
                   className={`controls__finish-btn${params.finishMode === 'mat' ? ' controls__finish-btn--active' : ''}`}
                   onClick={() => onChange('finishMode', 'mat')}
                   type="button"
-                >Mat</button>
+                >PLA Mat</button>
                 <span className="controls__material-info" aria-label="En savoir plus sur le PLA">
                   ?
                   <span className="controls__material-tooltip">
@@ -135,7 +135,7 @@ export default function ControlPanel({ params, onChange }) {
                   className={`controls__finish-btn${params.finishMode === 'brillant' ? ' controls__finish-btn--active' : ''}`}
                   onClick={() => onChange('finishMode', 'brillant')}
                   type="button"
-                >Brillant</button>
+                >PETG Brillant</button>
                 <span className="controls__material-info" aria-label="En savoir plus sur le PETG">
                   ?
                   <span className="controls__material-tooltip">

@@ -31,7 +31,7 @@
 .controls__fields {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
 }
 
 .controls__field {
@@ -211,25 +211,25 @@
 .controls__material-info:hover .controls__material-tooltip {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
 .controls__material-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
-  right: 0;
-  width: 200px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: 190px;
   background: #1e1530;
   border: 1px solid rgba(201, 134, 58, 0.35);
   border-radius: 8px;
   padding: 10px 12px;
   font-family: var(--font-ui);
-  font-size: 0.7rem;
-  line-height: 1.5;
-  color: rgba(240, 237, 230, 0.85);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: rgba(240, 237, 230, 0.9);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(4px);
   transition: opacity 0.15s, transform 0.15s;
   z-index: 100;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);

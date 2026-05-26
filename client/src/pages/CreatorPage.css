@@ -62,7 +62,7 @@
 
 .creator__viewer {
   flex: 1;
-  max-height: calc(100vh - var(--header-height, 70px) - 140px);
+  max-height: calc(100vh - var(--header-height, 70px) - 220px);
   position: relative;
   background: #12121a;
   overflow: hidden;
