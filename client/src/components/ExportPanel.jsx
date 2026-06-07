@@ -179,7 +179,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
 
       </div>
 
-      {/* Sauvegarde draft */
+      {/* Sauvegarde draft */}
       {user && (
         <button
           className="export__btn export__btn--secondary"
