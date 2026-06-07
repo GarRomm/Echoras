@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { exportMultiGeometrySTL, computeZLift } from '../utils/stlExporter';
 import { export3MF } from '../utils/3mfExporter';
@@ -14,8 +14,6 @@ import { useAuth } from '../context/AuthContext';
 import { computePrintCost } from '../utils/printCost';
 import { addToCart } from '../services/cartService';
 import { createSculpture } from '../services/sculptureService';
-import { saveModel } from '../services/modelService';
-import { triggerRender } from '../services/renderService';
 import './ExportPanel.css';
 
 // Returns { waveformGeos, bodyGeos, plaqueGeos } — three groups for multi-color export.
@@ -45,22 +43,6 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // États rendu photoréaliste
-  const [renderStatus, setRenderStatus] = useState(null); // null | 'saving' | 'rendering' | 'done'
-  const [renderUrl, setRenderUrl] = useState(null);
-  const [renderElapsed, setRenderElapsed] = useState(0);
-  const timerRef = useRef(null);
-
-  useEffect(() => {
-    if (renderStatus === 'rendering') {
-      setRenderElapsed(0);
-      timerRef.current = setInterval(() => setRenderElapsed((s) => s + 1), 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
-    return () => clearInterval(timerRef.current);
-  }, [renderStatus]);
-
   // États sauvegarde draft
   const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
   // Si on reprend une sculpture existante, on la pré-charge comme "déjà sauvegardée"
@@ -84,40 +66,6 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
 
   // État ajout panier
   const [cartStatus, setCartStatus] = useState(null); // null | 'adding' | 'added' | 'error'
-
-  const handleRender = useCallback(async () => {
-    try {
-      setRenderStatus('saving');
-
-      const helixBlob = exportMultiGeometrySTL([buildHelixRibbonGeometry(waveformData, params)]);
-      const helixBuffer = await helixBlob.arrayBuffer();
-      const saveRes1 = await saveModel(helixBuffer);
-
-      const cylGeos = [buildCentralCylinderGeometry(params)];
-      if (params.showBase) cylGeos.push(buildBaseGeometry(params));
-      const cylBlob = exportMultiGeometrySTL(cylGeos);
-      const cylBuffer = await cylBlob.arrayBuffer();
-      const saveRes2 = await saveModel(cylBuffer);
-
-      setRenderStatus('rendering');
-      const renderRes = await triggerRender(saveRes1.id, {
-        material:       params.finishMode === 'brillant' ? 'petg' : 'pla',
-        color:          params.waveformColor  || null,
-        input2:         saveRes2.id,
-        color2:         params.cylinderColor  || null,
-        artistName:     params.artistName     || null,
-        songTitle:      params.songTitle      || null,
-        cylinderRadius: params.cylinderRadius,
-        baseHeight:     params.baseHeight,
-      });
-
-      setRenderUrl(renderRes.renderUrl);
-      setRenderStatus('done');
-    } catch (err) {
-      console.error(err);
-      setRenderStatus(null);
-    }
-  }, [waveformData, params]);
 
   const handleSaveDraft = useCallback(async () => {
     if (!user) { navigate('/connexion'); return; }
@@ -231,19 +179,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
 
       </div>
 
-      {/* Rendu photoréaliste */}
-      <button
-        className="export__render-btn"
-        disabled={disabled || renderStatus === 'saving' || renderStatus === 'rendering'}
-        onClick={handleRender}
-      >
-        {renderStatus === 'saving' && 'Envoi du modèle…'}
-        {renderStatus === 'rendering' && `Rendu en cours… ${renderElapsed}s`}
-        {renderStatus === 'done' && 'Nouveau rendu'}
-        {!renderStatus && 'Rendu photoréaliste'}
-      </button>
-
-      {/* Sauvegarde draft */}
+      {/* Sauvegarde draft */
       {user && (
         <button
           className="export__btn export__btn--secondary"
@@ -270,18 +206,6 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         </button>
       )}
 
-      {renderUrl && (
-        <div className="export__preview">
-          <img src={renderUrl} alt="Rendu 3D" />
-          <a
-            className="export__download-btn"
-            href={renderUrl}
-            download="echoras-render.png"
-          >
-            Télécharger le rendu
-          </a>
-        </div>
-      )}
     </div>
   );
 }

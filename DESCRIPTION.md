@@ -1,7 +1,7 @@
 # Echoras — "Le Souvenir Musical"
 
 ## Concept
-Application web full-stack qui transforme un fichier audio en objet 3D imprimable (fichier STL), avec visualisation 3D en temps réel et rendu photoréaliste via Blender.
+Application web full-stack qui transforme un fichier audio en objet 3D imprimable (fichier STL), avec visualisation 3D en temps réel.
 
 ---
 
@@ -11,7 +11,7 @@ Application web full-stack qui transforme un fichier audio en objet 3D imprimabl
 |---|---|
 | Frontend | React 18, Vite, Three.js |
 | Backend | Node.js, Express |
-| Service IA / rendu | Python, Flask, Librosa, Blender (headless) |
+| Service IA / rendu | Python, Flask, Librosa |
 | Export 3D | STL (généré côté client et serveur) |
 
 ---
@@ -22,8 +22,8 @@ Application web full-stack qui transforme un fichier audio en objet 3D imprimabl
 Navigateur (React + Three.js)
     ↕ REST /api/*
 Serveur Node.js (port 4000)
-    ↕ subprocess / Flask HTTP
-Service Python (Blender + Librosa)
+    ↕ Flask HTTP
+Service Python (Librosa)
 ```
 
 ---
@@ -38,7 +38,6 @@ Service Python (Blender + Librosa)
 | F4 | Personnalisation du modèle | 10 paramètres via sliders : hauteur des pics, lissage, rayon/hauteur du cylindre, épaisseur, segments, tours d'hélice, largeur du ruban, couleurs, base |
 | F5 | Choix du matériau | Plastique blanc, plastique noir, métal argent, métal or, bois |
 | F6 | Export STL local | Génération et téléchargement direct du `.stl` dans le navigateur (sans serveur) |
-| F7 | Rendu photoréaliste | Envoi du STL au serveur → Blender → retour image PNG affichée dans l'interface |
 
 ---
 
@@ -48,20 +47,16 @@ Service Python (Blender + Librosa)
 |---|---|---|
 | B1 | Upload audio sécurisé | Multer, UUID, validation d'extension, limite configurable (défaut 50 MB) |
 | B2 | Sauvegarde des modèles STL | Stockage dans `server/storage/stl/` |
-| B3 | Déclenchement du rendu Blender | `POST /api/render/:id` — appel Blender en mode headless |
-| B4 | Vérification du statut de rendu | `GET /api/render/:id` |
-| B5 | Serveur statique des images rendues | Route `/renders/` — PNG servis directement |
-| B6 | Rate limiting | 100 requêtes / 15 min par IP |
-| B7 | Health check | `GET /api/health` |
+| B3 | Rate limiting | 100 requêtes / 15 min par IP |
+| B4 | Health check | `GET /api/health` |
 
 ---
 
-## Service Python (Flask + Librosa + Blender)
+## Service Python (Flask + Librosa)
 
 | # | Fonctionnalité | Détail |
 |---|---|---|
 | P1 | Analyse audio avancée | Librosa : tempo/BPM, enveloppe RMS (2048 pts), centroïde spectral, 5 bandes de fréquences (sub-bass → presence), positions des beats, chroma (harmoniques) |
-| P2 | Rendu 3D photoréaliste | Blender headless via xvfb-run, matériaux et résolution configurables, timeout 240s |
 
 ---
 

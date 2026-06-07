@@ -11,7 +11,6 @@ require('./db/models/index'); // enregistre les modèles et leurs associations
 const authRoutes = require('./routes/auth');
 const uploadRoutes = require('./routes/upload');
 const modelRoutes = require('./routes/model');
-const renderRoutes = require('./routes/render');
 const cartRoutes = require('./routes/cart');
 const sculpturesRoutes = require('./routes/sculptures');
 const adminRoutes      = require('./routes/admin');
@@ -38,16 +37,12 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Serve rendered images statically
-app.use('/renders', express.static(path.join(__dirname, '..', 'storage', 'renders')));
-
 // ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/model', modelRoutes);
-app.use('/api/render', renderRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/sculptures', sculpturesRoutes);
 app.use('/api/admin',     adminRoutes);

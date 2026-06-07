@@ -67,36 +67,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.export__render-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 16px;
-  background: rgba(123, 94, 167, 0.12);
-  border: 1px solid rgba(123, 94, 167, 0.35);
-  border-radius: 6px;
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text);
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.export__render-btn:hover:not(:disabled) {
-  background: rgba(123, 94, 167, 0.22);
-  border-color: var(--violet);
-}
-
-.export__render-btn:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-
 .export__quality {
   display: flex;
   align-items: center;
@@ -177,37 +147,3 @@
   box-shadow: 0 4px 12px rgba(123, 94, 167, 0.35);
 }
 
-.export__preview {
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid rgba(240, 237, 230, 0.08);
-  margin-top: 4px;
-}
-
-.export__preview img {
-  width: 100%;
-  display: block;
-}
-
-.export__download-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 8px 16px;
-  background: rgba(240, 237, 230, 0.06);
-  border: none;
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.export__download-btn:hover {
-  background: rgba(240, 237, 230, 0.12);
-}
