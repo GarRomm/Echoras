@@ -107,8 +107,8 @@ const STEPS = [
   },
   {
     num: '5',
-    title: '5. Visualisez le rendu',
-    desc: "Générez un aperçu photoréaliste pour mieux vous projeter dans le résultat final avant validation.",
+    title: '5. Visualisez en 3D',
+    desc: "Explorez votre sculpture en temps réel depuis tous les angles grâce à la vue 3D interactive. Tournez, zoomez et affinez jusqu'à ce que le résultat vous convienne.",
     icon: <IconPreview />,
     ellipseColor: 'violet',
   },
