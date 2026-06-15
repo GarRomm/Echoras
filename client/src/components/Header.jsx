@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logoEchoras from '../assets/echora_test2.svg';
+import IconProfil from '../assets/icon-profil.svg?react';
 import './Header.css';
 
 export default function Header() {
@@ -62,10 +63,7 @@ export default function Header() {
               aria-expanded={accountOpen}
               onClick={() => setAccountOpen((v) => !v)}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-              </svg>
+              <IconProfil width="20" height="20" aria-hidden="true" fill="currentColor" />
               <span className="header__account-name">{user.firstName}</span>
             </button>
 
@@ -87,10 +85,7 @@ export default function Header() {
           </>
         ) : (
           <Link to="/connexion" className="header__btn-account" aria-label="Se connecter">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-            </svg>
+            <IconProfil width="20" height="20" aria-hidden="true" fill="currentColor" />
           </Link>
         )}
 
