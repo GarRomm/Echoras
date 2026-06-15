@@ -42,7 +42,7 @@ const GALLERY_FALLBACK = [
 const TRUST = [
   {
     title: 'Matériaux de qualité',
-    desc: 'Bronze, résine, céramique ou finitions texturées : chaque sculpture est fabriquée avec soin, comme un objet de collection.',
+    desc: 'Plastique mat, métal argenté ou doré, bois : chaque sculpture est fabriquée avec soin, comme un objet de collection.',
     icon: <IconMateriaux width="30" height="30" fill="white" aria-hidden="true" />,
   },
   {
