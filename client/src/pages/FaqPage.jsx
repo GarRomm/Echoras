@@ -1,55 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FaqPage.css';
-
-function IconPricing() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-      <circle cx="13" cy="13" r="11.25" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <path d="M13 7v1.5M13 17.5V19M10 11.5c0-1.38 1.34-2.5 3-2.5s3 1.12 3 2.5c0 1.38-1.34 2.5-3 2.5S10 13.88 10 15.5c0 1.38 1.34 2.5 3 2.5s3-1.12 3-2.5" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function IconAccount() {
-  return (
-    <svg width="24" height="26" viewBox="0 0 24 26" fill="none" aria-hidden="true">
-      <circle cx="12" cy="8" r="5.25" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <path d="M2 24c0-5.52 4.48-10 10-10s10 4.48 10 10" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function IconPrivacy() {
-  return (
-    <svg width="24" height="26" viewBox="0 0 24 26" fill="none" aria-hidden="true">
-      <path d="M12 2L3 6v7c0 5.25 3.9 10.15 9 11.35C17.1 23.15 21 18.25 21 13V6L12 2z" stroke="#F0EDE6" strokeWidth="1.5" strokeLinejoin="round"/>
-      <path d="M8.5 13l2.5 2.5 4.5-4.5" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-function IconCreation() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-      <rect x="2.75" y="1.75" width="14.5" height="18.5" rx="2.25" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <path d="M6.5 7h7M6.5 11h5" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round"/>
-      <circle cx="19.5" cy="19.5" r="4.75" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <path d="M23.5 23.5L25.5 25.5" stroke="#F0EDE6" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function IconDelivery() {
-  return (
-    <svg width="26" height="18" viewBox="0 0 26 18" fill="none" aria-hidden="true">
-      <rect x="1" y="1" width="15" height="11" rx="1.5" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <path d="M16 4.5h4.5L24 9v5h-8V4.5z" stroke="#F0EDE6" strokeWidth="1.5" strokeLinejoin="round"/>
-      <circle cx="6" cy="15" r="2" stroke="#F0EDE6" strokeWidth="1.5"/>
-      <circle cx="20" cy="15" r="2" stroke="#F0EDE6" strokeWidth="1.5"/>
-    </svg>
-  );
-}
+import IconCreationPerso from '../assets/icon-creation-perso.svg?react';
+import IconLivraison from '../assets/icon-livraison.svg?react';
+import IconTarif from '../assets/icon-tarif.svg?react';
+import IconProfil from '../assets/icon-profil.svg?react';
+import IconDonnees from '../assets/icon-donnees.svg?react';
+import IconSupportContact from '../assets/icon-support-contact.svg?react';
 
 function IconChevronUp() {
   return (
@@ -68,14 +25,7 @@ function IconChevronDown() {
 }
 
 function IconHeadset() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M4 14v-3a8 8 0 0116 0v3" stroke="#12121A" strokeWidth="1.5" strokeLinecap="round"/>
-      <rect x="1" y="13" width="4" height="7" rx="2" stroke="#12121A" strokeWidth="1.5"/>
-      <rect x="19" y="13" width="4" height="7" rx="2" stroke="#12121A" strokeWidth="1.5"/>
-      <path d="M23 20v1a4 4 0 01-4 4h-3" stroke="#12121A" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  );
+  return <IconSupportContact width="24" height="24" fill="#12121A" aria-hidden="true" />;
 }
 
 const FAQ_DATA = [
@@ -228,11 +178,11 @@ export default function FaqPage() {
         {FAQ_DATA.map(section => (
           <div key={section.id} className="faq-page__section">
             <div className="faq-page__section-header">
-              {section.icon === 'creation'  && <IconCreation />}
-              {section.icon === 'delivery'  && <IconDelivery />}
-              {section.icon === 'pricing'   && <IconPricing />}
-              {section.icon === 'account'   && <IconAccount />}
-              {section.icon === 'privacy'   && <IconPrivacy />}
+              {section.icon === 'creation'  && <IconCreationPerso width="26" height="26" fill="#F0EDE6" aria-hidden="true" />}
+              {section.icon === 'delivery'  && <IconLivraison     width="26" height="26" fill="#F0EDE6" aria-hidden="true" />}
+              {section.icon === 'pricing'   && <IconTarif         width="26" height="26" fill="#F0EDE6" aria-hidden="true" />}
+              {section.icon === 'account'   && <IconProfil        width="26" height="26" fill="#F0EDE6" aria-hidden="true" />}
+              {section.icon === 'privacy'   && <IconDonnees       width="26" height="26" fill="#F0EDE6" aria-hidden="true" />}
               <h2 className="faq-page__section-title">{section.category}</h2>
             </div>
             <div className="faq-page__questions">

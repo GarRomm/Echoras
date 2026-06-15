@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './MyOrdersPage.css';
+import IconProfilSvg from '../assets/icon-profil.svg?react';
 
 const STATUS_CONFIG = {
   pending:     { label: 'En attente',     color: '#a98fd1' },
@@ -49,13 +50,7 @@ function IconShoppingBag() {
 }
 
 function IconUserCircle() {
-  return (
-    <svg className="sidebar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="10" r="3" />
-      <path d="M6.168 18.849A4 4 0 0110 16h4a4 4 0 013.834 2.855" />
-    </svg>
-  );
+  return <IconProfilSvg className="sidebar__icon" fill="currentColor" aria-hidden="true" />;
 }
 
 function IconQuestion() {

@@ -5,39 +5,31 @@ import imgGallery1 from '../assets/disiz - melodrama feat. theodora (audio offic
 import imgGallery2 from '../assets/Gazo, Tiakola - MAMI WATA (Clip Vidéo).png';
 import imgGallery3 from '../assets/Nada Surf - Always Love.png';
 import imgHero from '../assets/Image header.png';
+import IconTeleverse from '../assets/icon-televerse.svg?react';
+import IconPersonnalisez from '../assets/icon-personnalisez.svg?react';
+import IconRecevez from '../assets/icon-recevez.svg?react';
+import IconMateriaux from '../assets/icon-materiaux.svg?react';
+import IconPersonnalisationTotale from '../assets/icon-personnalisation-totale.svg?react';
+import IconPaiement from '../assets/icon-paiement.svg?react';
 
 const STEPS = [
   {
     num: '1',
     title: 'Téléversez',
     desc: 'Importez un fichier audio depuis votre appareil et lancez la génération de votre sculpture.',
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <path d="M8 32v8h32v-8M24 8v24M14 18l10-10 10 10" stroke="#7B5EA7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
+    icon: <IconTeleverse width="48" height="48" fill="#7B5EA7" aria-hidden="true" />,
   },
   {
     num: '2',
     title: 'Personnalisez',
     desc: "Ajustez la forme, le relief, les dimensions, les tours ou l'épaisseur pour créer un objet qui vous ressemble.",
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <rect x="8" y="8" width="32" height="32" rx="4" stroke="#7B5EA7" strokeWidth="2.5"/>
-        <path d="M16 24h16M24 16v16" stroke="#7B5EA7" strokeWidth="2.5" strokeLinecap="round"/>
-      </svg>
-    ),
+    icon: <IconPersonnalisez width="48" height="48" fill="#7B5EA7" aria-hidden="true" />,
   },
   {
     num: '3',
     title: 'Recevez',
     desc: 'Choisissez votre matériau, validez votre création et recevez une sculpture imprimée en 3D, pensée comme une pièce unique.',
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <path d="M8 16l16-8 16 8v16l-16 8L8 32V16z" stroke="#7B5EA7" strokeWidth="2.5" strokeLinejoin="round"/>
-        <path d="M24 8v32M8 16l16 8 16-8" stroke="#7B5EA7" strokeWidth="2.5" strokeLinejoin="round"/>
-      </svg>
-    ),
+    icon: <IconRecevez width="48" height="48" fill="#7B5EA7" aria-hidden="true" />,
   },
 ];
 
@@ -51,34 +43,17 @@ const TRUST = [
   {
     title: 'Matériaux de qualité',
     desc: 'Bronze, résine, céramique ou finitions texturées : chaque sculpture est fabriquée avec soin, comme un objet de collection.',
-    icon: (
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-        <polygon points="15,3 18.5,11 27,11.5 21,17.5 23,26 15,21.5 7,26 9,17.5 3,11.5 11.5,11" stroke="white" strokeWidth="1.8" fill="none" strokeLinejoin="round"/>
-      </svg>
-    ),
+    icon: <IconMateriaux width="30" height="30" fill="white" aria-hidden="true" />,
   },
   {
     title: 'Personnalisation totale',
     desc: "Ajustez les paramètres clés de votre sculpture pour obtenir une forme fidèle à votre intention visuelle.",
-    icon: (
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-        <path d="M5 15h20M5 8h20M5 22h20" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-        <circle cx="10" cy="8" r="2.5" fill="white"/>
-        <circle cx="20" cy="15" r="2.5" fill="white"/>
-        <circle cx="12" cy="22" r="2.5" fill="white"/>
-      </svg>
-    ),
+    icon: <IconPersonnalisationTotale width="30" height="30" fill="white" aria-hidden="true" />,
   },
   {
     title: 'Paiement sécurisé',
     desc: "Commandez en toute confiance grâce à un parcours clair, un paiement sécurisé et un suivi de commande transparent.",
-    icon: (
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-        <rect x="4" y="10" width="22" height="16" rx="3" stroke="white" strokeWidth="1.8"/>
-        <path d="M10 10V7a5 5 0 0110 0v3" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-        <circle cx="15" cy="18" r="2.5" fill="white"/>
-      </svg>
-    ),
+    icon: <IconPaiement width="30" height="30" fill="white" aria-hidden="true" />,
   },
 ];
 
