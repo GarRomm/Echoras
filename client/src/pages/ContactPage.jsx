@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BASE_URL, apiFetch } from '../services/api';
 import './ContactPage.css';
-import IconContacts from '../assets/icon-contacts.svg?react';
+import IconContacts from '../assets/icon-materiaux.svg?react';
 
 const SUBJECTS = [
   'Commande en cours',

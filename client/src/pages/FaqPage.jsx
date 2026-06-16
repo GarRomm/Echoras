@@ -4,7 +4,7 @@ import './FaqPage.css';
 import IconCreationPerso from '../assets/icon-creation-perso.svg?react';
 import IconLivraison from '../assets/icon-livraison.svg?react';
 import IconTarif from '../assets/icon-tarif.svg?react';
-import IconProfil from '../assets/icon-profil.svg?react';
+import IconProfil from '../assets/icon-personnalisez.svg?react'
 import IconDonnees from '../assets/icon-donnees.svg?react';
 import IconSupportContact from '../assets/icon-support-contact.svg?react';
 

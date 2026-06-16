@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './MyOrdersPage.css';
-import IconProfilSvg from '../assets/icon-profil.svg?react';
+import IconProfilSvg from '../assets/icon-personnalisez.svg?react'
 
 const STATUS_CONFIG = {
   pending:     { label: 'En attente',     color: '#a98fd1' },

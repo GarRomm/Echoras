@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './ProfilePage.css';
-import IconProfilSvg from '../assets/icon-profil.svg?react';
+import IconProfilSvg from '../assets/icon-personnalisez.svg?react'
 
 function IconDashboard() {
   return (

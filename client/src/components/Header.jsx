@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logoEchoras from '../assets/echora_test2.svg';
-import IconProfil from '../assets/icon-profil.svg?react';
+import IconProfil from '../assets/icon-personnalisez.svg?react';
 import './Header.css';
 
 export default function Header() {
