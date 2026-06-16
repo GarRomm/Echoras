@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FaqPage.css';
-import IconCreationPerso from '../assets/icon-creation-perso.svg?react';
-import IconLivraison from '../assets/icon-livraison.svg?react';
-import IconTarif from '../assets/icon-tarif.svg?react';
+import IconCreationPerso from '../assets/icon-livraison.svg?react';
+import IconLivraison from '../assets/icon-contacts.svg?react';
+import IconTarif from '../assets/icon-creation-perso.svg?react';
 import IconProfil from '../assets/icon-personnalisez.svg?react'
-import IconDonnees from '../assets/icon-donnees.svg?react';
-import IconSupportContact from '../assets/icon-support-contact.svg?react';
+import IconDonnees from '../assets/icon-paiement.svg?react';
+import IconSupportContact from '../assets/icon-profil.svg?react';
 
 function IconChevronUp() {
   return (
