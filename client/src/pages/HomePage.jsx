@@ -6,10 +6,10 @@ import imgGallery2 from '../assets/Gazo, Tiakola - MAMI WATA (Clip Vidéo).png';
 import imgGallery3 from '../assets/Nada Surf - Always Love.png';
 import imgHero from '../assets/Image header.png';
 import IconTeleverse from '../assets/icon-televerse.svg?react';
-import IconPersonnalisez from '../assets/icon-personnalisez.svg?react';
-import IconRecevez from '../assets/icon-recevez.svg?react';
-import IconMateriaux from '../assets/icon-materiaux.svg?react';
-import IconPersonnalisationTotale from '../assets/icon-personnalisation-totale.svg?react';
+import IconPersonnalisez from '../assets/icon-personnalisez-sculpture.svg?react';
+import IconRecevez from '../assets/icon-support-contact.svg?react';
+import IconMateriaux from '../assets/icon-materiau.svg?react';
+import IconPersonnalisationTotale from '../assets/icon-livraison.svg?react';
 import IconPaiement from '../assets/icon-paiement.svg?react';
 
 const STEPS = [
