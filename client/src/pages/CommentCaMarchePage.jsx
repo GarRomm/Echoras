@@ -5,7 +5,7 @@ import IconTeleverse from '../assets/icon-televerse.svg?react';
 import IconCreation from '../assets/icon-creation.svg?react';
 import IconPersonnalisezSculpture from '../assets/icon-personnalisez-sculpture.svg?react';
 import IconMateriau from '../assets/icon-materiau.svg?react';
-import IconVisualisez3D from '../assets/icon-visualisez-3d.svg?react';
+import IconVisualisez3D from '../assets/icon-tarif.svg?react';
 import IconRecevez from '../assets/icon-recevez.svg?react';
 
 // Ellipse décorative en haut à droite des cartes
