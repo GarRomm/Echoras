@@ -1,6 +1,6 @@
 'use strict';
 
-const { Resend } = require('resend');
+const resendPkg = require('resend');
 
 const FROM = process.env.EMAIL_FROM || 'Echoras <noreply@echoras.fr>';
 const CONTACT_TO = process.env.CONTACT_EMAIL || 'romainsics@gmail.com';
@@ -10,7 +10,7 @@ function getResendClient() {
     throw new Error('RESEND_API_KEY is not configured');
   }
 
-  return new Resend(process.env.RESEND_API_KEY);
+  return new resendPkg.Resend(process.env.RESEND_API_KEY);
 }
 
 async function sendResetPasswordEmail(to, resetUrl) {

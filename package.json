@@ -9,6 +9,9 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build:client": "cd client && npm run build",
     "start": "cd server && npm start",
+    "test": "concurrently --names \"server,client\" -c \"blue,green\" \"cd server && npm test\" \"cd client && npm test\"",
+    "test:watch": "concurrently --names \"server,client\" -c \"blue,green\" \"cd server && npm run test:watch\" \"cd client && npm run test:watch\"",
+    "coverage": "concurrently --names \"server,client\" -c \"blue,green\" \"cd server && npm run test:coverage\" \"cd client && npm run test:coverage\" && start client/coverage/index.html && start server/coverage/index.html",
     "setup": "npm install && cd server && npm install && cd ../client && npm install && cd ../python-service && pip install -r requirements.txt"
   },
   "devDependencies": {

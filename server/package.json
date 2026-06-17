@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "vitest run --config vitest.config.mjs",
+    "test:watch": "vitest --config vitest.config.mjs",
+    "test:coverage": "vitest run --config vitest.config.mjs --coverage"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -24,8 +27,10 @@
   },
   "devDependencies": {
     "@types/node": "20.17.57",
+    "@vitest/coverage-v8": "^2.1.9",
     "nodemon": "^3.0.2",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^2.1.9"
   },
   "overrides": {
     "@types/node": "20.17.57"

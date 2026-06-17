@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { User } = require('../db/models/index');
-const { sendResetPasswordEmail } = require('../services/emailService');
+const emailService = require('../services/emailService');
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -155,7 +155,7 @@ async function forgotPassword(req, res) {
     await user.update({ resetToken, resetTokenExpiry });
 
     const resetUrl = `${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
-    await sendResetPasswordEmail(user.email, resetUrl);
+    await emailService.sendResetPasswordEmail(user.email, resetUrl);
 
     res.json({ message: 'Si ce compte existe, un email a été envoyé.' });
   } catch (err) {
