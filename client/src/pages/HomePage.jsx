@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
-import imgGallery1 from '../assets/disiz - melodrama feat. theodora (audio officiel).png';
-import imgGallery2 from '../assets/Gazo, Tiakola - MAMI WATA (Clip Vidéo).png';
-import imgGallery3 from '../assets/Nada Surf - Always Love.png';
-import imgHero from '../assets/Image header.png';
+import imgGallery1 from '../assets/disiz - melodrama feat. theodora (audio officiel).webp';
+import imgGallery1Png from '../assets/disiz - melodrama feat. theodora (audio officiel).png';
+import imgGallery2 from '../assets/Gazo, Tiakola - MAMI WATA (Clip Vidéo).webp';
+import imgGallery2Png from '../assets/Gazo, Tiakola - MAMI WATA (Clip Vidéo).png';
+import imgGallery3 from '../assets/Nada Surf - Always Love.webp';
+import imgGallery3Png from '../assets/Nada Surf - Always Love.png';
+import imgHero from '../assets/Image header.webp';
+import imgHeroPng from '../assets/Image header.png';
 import IconTeleverse from '../assets/icon-televerse.svg?react';
 import IconPersonnalisez from '../assets/icon-personnalisez-sculpture.svg?react';
 import IconRecevez from '../assets/icon-support-contact.svg?react';
@@ -34,9 +38,9 @@ const STEPS = [
 ];
 
 const GALLERY_FALLBACK = [
-  { id: 'fb1', renderUrl: imgGallery1, name: 'Melodrama - Theodora', material: 'Résine violette translucide' },
-  { id: 'fb2', renderUrl: imgGallery2, name: 'Mami Wata - Gazo',     material: 'Métal noir satiné'         },
-  { id: 'fb3', renderUrl: imgGallery3, name: 'Always Love - Nada Surf', material: 'Céramique ivoire'       },
+  { id: 'fb1', renderUrl: imgGallery1, renderUrlPng: imgGallery1Png, name: 'Melodrama - Theodora', material: 'Résine violette translucide' },
+  { id: 'fb2', renderUrl: imgGallery2, renderUrlPng: imgGallery2Png, name: 'Mami Wata - Gazo',     material: 'Métal noir satiné'         },
+  { id: 'fb3', renderUrl: imgGallery3, renderUrlPng: imgGallery3Png, name: 'Always Love - Nada Surf', material: 'Céramique ivoire'       },
 ];
 
 const TRUST = [
@@ -89,7 +93,10 @@ export default function HomePage() {
           </div>
         </div>
         <div className="hero__visual">
-          <img src={imgHero} alt="Sculpture sonore Echoras" className="hero__img" />
+          <picture>
+            <source srcSet={imgHero} type="image/webp" />
+            <img src={imgHeroPng} alt="Sculpture sonore Echoras" className="hero__img" fetchpriority="high" width="500" height="500" />
+          </picture>
         </div>
       </section>
 
@@ -123,7 +130,14 @@ export default function HomePage() {
           {gallery.map((item) => (
             <article key={item.id} className="gallery__card">
               <div className="gallery__card-img-wrap">
-                <img src={item.renderUrl} alt={item.name} className="gallery__card-img" />
+                {item.renderUrlPng ? (
+                  <picture>
+                    <source srcSet={item.renderUrl} type="image/webp" />
+                    <img src={item.renderUrlPng} alt={item.name} className="gallery__card-img" loading="lazy" width="900" height="507" />
+                  </picture>
+                ) : (
+                  <img src={item.renderUrl} alt={item.name} className="gallery__card-img" loading="lazy" width="860" height="480" />
+                )}
               </div>
               <div className="gallery__card-body">
                 <h3 className="gallery__card-title">{item.name}</h3>

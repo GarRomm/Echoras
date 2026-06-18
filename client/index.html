@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Echoras — Le Souvenir Musical</title>
+    <meta name="description" content="Transformez une musique en sculpture 3D unique. Echoras génère un objet imprimé en 3D à partir de votre fichier audio — à offrir, conserver ou contempler." />
+    <link rel="preconnect" href="https://js.stripe.com" crossorigin />
+    <link rel="preconnect" href="https://m.stripe.network" crossorigin />
     <!-- Polices chargées localement via @fontsource (src/main.jsx) — aucun appel vers Google -->
+    <style>
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html,body,#root{height:100%;background:#1F172D;color:#F0EDE6;font-family:system-ui,-apple-system,sans-serif;overflow-x:hidden}
+      .app{display:flex;flex-direction:column;height:100%}
+      .app__main{flex:1}
+      .header{display:flex;align-items:center;justify-content:space-between;height:70px;padding:0 30px;background:#1F172D;border-bottom:1px solid rgba(240,237,230,.08);position:sticky;top:0;z-index:100;flex-shrink:0}
+      .header__logo{height:100px;width:auto}
+      .footer{background:#F0EDE6;border-top:1px solid rgba(31,23,45,.12);padding:16px 24px;flex-shrink:0}
+    </style>
   </head>
   <body>
     <div id="root"></div>

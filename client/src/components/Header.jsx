@@ -34,7 +34,7 @@ export default function Header() {
   return (
     <header className="header">
       <Link to="/" className="header__brand" onClick={closeMenu}>
-        <img src={logoEchoras} alt="ECHORAS" className="header__logo" />
+        <img src={logoEchoras} alt="ECHORAS" className="header__logo" width="120" height="32" />
       </Link>
 
       <nav className={`header__nav${menuOpen ? ' header__nav--open' : ''}`} aria-label="Navigation principale">

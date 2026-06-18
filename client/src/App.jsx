@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
-import CreatorPage from './pages/CreatorPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import PlaceholderPage from './pages/PlaceholderPage';
-import ContactPage from './pages/ContactPage';
-import FaqPage from './pages/FaqPage';
-import CommentCaMarchePage from './pages/CommentCaMarchePage';
-import CartPage from './pages/CartPage';
-import MyCreationsPage from './pages/MyCreationsPage';
-import CheckoutPage from './pages/CheckoutPage';
-import OrderConfirmationPage from './pages/OrderConfirmationPage';
-import ProfilePage from './pages/ProfilePage';
-import AdminPage from './pages/AdminPage';
-import GaleriePage from './pages/GaleriePage';
-import MyOrdersPage from './pages/MyOrdersPage';
-import AdminOrderDetailPage from './pages/AdminOrderDetailPage';
-import MentionsLegalesPage from './pages/MentionsLegalesPage';
-import ConfidentialitePage from './pages/ConfidentialitePage';
 import './styles/App.css';
+
+const CreatorPage = lazy(() => import('./pages/CreatorPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const PlaceholderPage = lazy(() => import('./pages/PlaceholderPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const FaqPage = lazy(() => import('./pages/FaqPage'));
+const CommentCaMarchePage = lazy(() => import('./pages/CommentCaMarchePage'));
+const CartPage = lazy(() => import('./pages/CartPage'));
+const MyCreationsPage = lazy(() => import('./pages/MyCreationsPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
+const GaleriePage = lazy(() => import('./pages/GaleriePage'));
+const MyOrdersPage = lazy(() => import('./pages/MyOrdersPage'));
+const AdminOrderDetailPage = lazy(() => import('./pages/AdminOrderDetailPage'));
+const MentionsLegalesPage = lazy(() => import('./pages/MentionsLegalesPage'));
+const ConfidentialitePage = lazy(() => import('./pages/ConfidentialitePage'));
 
 export default function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ export default function App() {
     <div className="app">
       <Header />
       <main className={`app__main${isCreator ? ' app__main--fixed' : ''}`}>
+        <Suspense fallback={null}>
         <Routes>
           {/* Pages publiques */}
           <Route path="/" element={<HomePage />} />
@@ -64,6 +66,7 @@ export default function App() {
 
           <Route path="*" element={<PlaceholderPage title="Page introuvable" />} />
         </Routes>
+        </Suspense>
       </main>
       <Footer />
     </div>
