@@ -1,5 +1,8 @@
 name: Deploy to VPS
 
+# Ce workflow s'exécute automatiquement à chaque push sur la branche main.
+# C'est le principe du CI/CD (Intégration Continue / Déploiement Continu) :
+# chaque merge validé déclenche automatiquement un déploiement en production.
 on:
   push:
     branches:
@@ -9,6 +12,8 @@ jobs:
   deploy:
     name: Build & Deploy
     runs-on: ubuntu-latest
+    # Sécurité : si le job dépasse 15 minutes (réseau bloqué, npm figé),
+    # GitHub Actions l'annule automatiquement pour ne pas consommer de minutes en boucle.
     timeout-minutes: 15
 
     steps:
@@ -19,38 +24,69 @@ jobs:
         uses: actions/setup-node@v4.4.0
         with:
           node-version: '22'
+          # Le cache npm évite de re-télécharger les dépendances à chaque run.
+          # cache-dependency-path pointe vers le lockfile du client (structure monorepo :
+          # le package.json racine ne contient que concurrently, pas les deps React/Three.js).
           cache: 'npm'
           cache-dependency-path: client/package-lock.json
 
       - name: Install client dependencies
+        # "npm ci" installe exactement les versions du package-lock.json, contrairement
+        # à "npm install" qui peut résoudre des versions différentes. Cela garantit
+        # des builds reproductibles entre la machine du développeur et le runner CI.
         run: npm ci --prefix client
 
       - name: Build client
+        # Vite compile le React et génère les fichiers statiques dans client/dist/.
+        # Ces fichiers seront servis directement par nginx sur le VPS.
         run: npm run build --prefix client
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
+          # La clé privée SSH est stockée dans les secrets GitHub (jamais dans le repo).
+          # chmod 600 est obligatoire : SSH refuse une clé dont les permissions sont trop larges.
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          # ssh-keyscan récupère et enregistre l'empreinte publique du VPS dans known_hosts.
+          # Sans cette étape, SSH demanderait une confirmation interactive au premier contact,
+          # ce qui bloquerait le runner en environnement non-interactif.
           ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to VPS
         run: |
-          # Copier le build client vers le VPS
+          # rsync transfère uniquement les fichiers modifiés depuis le dernier déploiement
+          # (-a = archive, -z = compression en transit).
+          # --delete supprime du VPS les fichiers qui n'existent plus dans client/dist/ :
+          # sans cette option, d'anciens chunks JS ou CSS continueraient d'être servis,
+          # ce qui peut casser le cache navigateur ou exposer du code obsolète.
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key" \
             client/dist/ \
             root@${{ secrets.VPS_HOST }}:/opt/echoras/client/dist/
 
-          # Sur le VPS : pull serveur + restart
+          # On ouvre une session SSH sur le VPS pour mettre à jour le code serveur
+          # et redémarrer le service Node.js.
           ssh -i ~/.ssh/deploy_key root@${{ secrets.VPS_HOST }} "
             set -e
             cd /opt/echoras
             git fetch origin
+
+            # "git reset --hard" plutôt que "git pull" : rsync vient de déposer des fichiers
+            # dans client/dist/ qui est potentiellement tracké par git. Un "git pull" échouerait
+            # sur un conflit de fusion. "reset --hard" est idempotent et ne peut pas bloquer.
             git reset --hard origin/main
+
+            # nginx tourne sous l'utilisateur système "www-data". Si les fichiers appartiennent
+            # à root (propriétaire par défaut après rsync), nginx obtient une erreur 403 Forbidden
+            # en tentant de les lire. On corrige la propriété après chaque déploiement.
             chown -R www-data:www-data /opt/echoras/client/dist
+
             systemctl restart echoras
+
+            # On attend 3 secondes pour laisser à systemd le temps de démarrer le processus
+            # Node.js avant de lire les logs. Sans ce délai, journalctl afficherait les logs
+            # du démarrage précédent.
             sleep 3
             journalctl -u echoras -n 8 --no-pager
           "
