@@ -1,5 +1,5 @@
 export function initCookies() {
-  // Chargement différé — ne bloque pas le rendu initial
+  // Chargement différé - ne bloque pas le rendu initial
   if ('requestIdleCallback' in window) {
     requestIdleCallback(load, { timeout: 3000 });
   } else {
@@ -44,8 +44,8 @@ function init() {
     mandatoryCta:            true,
   });
 
-  // JWT HttpOnly — cookies techniques nécessaires, exemptés de consentement (art. 82 LIL)
-  // Stripe — cookies de détection de fraude nécessaires à la transaction de paiement,
+  // JWT HttpOnly - cookies techniques nécessaires, exemptés de consentement (art. 82 LIL)
+  // Stripe - cookies de détection de fraude nécessaires à la transaction de paiement,
   // exemptés de consentement (même base légale). Stripe est chargé via @stripe/stripe-js
   // directement dans CheckoutPage, pas via tarteaucitron.job.
   tarteaucitron.job = tarteaucitron.job || [];

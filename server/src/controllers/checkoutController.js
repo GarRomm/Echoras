@@ -101,7 +101,7 @@ async function placeOrder(req, res) {
 
     const total = createdOrders.reduce((s, o) => s + o.price, 0);
 
-    // Email de confirmation — fire-and-forget, ne bloque pas la réponse
+    // Email de confirmation - fire-and-forget, ne bloque pas la réponse
     const user = await User.findByPk(req.user.id, { attributes: ['email', 'firstName'] });
     if (user) {
       sendOrderConfirmationEmail({

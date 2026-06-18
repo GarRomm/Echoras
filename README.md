@@ -15,16 +15,16 @@ Transformez un fichier audio en sculpture 3D imprimable. Echoras analyse la form
 | Service audio | Python, Flask, Librosa |
 | Paiement | Stripe Checkout |
 | Emails | Resend |
-| Tests | Vitest — 125 tests (server + client) |
+| Tests | Vitest - 125 tests (server + client) |
 
 ---
 
 ## Fonctionnalités
 
-- **Créateur 3D** — import audio drag & drop, visualisation en temps réel, 10 paramètres de personnalisation, export STL/3MF
-- **Compte utilisateur** — inscription, connexion JWT, reset mot de passe, historique sculptures et commandes
-- **E-commerce** — panier, calcul de prix dynamique, paiement Stripe, emails de confirmation et suivi de commande
-- **Backoffice admin** — gestion des commandes, téléchargement STL, mise à jour des statuts
+- **Créateur 3D** - import audio drag & drop, visualisation en temps réel, 10 paramètres de personnalisation, export STL/3MF
+- **Compte utilisateur** - inscription, connexion JWT, reset mot de passe, historique sculptures et commandes
+- **E-commerce** - panier, calcul de prix dynamique, paiement Stripe, emails de confirmation et suivi de commande
+- **Backoffice admin** - gestion des commandes, téléchargement STL, mise à jour des statuts
 
 ---
 

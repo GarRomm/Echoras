@@ -106,7 +106,7 @@ function CartCard({ item, onDelete, navigate }) {
 }
 
 export default function CartPage() {
-  useEffect(() => { document.title = 'Mon panier — Echoras'; }, []);
+  useEffect(() => { document.title = 'Mon panier - Echoras'; }, []);
 
   const navigate = useNavigate();
   const [items, setItems] = useState([]);

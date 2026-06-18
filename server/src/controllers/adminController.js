@@ -56,7 +56,7 @@ async function updateOrderStatus(req, res) {
     if (!order) return res.status(404).json({ error: 'Commande introuvable' });
     await order.update({ status });
 
-    // Email de statut — fire-and-forget pour fabrication, shipped, delivered
+    // Email de statut - fire-and-forget pour fabrication, shipped, delivered
     if (order.User) {
       sendOrderStatusEmail({
         to:          order.User.email,
@@ -117,7 +117,7 @@ async function getOrderDetail(req, res) {
         id:       s.id,
         name:     s.name,
         hasStl:   !!s.stlFilePath,
-        material: MATERIAL_LABELS[matName] || matName || '—',
+        material: MATERIAL_LABELS[matName] || matName || '-',
         params:   p ? {
           peakHeight:     p.peakHeight,
           cylinderHeight: p.cylinderHeight,
@@ -157,8 +157,8 @@ async function downloadStl(req, res) {
     const stlPath = order.Sculpture?.stlFilePath;
     if (!stlPath) return res.status(404).json({ error: 'Fichier STL non disponible' });
 
-    // New format: sculpture_123_waveform.stl — dérive les autres suffixes
-    // Legacy format: sculpture_123.stl — seul waveform disponible
+    // New format: sculpture_123_waveform.stl - dérive les autres suffixes
+    // Legacy format: sculpture_123.stl - seul waveform disponible
     let targetPath;
     if (stlPath.endsWith('_waveform.stl')) {
       targetPath = stlPath.replace('_waveform.stl', `_${suffix}.stl`);

@@ -2,7 +2,7 @@
 
 const { Cart, CartItem, Sculpture, Material, SculptureParams } = require('../db/models/index');
 
-// Réplique de la formule printCost.js (client) — source de vérité côté serveur
+// Réplique de la formule printCost.js (client) - source de vérité côté serveur
 const PRINT_SPEED_CM3_H = 25;
 const INFILL_FACTOR     = 0.15;
 const BRILLANT_PREMIUM  = 14;

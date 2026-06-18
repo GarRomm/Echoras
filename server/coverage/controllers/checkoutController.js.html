@@ -422,7 +422,7 @@ async function placeOrder(req, res) {
 &nbsp;
     const total = createdOrders.reduce((s, o) =&gt; s + o.price, 0);
 &nbsp;
-    // Email de confirmation — fire-and-forget, ne bloque pas la réponse
+    // Email de confirmation - fire-and-forget, ne bloque pas la réponse
     const user = await User.findByPk(req.user.id, { attributes: ['email', 'firstName'] });
     if (user) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      sendOrderConfirmationEmail({</span>

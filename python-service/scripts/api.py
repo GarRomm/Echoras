@@ -1,5 +1,5 @@
 """
-api.py — Flask HTTP API wrapping Blender rendering and Librosa analysis.
+api.py - Flask HTTP API wrapping Blender rendering and Librosa analysis.
 
 Endpoints:
     POST /render   { "stl_path": "...", "output_path": "...", "material": "..." }

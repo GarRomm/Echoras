@@ -55,7 +55,7 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: Date.now() });
 });
 
-// Serve sculpture renders (public — used by gallery)
+// Serve sculpture renders (public - used by gallery)
 app.use('/renders', express.static(path.join(__dirname, '..', 'storage', 'renders')));
 
 // Serve client build in production

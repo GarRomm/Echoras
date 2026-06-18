@@ -142,7 +142,7 @@ async function getPublicGallery(req, res) {
         { model: SculptureParams, as: 'params', attributes: ['waveformColor', 'artistName', 'songTitle'] },
         {
           model: Order,
-          required: true,                          // INNER JOIN — exclut les sculptures sans commande
+          required: true,                          // INNER JOIN - exclut les sculptures sans commande
           attributes: [],
           where: { status: { [require('sequelize').Op.in]: PAID_STATUSES } },
         },
@@ -197,7 +197,7 @@ async function saveStl(req, res) {
     fs.mkdirSync(STL_DIR, { recursive: true });
     const filePath = path.join(STL_DIR, `sculpture_${id}_${suffix}.stl`);
     fs.writeFileSync(filePath, req.body);
-    // stlFilePath tracks the waveform file — used for hasStl detection
+    // stlFilePath tracks the waveform file - used for hasStl detection
     if (suffix === 'waveform') {
       await sculpture.update({ stlFilePath: filePath });
     }

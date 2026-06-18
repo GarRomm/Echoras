@@ -13,7 +13,7 @@ const BASE_PARAMS = {
   baseHeight: 1,
 };
 
-describe('computePrintCost — structure', () => {
+describe('computePrintCost - structure', () => {
   it('returns all expected keys', () => {
     const result = computePrintCost(BASE_PARAMS);
     expect(result).toHaveProperty('total');
@@ -31,7 +31,7 @@ describe('computePrintCost — structure', () => {
   });
 });
 
-describe('computePrintCost — finition', () => {
+describe('computePrintCost - finition', () => {
   it('finishLabel is "PLA mat" for mat mode', () => {
     expect(computePrintCost(BASE_PARAMS).finishLabel).toBe('PLA mat');
   });
@@ -58,7 +58,7 @@ describe('computePrintCost — finition', () => {
   });
 });
 
-describe('computePrintCost — volumes', () => {
+describe('computePrintCost - volumes', () => {
   it('adding a base increases total cost', () => {
     const withoutBase = computePrintCost(BASE_PARAMS);
     const withBase = computePrintCost({ ...BASE_PARAMS, showBase: true, baseHeight: 2 });
@@ -78,7 +78,7 @@ describe('computePrintCost — volumes', () => {
   });
 });
 
-describe('computePrintCost — laborBase override', () => {
+describe('computePrintCost - laborBase override', () => {
   it('custom laborBase of 0 reduces total below default', () => {
     const defaultCost = computePrintCost(BASE_PARAMS);
     const zeroCost = computePrintCost(BASE_PARAMS, 0);

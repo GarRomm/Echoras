@@ -30,7 +30,7 @@ const DEFAULT_PARAMS = {
 export default function CreatorPage() {
   const location = useLocation();
 
-  useEffect(() => { document.title = 'Studio 3D — Echoras'; }, []);
+  useEffect(() => { document.title = 'Studio 3D - Echoras'; }, []);
 
   const [audioFile, setAudioFile] = useState(null);
   const [params, setParams] = useState(() => {
@@ -145,9 +145,9 @@ export default function CreatorPage() {
           <span>
             Reprise de <strong>{location.state?.sculptureName || 'votre sculpture'}</strong>
             {resumedWaveform
-              ? <> — votre sculpture est prête, vous pouvez modifier les paramètres</>
+              ? <> - votre sculpture est prête, vous pouvez modifier les paramètres</>
               : location.state?.audioFileName
-                ? <> — re-uploadez <em>{location.state.audioFileName}</em> pour retrouver votre son</>
+                ? <> - re-uploadez <em>{location.state.audioFileName}</em> pour retrouver votre son</>
                 : null
             }
           </span>

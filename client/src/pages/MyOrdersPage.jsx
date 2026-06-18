@@ -13,7 +13,7 @@ const STATUS_CONFIG = {
 };
 
 function formatDate(iso) {
-  if (!iso) return '—';
+  if (!iso) return '-';
   return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 }
 
@@ -152,7 +152,7 @@ function OrderCard({ order }) {
           <StatusBadge status={order.status} />
           {(order.sculpture?.artistName || order.sculpture?.songTitle) && (
             <p className="order-card__subtitle">
-              {[order.sculpture.artistName, order.sculpture.songTitle].filter(Boolean).join(' — ')}
+              {[order.sculpture.artistName, order.sculpture.songTitle].filter(Boolean).join(' - ')}
             </p>
           )}
         </div>

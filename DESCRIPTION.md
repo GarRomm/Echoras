@@ -1,4 +1,4 @@
-# Echoras — "Le Souvenir Musical"
+# Echoras - "Le Souvenir Musical"
 
 ## Concept
 Application web full-stack qui transforme un fichier audio en objet 3D imprimable (fichier STL), avec visualisation 3D en temps réel, compte utilisateur, panier et commande en ligne.
@@ -40,7 +40,7 @@ Service Python (Librosa)
 
 | # | Fonctionnalité | Détail |
 |---|---|---|
-| F1 | Import audio | Drag & drop — MP3, WAV, OGG, FLAC, M4A, 50 Mo max |
+| F1 | Import audio | Drag & drop - MP3, WAV, OGG, FLAC, M4A, 50 Mo max |
 | F2 | Analyse de la forme d'onde | Web Audio API, 2048 points d'amplitude normalisés |
 | F3 | Visualisation 3D temps réel | Sculpture hélicoïdale Three.js modulée par l'audio |
 | F4 | Personnalisation | 10 paramètres via sliders (hauteur pics, lissage, rayon, segments, tours, couleurs…) |
@@ -125,7 +125,7 @@ Commande : `npm run coverage` à la racine (server + client en parallèle).
 package.json                    # Scripts racine (dev, test, coverage, build)
 client/                         # Frontend React + Vite
   src/
-    App.jsx                     # Router v7 — toutes les routes
+    App.jsx                     # Router v7 - toutes les routes
     components/                 # AudioUploader, ControlPanel, ExportPanel, Visualizer, Header, Footer
     pages/                      # HomePage, CreatorPage, LoginPage, RegisterPage, CartPage,
     │                           # CheckoutPage, OrderConfirmationPage, ProfilePage,

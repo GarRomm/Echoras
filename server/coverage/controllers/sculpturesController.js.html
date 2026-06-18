@@ -657,7 +657,7 @@ async function getPublicGallery(req, res) {
         { model: SculptureParams, as: 'params', attributes: ['waveformColor', 'artistName', 'songTitle'] },
         {
           model: Order,
-          required: true,                          // INNER JOIN — exclut les sculptures sans commande
+          required: true,                          // INNER JOIN - exclut les sculptures sans commande
           attributes: [],
           where: { status: { [require('sequelize').Op.in]: PAID_STATUSES } },
         },
@@ -712,7 +712,7 @@ async function getMaterials(_req, res) {
 <span class="cstat-no" title="statement not covered" >    fs.mkdirSync(STL_DIR, { recursive: true });</span>
 <span class="cstat-no" title="statement not covered" >    const filePath = path.join(STL_DIR, `sculpture_${id}_${suffix}.stl`);</span>
 <span class="cstat-no" title="statement not covered" >    fs.writeFileSync(filePath, req.body);</span>
-<span class="cstat-no" title="statement not covered" >    // stlFilePath tracks the waveform file — used for hasStl detection</span>
+<span class="cstat-no" title="statement not covered" >    // stlFilePath tracks the waveform file - used for hasStl detection</span>
 <span class="cstat-no" title="statement not covered" >    if (suffix === 'waveform') {</span>
 <span class="cstat-no" title="statement not covered" >      await sculpture.update({ stlFilePath: filePath });</span>
 <span class="cstat-no" title="statement not covered" >    }</span>

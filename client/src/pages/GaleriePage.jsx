@@ -37,7 +37,7 @@ function SculptureCard({ sculpture }) {
         <p className="galerie__card-subtitle">
           {sculpture.material}
           {sculpture.artistName && ` · ${sculpture.artistName}`}
-          {sculpture.songTitle && ` — ${sculpture.songTitle}`}
+          {sculpture.songTitle && ` - ${sculpture.songTitle}`}
         </p>
       </div>
     </article>

@@ -1,5 +1,5 @@
 """
-analyze_audio.py — Deep audio analysis using Librosa.
+analyze_audio.py - Deep audio analysis using Librosa.
 
 Called by the Node.js backend when advanced frequency analysis is needed
 beyond what Web Audio API provides on the client.

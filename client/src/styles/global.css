@@ -244,7 +244,7 @@ html:has(#tarteaucitronBack[style*="block"]) body {
   font-family: 'Manrope', 'Segoe UI', Arial, sans-serif !important;
 }
 
-/* ── Icône flottante — cercle pur ── */
+/* ── Icône flottante - cercle pur ── */
 #tarteaucitronRoot #tarteaucitronIcon {
   background: #1F172D !important;
   border: 1px solid rgba(240, 237, 230, 0.15) !important;

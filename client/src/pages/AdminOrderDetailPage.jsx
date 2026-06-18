@@ -24,12 +24,12 @@ const TIMELINE_STEPS = [
 ];
 
 function formatDateLong(iso) {
-  if (!iso) return '—';
+  if (!iso) return '-';
   return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function formatDateShort(iso) {
-  if (!iso) return '—';
+  if (!iso) return '-';
   return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
@@ -114,7 +114,7 @@ export default function AdminOrderDetailPage() {
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    document.title = `Commande — Admin | Echoras`;
+    document.title = `Commande - Admin | Echoras`;
     return () => { document.title = 'Echoras'; };
   }, []);
 
@@ -322,32 +322,32 @@ export default function AdminOrderDetailPage() {
                         <h2 className="aod__sculpture-name">{order.sculpture?.name || 'Sans titre'}</h2>
                         {(order.sculpture?.params?.artistName || order.sculpture?.params?.songTitle) && (
                           <p className="aod__sculpture-artist">
-                            {[order.sculpture.params.artistName, order.sculpture.params.songTitle].filter(Boolean).join(' — ')}
+                            {[order.sculpture.params.artistName, order.sculpture.params.songTitle].filter(Boolean).join(' - ')}
                           </p>
                         )}
                       </div>
                       <div className="aod__params-grid">
                         <div className="aod__param">
                           <span className="aod__param-label">Matériau</span>
-                          <span className="aod__param-value">{order.sculpture?.material || '—'}</span>
+                          <span className="aod__param-value">{order.sculpture?.material || '-'}</span>
                         </div>
                         <div className="aod__param">
                           <span className="aod__param-label">Hauteur</span>
                           <span className="aod__param-value">
                             {order.sculpture?.params?.cylinderHeight != null
-                              ? `${order.sculpture.params.cylinderHeight.toFixed(1)} cm` : '—'}
+                              ? `${order.sculpture.params.cylinderHeight.toFixed(1)} cm` : '-'}
                           </span>
                         </div>
                         <div className="aod__param">
                           <span className="aod__param-label">Hauteur pics</span>
                           <span className="aod__param-value">
                             {order.sculpture?.params?.peakHeight != null
-                              ? order.sculpture.params.peakHeight.toFixed(2) : '—'}
+                              ? order.sculpture.params.peakHeight.toFixed(2) : '-'}
                           </span>
                         </div>
                         <div className="aod__param">
                           <span className="aod__param-label">Tours hélice</span>
-                          <span className="aod__param-value">{order.sculpture?.params?.helixTurns ?? '—'}</span>
+                          <span className="aod__param-value">{order.sculpture?.params?.helixTurns ?? '-'}</span>
                         </div>
                       </div>
                     </div>
@@ -392,12 +392,12 @@ export default function AdminOrderDetailPage() {
                       <div className="aod__field">
                         <span className="aod__field-label">Nom complet</span>
                         <span className="aod__field-value">
-                          {order.client ? `${order.client.firstName} ${order.client.lastName}` : '—'}
+                          {order.client ? `${order.client.firstName} ${order.client.lastName}` : '-'}
                         </span>
                       </div>
                       <div className="aod__field">
                         <span className="aod__field-label">Email</span>
-                        <span className="aod__field-value">{order.client?.email || '—'}</span>
+                        <span className="aod__field-value">{order.client?.email || '-'}</span>
                       </div>
                       {order.client?.phone && (
                         <div className="aod__field">

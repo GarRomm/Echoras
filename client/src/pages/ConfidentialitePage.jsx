@@ -94,14 +94,14 @@ export default function ConfidentialitePage() {
           </p>
           <ul>
             <li>
-              <strong>LWS (Groupe LWS SARL)</strong> — hébergement du serveur (données stockées en France)
+              <strong>LWS (Groupe LWS SARL)</strong> - hébergement du serveur (données stockées en France)
             </li>
             <li>
-              <strong>Resend</strong> — envoi des e-mails transactionnels (reset de mot de passe,
+              <strong>Resend</strong> - envoi des e-mails transactionnels (reset de mot de passe,
               confirmation de contact). Les e-mails ne sont pas stockés sur nos serveurs.
             </li>
             <li>
-              <strong>Partenaire imprimeur</strong> — transmission du fichier STL de la sculpture
+              <strong>Partenaire imprimeur</strong> - transmission du fichier STL de la sculpture
               uniquement (aucune donnée personnelle identifiante n'est transmise)
             </li>
           </ul>

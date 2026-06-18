@@ -5,7 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import App from './App';
 import './styles/global.css';
 
-// Polices auto-hébergées (conformité CNIL — aucun transfert vers Google)
+// Polices auto-hébergées (conformité CNIL - aucun transfert vers Google)
 import '@fontsource/epilogue/700.css';
 import '@fontsource/manrope/400.css';
 import '@fontsource/montserrat/400.css';

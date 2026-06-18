@@ -12,7 +12,7 @@ function getFileInput() {
   return document.querySelector('input[type="file"]');
 }
 
-describe('AudioUploader — idle state', () => {
+describe('AudioUploader - idle state', () => {
   it('renders the drop zone label', () => {
     render(<AudioUploader onFileSelected={vi.fn()} isAnalyzing={false} audioFile={null} />);
     expect(screen.getByText(/Glissez un fichier ici/)).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('AudioUploader — idle state', () => {
   });
 });
 
-describe('AudioUploader — file selected state', () => {
+describe('AudioUploader - file selected state', () => {
   it('displays the selected file name', () => {
     const file = makeFile('chanson.mp3');
     render(<AudioUploader onFileSelected={vi.fn()} isAnalyzing={false} audioFile={file} />);
@@ -56,7 +56,7 @@ describe('AudioUploader — file selected state', () => {
   });
 });
 
-describe('AudioUploader — validation via input', () => {
+describe('AudioUploader - validation via input', () => {
   it('calls onFileSelected with the file for a valid .mp3', () => {
     const onFileSelected = vi.fn();
     render(<AudioUploader onFileSelected={onFileSelected} isAnalyzing={false} audioFile={null} />);
@@ -105,7 +105,7 @@ describe('AudioUploader — validation via input', () => {
   });
 });
 
-describe('AudioUploader — drag and drop', () => {
+describe('AudioUploader - drag and drop', () => {
   it('calls onFileSelected on a valid drop', () => {
     const onFileSelected = vi.fn();
     render(<AudioUploader onFileSelected={onFileSelected} isAnalyzing={false} audioFile={null} />);

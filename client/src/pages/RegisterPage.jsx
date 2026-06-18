@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import '../styles/auth.css';
 
 export default function RegisterPage() {
-  useEffect(() => { document.title = 'Créer un compte — Echoras'; }, []);
+  useEffect(() => { document.title = 'Créer un compte - Echoras'; }, []);
 
   const { register } = useAuth();
   const navigate = useNavigate();

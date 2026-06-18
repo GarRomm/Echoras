@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import '../styles/auth.css';
 
 export default function LoginPage() {
-  useEffect(() => { document.title = 'Connexion — Echoras'; }, []);
+  useEffect(() => { document.title = 'Connexion - Echoras'; }, []);
 
   const { login } = useAuth();
   const navigate = useNavigate();

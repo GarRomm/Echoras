@@ -63,7 +63,7 @@ function CheckoutArticle({ item }) {
 function CheckoutPage() {
   const stripe = useStripe();
   const elements = useElements();
-  useEffect(() => { document.title = 'Commande — Echoras'; }, []);
+  useEffect(() => { document.title = 'Commande - Echoras'; }, []);
 
   const navigate = useNavigate();
 
@@ -484,7 +484,7 @@ function CheckoutPage() {
                   )}
                   {!stripe && (
                     <p className="checkout__card-error">
-                      Stripe non configuré — ajoutez VITE_STRIPE_PUBLIC_KEY dans client/.env
+                      Stripe non configuré - ajoutez VITE_STRIPE_PUBLIC_KEY dans client/.env
                     </p>
                   )}
                 </div>
@@ -495,7 +495,7 @@ function CheckoutPage() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M12 1L3 5v6c0 5.25 3.75 10.15 9 11.35C17.25 21.15 21 16.25 21 11V5l-9-4z" fill="#6772e5" />
                 </svg>
-                <span>Paiement 100% sécurisé — traité par <strong>Stripe</strong></span>
+                <span>Paiement 100% sécurisé - traité par <strong>Stripe</strong></span>
               </div>
 
             </div>

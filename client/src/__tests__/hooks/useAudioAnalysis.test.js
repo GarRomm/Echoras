@@ -20,7 +20,7 @@ beforeEach(() => {
 
 function buildFileWithArrayBuffer(name = 'test.mp3', size = 100) {
   const file = new File([new Uint8Array(size)], name, { type: 'audio/mp3' });
-  // jsdom's File.prototype.arrayBuffer may not be spyable via vi.spyOn — assign directly
+  // jsdom's File.prototype.arrayBuffer may not be spyable via vi.spyOn - assign directly
   file.arrayBuffer = () => Promise.resolve(new ArrayBuffer(size));
   return file;
 }

@@ -25,7 +25,7 @@ function IconCheck() {
 }
 
 export default function ContactPage() {
-  useEffect(() => { document.title = 'Contact — Echoras'; }, []);
+  useEffect(() => { document.title = 'Contact - Echoras'; }, []);
 
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState('idle'); // idle | loading | success | error

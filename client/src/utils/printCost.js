@@ -1,10 +1,10 @@
 const PRINT_SPEED_CM3_H = 25;   // Bambu P1S / Prusa MK4 en mode qualité
-const INFILL_FACTOR     = 0.15;  // 15 % gyroïde — parois extérieures + remplissage sparse
-const MACHINE_RATE      = 0.35;  // €/h — amortissement imprimante + électricité
+const INFILL_FACTOR     = 0.15;  // 15 % gyroïde - parois extérieures + remplissage sparse
+const MACHINE_RATE      = 0.35;  // €/h - amortissement imprimante + électricité
 
 // Frais fixes par pièce : packaging, main d'œuvre (QC + emballage ~20 min), frais plateforme, marge Echoras
-const LABOR_BASE       = 28;  // € — finition mat
-const BRILLANT_PREMIUM =  9;  // € — surcoût finition brillant (post-traitement + matière PETG premium)
+const LABOR_BASE       = 28;  // € - finition mat
+const BRILLANT_PREMIUM =  9;  // € - surcoût finition brillant (post-traitement + matière PETG premium)
 
 export function computePrintCost(params, laborBase) {
   const LABOR_BASE_RESOLVED = laborBase ?? LABOR_BASE;

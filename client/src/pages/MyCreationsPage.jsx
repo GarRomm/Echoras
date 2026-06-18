@@ -113,23 +113,23 @@ function SculptureCard({ sculpture, onDelete }) {
           <dl className="creation-card__params">
             <div className="creation-card__param">
               <dt>Matériau</dt>
-              <dd>{MATERIAL_LABELS[material?.name] ?? material?.name ?? '—'}</dd>
+              <dd>{MATERIAL_LABELS[material?.name] ?? material?.name ?? '-'}</dd>
             </div>
             <div className="creation-card__param">
               <dt>Hauteur pics</dt>
-              <dd>{params?.peakHeight?.toFixed(2) ?? '—'}</dd>
+              <dd>{params?.peakHeight?.toFixed(2) ?? '-'}</dd>
             </div>
             <div className="creation-card__param">
               <dt>Tours hélice</dt>
-              <dd>{params?.helixTurns ?? '—'}</dd>
+              <dd>{params?.helixTurns ?? '-'}</dd>
             </div>
             <div className="creation-card__param">
               <dt>Rayon</dt>
-              <dd>{params?.cylinderRadius?.toFixed(1) ?? '—'}</dd>
+              <dd>{params?.cylinderRadius?.toFixed(1) ?? '-'}</dd>
             </div>
             <div className="creation-card__param">
               <dt>Hauteur</dt>
-              <dd>{params?.cylinderHeight?.toFixed(1) ?? '—'}</dd>
+              <dd>{params?.cylinderHeight?.toFixed(1) ?? '-'}</dd>
             </div>
           </dl>
 
@@ -140,7 +140,7 @@ function SculptureCard({ sculpture, onDelete }) {
               </svg>
               {sculpture.analysis?.rmsEnvelope
                 ? <>Audio : <em>{sculpture.audioFileName}</em></>
-                : <>Audio : <em>{sculpture.audioFileName}</em> — à re-uploader pour reprendre</>
+                : <>Audio : <em>{sculpture.audioFileName}</em> - à re-uploader pour reprendre</>
               }
             </p>
           )}
@@ -175,7 +175,7 @@ function SculptureCard({ sculpture, onDelete }) {
           >
             <IconCart />
             {cartStatus === 'adding' && 'Ajout…'}
-            {cartStatus === 'error'  && 'Erreur — réessayer'}
+            {cartStatus === 'error'  && 'Erreur - réessayer'}
             {!cartStatus             && 'Ajouter au panier'}
           </button>
         )}
@@ -198,7 +198,7 @@ function SculptureCard({ sculpture, onDelete }) {
 }
 
 export default function MyCreationsPage() {
-  useEffect(() => { document.title = 'Mes créations — Echoras'; }, []);
+  useEffect(() => { document.title = 'Mes créations - Echoras'; }, []);
 
   const [sculptures, setSculptures] = useState([]);
   const [loading, setLoading]       = useState(true);

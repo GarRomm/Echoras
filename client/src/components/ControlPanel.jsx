@@ -126,7 +126,7 @@ export default function ControlPanel({ params, onChange }) {
                 <span className="controls__material-info" aria-label="En savoir plus sur le PLA">
                   ?
                   <span className="controls__material-tooltip">
-                    <strong>PLA</strong> — Plastique biosourcé à finition mate. Rigide, précis et écoresponsable. Idéal pour les détails fins.
+                    <strong>PLA</strong> - Plastique biosourcé à finition mate. Rigide, précis et écoresponsable. Idéal pour les détails fins.
                   </span>
                 </span>
               </div>
@@ -139,7 +139,7 @@ export default function ControlPanel({ params, onChange }) {
                 <span className="controls__material-info" aria-label="En savoir plus sur le PETG">
                   ?
                   <span className="controls__material-tooltip">
-                    <strong>PETG</strong> — Plastique à finition brillante, résistant aux chocs et à l'humidité. Rendu plus lumineux et satiné.
+                    <strong>PETG</strong> - Plastique à finition brillante, résistant aux chocs et à l'humidité. Rendu plus lumineux et satiné.
                   </span>
                 </span>
               </div>

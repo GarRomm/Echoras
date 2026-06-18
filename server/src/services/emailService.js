@@ -65,12 +65,12 @@ async function sendContactConfirmationEmail({ name, email }) {
   await resend.emails.send({
     from: FROM,
     to: email,
-    subject: 'Votre message a bien été reçu — Echoras',
+    subject: 'Votre message a bien été reçu - Echoras',
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: auto;">
         <h2>Merci ${name} !</h2>
         <p>Nous avons bien reçu votre message et vous répondrons dans les plus brefs délais (généralement sous 24–48h ouvrées).</p>
-        <p>En attendant, consultez notre <a href="${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/faq">FAQ</a> — votre réponse s'y trouve peut-être déjà.</p>
+        <p>En attendant, consultez notre <a href="${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/faq">FAQ</a> - votre réponse s'y trouve peut-être déjà.</p>
         <p style="color:#888; font-size:12px; margin-top:32px;">Cet email a été envoyé automatiquement, merci de ne pas y répondre directement.</p>
       </div>
     `,
@@ -97,7 +97,7 @@ async function sendOrderConfirmationEmail({ to, firstName, orders, total }) {
   await resend.emails.send({
     from: FROM,
     to,
-    subject: `Confirmation de commande — Echoras`,
+    subject: `Confirmation de commande - Echoras`,
     html: `
       <div style="font-family:sans-serif; max-width:560px; margin:auto; color:#12121a;">
         <h2 style="margin-bottom:4px;">Merci pour votre commande${firstName ? `, ${firstName}` : ''} !</h2>
@@ -142,7 +142,7 @@ async function sendOrderStatusEmail({ to, firstName, orderNumber, status }) {
   await resend.emails.send({
     from: FROM,
     to,
-    subject: `Commande ${orderNumber} — ${label}`,
+    subject: `Commande ${orderNumber} - ${label}`,
     html: `
       <div style="font-family:sans-serif; max-width:480px; margin:auto; color:#12121a;">
         <h2 style="margin-bottom:4px;">Mise à jour de votre commande</h2>

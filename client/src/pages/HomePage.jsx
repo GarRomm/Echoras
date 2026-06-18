@@ -64,7 +64,7 @@ const TRUST = [
 export default function HomePage() {
   const [gallery, setGallery] = useState(GALLERY_FALLBACK);
 
-  useEffect(() => { document.title = 'Echoras — Sculptures sonores 3D'; }, []);
+  useEffect(() => { document.title = 'Echoras - Sculptures sonores 3D'; }, []);
 
   useEffect(() => {
     fetch('/api/sculptures/gallery')

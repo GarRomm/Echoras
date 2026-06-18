@@ -6,7 +6,7 @@ const sculpturesController = require('../controllers/sculpturesController');
 
 const router = express.Router();
 
-// Routes publiques — avant authJWT
+// Routes publiques - avant authJWT
 router.get('/gallery',   sculpturesController.getPublicGallery);
 router.get('/materials', sculpturesController.getMaterials);
 

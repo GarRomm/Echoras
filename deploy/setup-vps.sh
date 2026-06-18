@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Echoras — VPS Setup Script (Debian/Ubuntu on IONOS)
+# Echoras - VPS Setup Script (Debian/Ubuntu on IONOS)
 #
 # This script installs all system dependencies required to run:
 #   - Node.js (backend + built frontend)

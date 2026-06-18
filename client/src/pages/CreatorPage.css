@@ -251,7 +251,7 @@
 }
 
 /* ───────────────────────────────────────────────
-   Responsive — tablette (≤ 900 px)
+   Responsive - tablette (≤ 900 px)
 ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .creator {
@@ -285,7 +285,7 @@
 }
 
 /* ───────────────────────────────────────────────
-   Responsive — mobile (≤ 600 px)
+   Responsive - mobile (≤ 600 px)
 ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .creator__resume-banner {

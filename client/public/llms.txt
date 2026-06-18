@@ -1,11 +1,11 @@
 # Echoras
 
-> Echoras transforms music into a physical 3D-printed object — a sound sculpture generated from an audio file, designed to be collected, displayed or given as a gift.
+> Echoras transforms music into a physical 3D-printed object - a sound sculpture generated from an audio file, designed to be collected, displayed or given as a gift.
 
 ## Key pages
 
 - [Home](https://echoras.dedyn.io/): Overview, how-it-works steps, and gallery of example sculptures
-- [Studio 3D — Creator](https://echoras.dedyn.io/createur): Interactive 3D editor — upload audio, customize shape/relief/dimensions, preview the sculpture
+- [Studio 3D - Creator](https://echoras.dedyn.io/createur): Interactive 3D editor - upload audio, customize shape/relief/dimensions, preview the sculpture
 - [Gallery](https://echoras.dedyn.io/galerie): Collection of sculptures created by Echoras users
 - [How it works](https://echoras.dedyn.io/comment-ca-marche): Step-by-step guide (upload → customize → receive)
 - [FAQ](https://echoras.dedyn.io/faq): Questions about materials, pricing, delivery times, and data privacy
@@ -13,7 +13,7 @@
 
 ## Materials
 
-- [Materials & pricing](https://echoras.dedyn.io/comment-ca-marche): Matte plastic (PLA), metal (silver/gold), resin, wood, ceramic — each with its own price tier
+- [Materials & pricing](https://echoras.dedyn.io/comment-ca-marche): Matte plastic (PLA), metal (silver/gold), resin, wood, ceramic - each with its own price tier
 
 ## Legal
 

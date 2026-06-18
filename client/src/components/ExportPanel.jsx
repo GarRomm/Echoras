@@ -16,10 +16,10 @@ import { addToCart } from '../services/cartService';
 import { createSculpture } from '../services/sculptureService';
 import './ExportPanel.css';
 
-// Returns { waveformGeos, bodyGeos, plaqueGeos } — three groups for multi-color export.
+// Returns { waveformGeos, bodyGeos, plaqueGeos } - three groups for multi-color export.
 // waveformGeos → helix ribbon (color 1)
 // bodyGeos     → cylinder + base (color 2)
-// plaqueGeos   → nameplate + engraving (color 3) — empty array if no base
+// plaqueGeos   → nameplate + engraving (color 3) - empty array if no base
 async function buildSeparatedGeometries(waveformData, params) {
   const waveformGeos = [buildHelixRibbonGeometry(waveformData, params)];
 
@@ -188,7 +188,7 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
         >
           {saveStatus === 'saving' && 'Sauvegarde…'}
           {saveStatus === 'saved' && '✓ Sculpture sauvegardée'}
-          {saveStatus === 'error' && 'Erreur — réessayer'}
+          {saveStatus === 'error' && 'Erreur - réessayer'}
           {!saveStatus && (resumedSculptureId ? 'Sauvegarder les modifications' : 'Sauvegarder ma sculpture')}
         </button>
       )}
@@ -201,8 +201,8 @@ export default function ExportPanel({ waveformData, params, audioFileName, resum
           onClick={handleAddToCart}
         >
           {cartStatus === 'adding' && 'Ajout en cours…'}
-          {cartStatus === 'error' && 'Erreur — réessayer'}
-          {!cartStatus && (savedSculpture?.price ? `Ajouter au panier — ${savedSculpture.price} €` : 'Ajouter au panier')}
+          {cartStatus === 'error' && 'Erreur - réessayer'}
+          {!cartStatus && (savedSculpture?.price ? `Ajouter au panier - ${savedSculpture.price} €` : 'Ajouter au panier')}
         </button>
       )}
 

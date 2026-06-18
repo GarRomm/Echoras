@@ -468,12 +468,12 @@ async function sendContactConfirmationEmail({ name, email }) {
   await resend.emails.send({
     from: FROM,
     to: email,
-    subject: 'Votre message a bien été reçu — Echoras',
+    subject: 'Votre message a bien été reçu - Echoras',
     html: `
       &lt;div style="font-family: sans-serif; max-width: 480px; margin: auto;"&gt;
         &lt;h2&gt;Merci ${name} !&lt;/h2&gt;
         &lt;p&gt;Nous avons bien reçu votre message et vous répondrons dans les plus brefs délais (généralement sous 24–48h ouvrées).&lt;/p&gt;
-        &lt;p&gt;En attendant, consultez notre &lt;a href="${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/faq"&gt;FAQ&lt;/a&gt; — votre réponse s'y trouve peut-être déjà.&lt;/p&gt;
+        &lt;p&gt;En attendant, consultez notre &lt;a href="${process.env.CLIENT_ORIGIN || 'http://localhost:5173'}/faq"&gt;FAQ&lt;/a&gt; - votre réponse s'y trouve peut-être déjà.&lt;/p&gt;
         &lt;p style="color:#888; font-size:12px; margin-top:32px;"&gt;Cet email a été envoyé automatiquement, merci de ne pas y répondre directement.&lt;/p&gt;
       &lt;/div&gt;
     `,
@@ -500,7 +500,7 @@ async function sendOrderConfirmationEmail({ to, firstName, orders, total }) {
   await resend.emails.send({
     from: FROM,
     to,
-    subject: `Confirmation de commande — Echoras`,
+    subject: `Confirmation de commande - Echoras`,
     html: `
       &lt;div style="font-family:sans-serif; max-width:560px; margin:auto; color:#12121a;"&gt;
         &lt;h2 style="margin-bottom:4px;"&gt;Merci pour votre commande${firstName ? `, ${firstName}` <span class="branch-0 cbranch-no" title="branch not covered" >: ''}</span> !&lt;/h2&gt;
@@ -545,7 +545,7 @@ async function sendOrderStatusEmail({ to, firstName, orderNumber, status }) {
   await resend.emails.send({
     from: FROM,
     to,
-    subject: `Commande ${orderNumber} — ${label}`,
+    subject: `Commande ${orderNumber} - ${label}`,
     html: `
       &lt;div style="font-family:sans-serif; max-width:480px; margin:auto; color:#12121a;"&gt;
         &lt;h2 style="margin-bottom:4px;"&gt;Mise à jour de votre commande&lt;/h2&gt;

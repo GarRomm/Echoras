@@ -84,7 +84,7 @@ export default function WaveformRingMesh({ waveformData, params }) {
         </mesh>
       )}
 
-      {/* Flat nameplate backing plate — bridges the gap between curved base and flat text */}
+      {/* Flat nameplate backing plate - bridges the gap between curved base and flat text */}
       {params.showBase && nameplateGeometry && (
         <mesh geometry={nameplateGeometry}>
           <meshStandardMaterial
