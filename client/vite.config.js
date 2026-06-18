@@ -44,8 +44,28 @@ function preloadCriticalFonts() {
   };
 }
 
+// Adds <link rel="preload" as="image"> for the LCP hero image so the browser
+// fetches it in parallel with JS, eliminating the HTML→JS→image discovery chain.
+function preloadHeroImage() {
+  return {
+    name: 'preload-hero-image',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html, ctx) {
+        if (!ctx.bundle) return html;
+        const heroKey = Object.keys(ctx.bundle).find(
+          k => k.includes('Image header') && k.endsWith('.webp'),
+        );
+        if (!heroKey) return html;
+        const tag = `    <link rel="preload" as="image" type="image/webp" href="/${heroKey}">`;
+        return html.replace('</head>', `${tag}\n  </head>`);
+      },
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), svgr(), deferCss(), preloadCriticalFonts()],
+  plugins: [react(), svgr(), deferCss(), preloadCriticalFonts(), preloadHeroImage()],
   server: {
     port: 5173,
     proxy: {
