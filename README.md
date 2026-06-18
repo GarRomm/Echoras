@@ -1,8 +1,7 @@
-# Echoras — Le Souvenir Musical
+# Echoras - Le Souvenir Musical
 
 Transformez un fichier audio en sculpture 3D imprimable. Echoras analyse la forme d'onde de votre musique et génère un objet 3D unique, personnalisable et commandable en ligne.
 
-> Projet scolaire — MyDigitalSchool Paris, soutenance juillet 2026.
 
 ---
 
