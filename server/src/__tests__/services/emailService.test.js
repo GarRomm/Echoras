@@ -16,10 +16,6 @@ beforeEach(() => {
   process.env.RESEND_API_KEY = 'test-resend-key';
 });
 
-// ---------------------------------------------------------------------------
-// sendResetPasswordEmail
-// ---------------------------------------------------------------------------
-
 describe('sendResetPasswordEmail', () => {
   it('throws when RESEND_API_KEY is not configured', async () => {
     delete process.env.RESEND_API_KEY;
@@ -41,10 +37,6 @@ describe('sendResetPasswordEmail', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// sendContactEmail
-// ---------------------------------------------------------------------------
-
 describe('sendContactEmail', () => {
   it('calls resend.emails.send with the contact message', async () => {
     const send = mockResend();
@@ -63,10 +55,6 @@ describe('sendContactEmail', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// sendContactConfirmationEmail
-// ---------------------------------------------------------------------------
-
 describe('sendContactConfirmationEmail', () => {
   it('sends confirmation to the user email', async () => {
     const send = mockResend();
@@ -79,10 +67,6 @@ describe('sendContactConfirmationEmail', () => {
     );
   });
 });
-
-// ---------------------------------------------------------------------------
-// sendOrderConfirmationEmail
-// ---------------------------------------------------------------------------
 
 describe('sendOrderConfirmationEmail', () => {
   it('includes order rows and total in the email body', async () => {
@@ -101,10 +85,6 @@ describe('sendOrderConfirmationEmail', () => {
     );
   });
 });
-
-// ---------------------------------------------------------------------------
-// sendOrderStatusEmail
-// ---------------------------------------------------------------------------
 
 describe('sendOrderStatusEmail', () => {
   it('sends email for "fabrication" status', async () => {

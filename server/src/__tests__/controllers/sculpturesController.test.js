@@ -33,10 +33,6 @@ const BASE_BODY = {
 
 beforeEach(() => vi.restoreAllMocks());
 
-// ---------------------------------------------------------------------------
-// createSculpture
-// ---------------------------------------------------------------------------
-
 describe('createSculpture', () => {
   it('returns 400 when material slug is not found', async () => {
     vi.spyOn(Material, 'findOne').mockResolvedValue(null);
@@ -91,10 +87,6 @@ describe('createSculpture', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getSculptures
-// ---------------------------------------------------------------------------
-
 describe('getSculptures', () => {
   it('returns the list of sculptures for the user', async () => {
     const fakeSculptures = [{ id: 1 }, { id: 2 }];
@@ -113,10 +105,6 @@ describe('getSculptures', () => {
     expect(res.status).toHaveBeenCalledWith(500);
   });
 });
-
-// ---------------------------------------------------------------------------
-// deleteSculpture
-// ---------------------------------------------------------------------------
 
 describe('deleteSculpture', () => {
   it('returns 404 when sculpture not found', async () => {
@@ -143,10 +131,6 @@ describe('deleteSculpture', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getMaterials
-// ---------------------------------------------------------------------------
-
 describe('getMaterials', () => {
   it('returns the list of materials', async () => {
     const fakeMaterials = [
@@ -161,10 +145,6 @@ describe('getMaterials', () => {
     expect(res.json).toHaveBeenCalledWith(fakeMaterials);
   });
 });
-
-// ---------------------------------------------------------------------------
-// getPublicGallery
-// ---------------------------------------------------------------------------
 
 describe('getPublicGallery', () => {
   it('returns mapped gallery with renderUrl when render file exists', async () => {

@@ -1,19 +1,4 @@
-/**
- * authController unit tests
- *
- * Strategy: vi.mock() doesn't intercept require() calls inside CJS source files
- * when those files aren't transformed by vitest. Instead we:
- *  - Use vi.spyOn() on the Sequelize model methods (Node's CJS cache guarantees
- *    the test and the controller share the same User object).
- *  - Mock external npm packages (bcryptjs, jsonwebtoken, emailService) via
- *    vi.mock() — these are resolved from node_modules and ARE intercepted.
- */
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-// ---------------------------------------------------------------------------
-// External package mocks (intercepted correctly via vi.mock)
-// ---------------------------------------------------------------------------
 
 vi.mock('bcryptjs', () => {
   const compare = vi.fn();
@@ -46,14 +31,6 @@ vi.mock('resend', () => ({
   })),
 }));
 
-// ---------------------------------------------------------------------------
-// Imports (after vi.mock declarations)
-// ---------------------------------------------------------------------------
-
-// vi.mock() intercepts ESM imports but NOT require() inside CJS source files
-// that vitest doesn't transform. Using createRequire ensures we access the
-// exact same module instances (Node CJS cache) that the controller uses, so
-// vi.spyOn() actually affects the code under test.
 import { createRequire } from 'module';
 const _require = createRequire(import.meta.url);
 const { User } = _require('../../db/models/index');
@@ -62,10 +39,6 @@ const emailServiceCJS = _require('../../services/emailService');
 
 import bcrypt from 'bcryptjs';
 import { register, login, logout, me, forgotPassword, resetPassword } from '../../controllers/authController';
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 const BASE_USER = {
   id: 1,
@@ -92,10 +65,6 @@ beforeEach(() => {
   vi.clearAllMocks();
   bcrypt.hash.mockResolvedValue('hashed_password');
 });
-
-// ---------------------------------------------------------------------------
-// register
-// ---------------------------------------------------------------------------
 
 describe('register', () => {
   it('returns 400 when a required field is missing', async () => {
@@ -148,10 +117,6 @@ describe('register', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// login
-// ---------------------------------------------------------------------------
-
 describe('login', () => {
   it('returns 400 when email or password is missing', async () => {
     const req = { body: { email: 'a@b.com' } };
@@ -202,10 +167,6 @@ describe('login', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// logout
-// ---------------------------------------------------------------------------
-
 describe('logout', () => {
   it('clears the token cookie and returns a success message', () => {
     const req = {};
@@ -215,10 +176,6 @@ describe('logout', () => {
     expect(res.json).toHaveBeenCalledWith({ message: 'Déconnecté' });
   });
 });
-
-// ---------------------------------------------------------------------------
-// me
-// ---------------------------------------------------------------------------
 
 describe('me', () => {
   it('returns 404 when user is not found in DB', async () => {
@@ -243,10 +200,6 @@ describe('me', () => {
     spy.mockRestore();
   });
 });
-
-// ---------------------------------------------------------------------------
-// forgotPassword
-// ---------------------------------------------------------------------------
 
 describe('forgotPassword', () => {
   it('returns 400 when no email is provided', async () => {
@@ -285,10 +238,6 @@ describe('forgotPassword', () => {
     emailSpy.mockRestore();
   });
 });
-
-// ---------------------------------------------------------------------------
-// resetPassword
-// ---------------------------------------------------------------------------
 
 describe('resetPassword', () => {
   it('returns 400 when token or password is missing', async () => {

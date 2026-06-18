@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import jwt from 'jsonwebtoken';
 
-// Use a real JWT secret for these tests — no mocking needed for the middleware itself
 const SECRET = 'test-jwt-secret-echoras';
 
 beforeEach(() => {

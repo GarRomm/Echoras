@@ -6,7 +6,6 @@ const { Cart, CartItem, Sculpture, Order, ShippingAddress, User } = _require('..
 const sequelizeCJS = _require('../../db/index');
 const { placeOrder } = _require('../../controllers/checkoutController');
 
-// Fake transaction returned by sequelize.transaction()
 function makeFakeTransaction() {
   return {
     commit:   vi.fn().mockResolvedValue(undefined),
@@ -39,13 +38,8 @@ function makeRes() {
 
 beforeEach(() => {
   vi.restoreAllMocks();
-  // Ensure no Stripe key so the payment check is skipped
   delete process.env.STRIPE_SECRET_KEY;
 });
-
-// ---------------------------------------------------------------------------
-// placeOrder
-// ---------------------------------------------------------------------------
 
 describe('placeOrder', () => {
   it('returns 400 when address is incomplete', async () => {
@@ -88,7 +82,7 @@ describe('placeOrder', () => {
     vi.spyOn(Order,           'create').mockResolvedValue({ id: 1 });
     vi.spyOn(Sculpture,       'update').mockResolvedValue([1]);
     vi.spyOn(CartItem,        'destroy').mockResolvedValue(1);
-    vi.spyOn(User,            'findByPk').mockResolvedValue(null); // skip fire-and-forget email
+    vi.spyOn(User,            'findByPk').mockResolvedValue(null);
 
     const res = makeRes();
     await placeOrder(makeReq(), res);
@@ -130,7 +124,6 @@ describe('placeOrder', () => {
     const res = makeRes();
     await placeOrder(makeReq({ deliveryType: 'express' }), res);
 
-    // First order = 40 + 8 (express fee), second = 30
     expect(createdOrders[0]).toBe(48);
     expect(createdOrders[1]).toBe(30);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ total: 78 }));

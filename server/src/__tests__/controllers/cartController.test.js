@@ -25,10 +25,6 @@ function makeRes() {
 
 beforeEach(() => vi.restoreAllMocks());
 
-// ---------------------------------------------------------------------------
-// getCart
-// ---------------------------------------------------------------------------
-
 describe('getCart', () => {
   it('returns empty items when no cart exists', async () => {
     vi.spyOn(Cart, 'findOne').mockResolvedValue(null);
@@ -52,10 +48,6 @@ describe('getCart', () => {
     expect(res.status).toHaveBeenCalledWith(500);
   });
 });
-
-// ---------------------------------------------------------------------------
-// addToCart
-// ---------------------------------------------------------------------------
 
 describe('addToCart', () => {
   it('returns 400 when sculptureId is missing', async () => {
@@ -149,10 +141,6 @@ describe('addToCart', () => {
     expect(petgPrice).toBeGreaterThan(plaPrice);
   });
 });
-
-// ---------------------------------------------------------------------------
-// removeFromCart
-// ---------------------------------------------------------------------------
 
 describe('removeFromCart', () => {
   it('returns 404 when cart does not exist', async () => {
