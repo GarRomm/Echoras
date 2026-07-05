@@ -84,7 +84,7 @@ Service Python (Librosa)
 
 | # | Fonctionnalité | Détail |
 |---|---|---|
-| B1 | Upload audio sécurisé | Multer, UUID, validation format/taille |
+| B1 | Analyse audio côté client | Web Audio API, aucun fichier audio envoyé au serveur (RGPD) |
 | B2 | Analyse audio Librosa | BPM, RMS, centroïde spectral, 5 bandes fréquences, beats |
 | B3 | Stockage STL | POST /api/sculptures/:id/stl/:suffix, POST /api/sculptures/:id/3mf (authentifié) |
 | B4 | Rate limiting | 100 req / 15 min par IP |

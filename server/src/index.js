@@ -9,7 +9,6 @@ const sequelize = require('./db/index');
 require('./db/models/index'); // enregistre les modèles et leurs associations
 
 const authRoutes = require('./routes/auth');
-const uploadRoutes = require('./routes/upload');
 const cartRoutes = require('./routes/cart');
 const sculpturesRoutes = require('./routes/sculptures');
 const adminRoutes      = require('./routes/admin');
@@ -40,7 +39,6 @@ app.use('/api/', limiter);
 // Routes
 // ---------------------------------------------------------------------------
 app.use('/api/auth', authRoutes);
-app.use('/api/upload', uploadRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/sculptures', sculpturesRoutes);
 app.use('/api/admin',     adminRoutes);
