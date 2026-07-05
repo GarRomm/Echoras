@@ -86,7 +86,7 @@ Service Python (Librosa)
 |---|---|---|
 | B1 | Upload audio sécurisé | Multer, UUID, validation format/taille |
 | B2 | Analyse audio Librosa | BPM, RMS, centroïde spectral, 5 bandes fréquences, beats |
-| B3 | Stockage STL | POST /api/model/save, GET/DELETE /api/model/:id |
+| B3 | Stockage STL | POST /api/sculptures/:id/stl/:suffix, POST /api/sculptures/:id/3mf (authentifié) |
 | B4 | Rate limiting | 100 req / 15 min par IP |
 | B5 | Gestion commandes BDD | Sequelize Order, ShippingAddress |
 | B6 | Email confirmation commande | Resend |
