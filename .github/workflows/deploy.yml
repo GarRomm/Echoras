@@ -39,6 +39,15 @@ jobs:
       - name: Build client
         # Vite compile le React et génère les fichiers statiques dans client/dist/.
         # Ces fichiers seront servis directement par nginx sur le VPS.
+        #
+        # IMPORTANT : client/.env est dans .gitignore, donc il n'existe pas sur le
+        # runner GitHub Actions. Vite lit quand même les variables VITE_* déjà
+        # présentes dans process.env (elles ont priorité sur un éventuel fichier .env),
+        # donc on les injecte ici depuis les secrets du repo. Sans ça, le build produit
+        # un bundle où VITE_STRIPE_PUBLIC_KEY est undefined et Stripe reste "non configuré"
+        # en production, même si client/.env est correct en local.
+        env:
+          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
         run: npm run build --prefix client
 
       - name: Setup SSH
